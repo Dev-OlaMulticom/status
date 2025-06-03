@@ -1,0 +1,76 @@
+# .github/workflows/website-monitor.yml
+name: Website Status Monitor
+
+on:
+  schedule:
+    # Ejecutar cada 5 minutos (ajusta según necesites)
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # Permite ejecutar manualmente
+  push:
+    branches: [ main ] # También ejecutar cuando hagas push
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Necesario para hacer commits
+      pages: write    # Necesario para GitHub Pages
+      id-token: write # Necesario para el deployment
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Run website monitor
+      run: node monitor.js
+      
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action Bot"
+        git add status.json index.html
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "🔍 Update website status - $(date '+%Y-%m-%d %H:%M:%S')"
+          git push
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WHM_API_TOKEN: ${{ secrets.WHM_API_TOKEN }}
+
+  # Job separado para deployment a GitHub Pages
+  deploy:
+    needs: monitor
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: main # Asegurar que use la versión más reciente
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: '.'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
