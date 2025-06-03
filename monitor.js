@@ -40,7 +40,7 @@ const WHM_CONFIG = {
 // Configuración del monitor
 const MONITOR_CONFIG = {
   timeout: 10000,           // Timeout en milisegundos
-  userAgent: 'Website-Monitor/1.0',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91 Safari/537.36',
   maxRetries: 2,           // Reintentos para sitios fallidos
   parallelLimit: 10,       // Máximo sitios en paralelo
   updateInterval: 300000,  // Auto-update cada 5 minutos (300000ms)
