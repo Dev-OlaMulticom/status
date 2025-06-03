@@ -2,6 +2,16 @@ const fs = require('fs');
 const https = require('https');
 const http = require('http');
 
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('🚨 Unhandled Rejection:', reason);
+    process.exit(254);
+  });
+  
+process.on('uncaughtException', (error) => {
+console.error('🚨 Uncaught Exception:', error);
+process.exit(254);
+});
+
 // ===========================================
 // CONFIGURACIÓN
 // ===========================================
@@ -611,6 +621,9 @@ class IntegratedMonitor {
 // ===========================================
 // EJECUCIÓN PRINCIPAL
 // ===========================================
+
+console.log("🔧 Iniciando monitor.js");
+console.log("🔐 WHM_API_TOKEN:", process.env.WHM_API_TOKEN ? "PRESENTE" : "AUSENTE");
 
 async function main() {
   console.log('🚀 Iniciando Monitor Integrado...\n');
