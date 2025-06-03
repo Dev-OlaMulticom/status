@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Integrado - WHM + Sitios Manuales</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .header h1 { 
+            font-size: 2.5rem; 
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-number { 
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label { color: #666; margin-top: 8px; font-weight: 500; }
+        
+        .category-section {
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .category-critical { border-left: 4px solid #dc3545; }
+        .category-high { border-left: 4px solid #fd7e14; }
+        .category-normal { border-left: 4px solid #28a745; }
+        .category-whm { border-left: 4px solid #6f42c1; }
+        .category-external { border-left: 4px solid #17a2b8; }
+        
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .site-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .site-card:hover { 
+            background: rgba(255,255,255,0.9);
+            transform: translateX(5px);
+        }
+        .site-info { flex-grow: 1; }
+        .site-name { font-weight: 600; font-size: 16px; }
+        .site-url { color: #666; font-size: 13px; margin-top: 3px; }
+        .site-meta { color: #888; font-size: 12px; margin-top: 2px; }
+        .status {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .online { background: #d4edda; color: #155724; }
+        .offline { background: #f8d7da; color: #721c24; }
+        .response-time { 
+            margin-left: 10px; 
+            color: #666; 
+            font-size: 12px;
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+        }
+        
+        .sync-info {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Monitor Integrado</h1>
+            <p>Monitoreo automático de sitios manuales + cuentas WHM</p>
+        </div>
+        
+        <div class="sync-info">
+            <strong>Última sincronización WHM:</strong> Nunca |
+            <strong>Total de sitios:</strong> 4
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">✅ Online</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">❌ Offline</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">📝 Manuales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">🌐 WHM</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0%</div>
+                <div class="stat-label">📊 Uptime</div>
+            </div>
+        </div>
+        
+        
+        <div class="category-section category-normal">
+            <div class="category-title">📋 Normales (4)</div>
+            <div class="sites-grid">
+                
+                    <div class="site-card">
+                        <div class="site-info">
+                            <div class="site-name">Smartbox Brasil</div>
+                            <div class="site-url">https://smartboxbrasil.com.br</div>
+                            
+                        </div>
+                        <div>
+                            <span class="status offline">
+                                ❌ Offline
+                            </span>
+                            
+                        </div>
+                    </div>
+                
+                    <div class="site-card">
+                        <div class="site-info">
+                            <div class="site-name">Tecnuv</div>
+                            <div class="site-url">https://tecnuv.com.br</div>
+                            
+                        </div>
+                        <div>
+                            <span class="status offline">
+                                ❌ Offline
+                            </span>
+                            
+                        </div>
+                    </div>
+                
+                    <div class="site-card">
+                        <div class="site-info">
+                            <div class="site-name">Postogestor</div>
+                            <div class="site-url">https://postogestor.com.br</div>
+                            
+                        </div>
+                        <div>
+                            <span class="status offline">
+                                ❌ Offline
+                            </span>
+                            
+                        </div>
+                    </div>
+                
+                    <div class="site-card">
+                        <div class="site-info">
+                            <div class="site-name">Epsy</div>
+                            <div class="site-url">https://epsy.com.br</div>
+                            
+                        </div>
+                        <div>
+                            <span class="status offline">
+                                ❌ Offline
+                            </span>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+      
+        
+        <div class="last-updated">
+            <p><strong>Última actualización:</strong> 3/6/2025, 16:22:38</p>
+            <p>Actualizaciones automáticas cada 5 minutos • Sync WHM cada hora</p>
+        </div>
+    </div>
+</body>
+</html>
