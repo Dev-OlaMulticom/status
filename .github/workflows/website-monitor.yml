@@ -1,63 +1,160 @@
+# .github/workflows/website-monitor.yml
 name: Website Status Monitor
-true:
-  push:
-    branches:
-    - main
+
+on:
   schedule:
-  - cron: '*/5 * * * *'
-  workflow_dispatch: null
+    - cron: '*/5 * * * *'  # Cada 5 minutos
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+# Configuración de concurrencia para evitar ejecuciones simultáneas
+concurrency:
+  group: website-monitor
+  cancel-in-progress: false
+
 jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          else
+            echo "No package.json found, skipping dependency installation"
+          fi
+
+      - name: Run website monitor
+        id: monitor
+        run: node monitor.js
+        env:
+          WHM_API_TOKEN: ${{ secrets.WHM_API_TOKEN }}
+        continue-on-error: true
+
+      - name: Check monitor result
+        if: steps.monitor.outcome == 'failure'
+        run: |
+          echo "⚠️ Website monitor encountered errors but continuing..."
+          echo "Check the logs above for details"
+
+      - name: Verify required files exist
+        run: |
+          files=("status.json" "index.html")
+          for file in "${files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Required file $file not found"
+              exit 1
+            fi
+          done
+          echo "✅ All required files exist"
+
+      - name: Prepare public directory for Pages
+        run: |
+          mkdir -p public
+          cp index.html public/
+          cp status.json public/
+          # Copiar archivos adicionales si existen
+          [ -f sites-config.json ] && cp sites-config.json public/ || echo "sites-config.json not found, skipping"
+          [ -d assets ] && cp -r assets public/ || echo "assets directory not found, skipping"
+          [ -d css ] && cp -r css public/ || echo "css directory not found, skipping"
+          [ -d js ] && cp -r js public/ || echo "js directory not found, skipping"
+
+      - name: Commit and push changes
+        id: commit
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Añadir archivos principales
+          git add status.json index.html
+          
+          # Añadir archivos opcionales si existen
+          [ -f sites-config.json ] && git add sites-config.json
+          
+          # Verificar si hay cambios
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S UTC')
+            git commit -m "🔍 Update website status - $TIMESTAMP"
+            git push
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "✅ Changes committed and pushed successfully"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload public directory as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-status-pages
+          path: public/
+          retention-days: 1
+
   deploy:
+    needs: monitor
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: monitor
-    permissions:
-      id-token: write
-      pages: write
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: public
-    - id: deployment
-      name: Deploy to GitHub Pages
-      uses: actions/deploy-pages@v4
-  monitor:
-    permissions:
-      contents: write
-      id-token: write
-      pages: write
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-    - name: Install dependencies
-      run: npm install
-    - env:
-        WHM_API_TOKEN: ${{ secrets.WHM_API_TOKEN }}
-      name: Run website monitor
-      run: node monitor.js
-    - name: Prepare public directory for Pages
-      run: 'mkdir -p public
+    
+    # Solo ejecutar si el job anterior fue exitoso
+    if: needs.monitor.result == 'success'
 
-        cp index.html status.json public/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        '
-    - env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      name: Commit and push changes
-      run: "git config --local user.email \"action@github.com\"\ngit config --local\
-        \ user.name \"GitHub Action Bot\"\ngit add status.json index.html sites-config.json\n\
-        if git diff --staged --quiet; then\n  echo \"No changes to commit\"\nelse\n\
-        \  git commit -m \"\U0001F50D Update status - $(date '+%Y-%m-%d %H:%M:%S')\"\
-        \n  git push\nfi\n"
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: website-status-pages
+          path: public
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Job opcional para notificaciones en caso de fallos críticos
+  notify-on-failure:
+    needs: [monitor, deploy]
+    runs-on: ubuntu-latest
+    if: failure() && github.event_name == 'schedule'
+    
+    steps:
+      - name: Log failure
+        run: |
+          echo "🚨 Website monitor workflow failed"
+          echo "Event: ${{ github.event_name }}"
+          echo "Time: $(date)"
+          echo "Run: ${{ github.run_id }}"
