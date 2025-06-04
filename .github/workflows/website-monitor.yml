@@ -1,80 +1,63 @@
-# .github/workflows/website-monitor.yml
 name: Website Status Monitor
-
-on:
-  schedule:
-    - cron: '*/5 * * * *'  # Cada 5 minutos
-  workflow_dispatch:
+true:
   push:
-    branches: [main]
-
+    branches:
+    - main
+  schedule:
+  - cron: '*/5 * * * *'
+  workflow_dispatch: null
 jobs:
-  monitor:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-        # Solo necesario si usas axios o módulos en package.json
-
-      - name: Run website monitor
-        run: node monitor.js
-        env:
-          WHM_API_TOKEN: ${{ secrets.WHM_API_TOKEN }}
-
-      - name: Prepare public directory for Pages
-        run: |
-          mkdir -p public
-          cp index.html status.json public/
-
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action Bot"
-          git add status.json index.html sites-config.json
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "🔍 Update status - $(date '+%Y-%m-%d %H:%M:%S')"
-            git push
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   deploy:
-    needs: monitor
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
+    needs: monitor
+    permissions:
+      id-token: write
+      pages: write
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: public
+    - id: deployment
+      name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
+  monitor:
+    permissions:
+      contents: write
+      id-token: write
+      pages: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    - name: Install dependencies
+      run: npm install
+    - env:
+        WHM_API_TOKEN: ${{ secrets.WHM_API_TOKEN }}
+      name: Run website monitor
+      run: node monitor.js
+    - name: Prepare public directory for Pages
+      run: 'mkdir -p public
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+        cp index.html status.json public/
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'public'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        '
+    - env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      name: Commit and push changes
+      run: "git config --local user.email \"action@github.com\"\ngit config --local\
+        \ user.name \"GitHub Action Bot\"\ngit add status.json index.html sites-config.json\n\
+        if git diff --staged --quiet; then\n  echo \"No changes to commit\"\nelse\n\
+        \  git commit -m \"\U0001F50D Update status - $(date '+%Y-%m-%d %H:%M:%S')\"\
+        \n  git push\nfi\n"
