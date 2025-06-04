@@ -27,7 +27,7 @@ const MANUAL_SITES = [
 // Configuración de WHM (opcional - para auto-sync)
 const WHM_CONFIG = {
   enabled: true, // Cambiar a false para desactivar sync con WHM
-  host: 'servolam.olamulticom.com.br',
+  host: '208.109.245.134',
   port: 2087,
   username: 'root',
   apiToken: process.env.WHM_API_TOKEN,
@@ -83,6 +83,7 @@ class SiteManager {
       }
     } catch (error) {
       console.log('⚠️ No se pudo cargar configuración previa, usando configuración por defecto');
+      fs.unlinkSync('sites-config.json');
     }
   }
 
@@ -141,7 +142,11 @@ class SiteManager {
       });
 
       // Convertir a formato de sitios
+      if (filteredDomains.length > 0) {
       this.whmSites = filteredDomains.map(domain => ({
+      } else {
+        console.warn('⚠️ WHM no devolvió dominios. Se conservarán los datos anteriores.');
+      }
         name: domain.domain,
         url: `https://${domain.domain}`,
         category: 'whm',
@@ -359,7 +364,9 @@ class IntegratedMonitor {
   // Generar página de status mejorada
   generateStatusPage() {
     const latestCheck = this.history.checks[0];
-    if (!latestCheck) return;
+    if (!latestCheck || !latestCheck.results.length) {
+      return fs.writeFileSync('index.html', '<h1>Sin datos de verificación aún</h1>');
+    }
 
     const stats = latestCheck.stats;
     const uptime = this.calculateUptime();
