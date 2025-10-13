@@ -1,6 +1,73 @@
 {
   "checks": [
     {
+      "timestamp": "2025-10-13T18:59:27.006Z",
+      "results": [
+        {
+          "name": "Smartbox Brasil",
+          "url": "https://smartboxbrasil.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 200,
+          "online": true,
+          "responseTime": 550,
+          "timestamp": "2025-10-13T18:59:24.949Z",
+          "ssl": true
+        },
+        {
+          "name": "Tecnuv",
+          "url": "https://tecnuv.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 301,
+          "online": true,
+          "responseTime": 2440,
+          "timestamp": "2025-10-13T18:59:26.921Z",
+          "ssl": true
+        },
+        {
+          "name": "Postogestor",
+          "url": "https://postogestor.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 302,
+          "online": true,
+          "responseTime": 962,
+          "timestamp": "2025-10-13T18:59:25.443Z",
+          "ssl": true
+        },
+        {
+          "name": "Epsy",
+          "url": "https://epsy.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 301,
+          "online": true,
+          "responseTime": 2524,
+          "timestamp": "2025-10-13T18:59:27.006Z",
+          "ssl": true
+        }
+      ],
+      "stats": {
+        "total": 4,
+        "manual": 4,
+        "whm": 0,
+        "byCategory": {
+          "externo": 0,
+          "whm": 0,
+          "api": 0,
+          "cdn": 0,
+          "manual": 4
+        },
+        "byPriority": {
+          "critical": 0,
+          "high": 0,
+          "normal": 4,
+          "low": 0
+        }
+      }
+    },
+    {
       "timestamp": "2025-10-13T18:52:37.149Z",
       "results": [
         {
@@ -6611,73 +6678,6 @@
           "online": true,
           "responseTime": 1785,
           "timestamp": "2025-10-12T17:57:47.582Z",
-          "ssl": true
-        }
-      ],
-      "stats": {
-        "total": 4,
-        "manual": 4,
-        "whm": 0,
-        "byCategory": {
-          "externo": 0,
-          "whm": 0,
-          "api": 0,
-          "cdn": 0,
-          "manual": 4
-        },
-        "byPriority": {
-          "critical": 0,
-          "high": 0,
-          "normal": 4,
-          "low": 0
-        }
-      }
-    },
-    {
-      "timestamp": "2025-10-12T17:50:34.102Z",
-      "results": [
-        {
-          "name": "Smartbox Brasil",
-          "url": "https://smartboxbrasil.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 200,
-          "online": true,
-          "responseTime": 460,
-          "timestamp": "2025-10-12T17:50:27.951Z",
-          "ssl": true
-        },
-        {
-          "name": "Tecnuv",
-          "url": "https://tecnuv.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 301,
-          "online": true,
-          "responseTime": 6577,
-          "timestamp": "2025-10-12T17:50:34.102Z",
-          "ssl": true
-        },
-        {
-          "name": "Postogestor",
-          "url": "https://postogestor.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 302,
-          "online": true,
-          "responseTime": 830,
-          "timestamp": "2025-10-12T17:50:28.356Z",
-          "ssl": true
-        },
-        {
-          "name": "Epsy",
-          "url": "https://epsy.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 301,
-          "online": true,
-          "responseTime": 5626,
-          "timestamp": "2025-10-12T17:50:33.153Z",
           "ssl": true
         }
       ],
