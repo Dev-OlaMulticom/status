@@ -1,21 +1,21 @@
-const whmExtractor = require('./whm-extractor');
+import { extractAccountsAndDomains, testConnection } from './whm-extractor';
 
 console.log('🧪 TESTE DE INTEGRAÇÃO WHM\n');
 console.log('═'.repeat(50));
 
-async function runTests() {
+async function runTests(): Promise<void> {
     try {
         console.log('\n1️⃣ Testando configuração de ambiente...');
         console.log(`   WHM_API_TOKEN: ${process.env.WHM_API_TOKEN ? '✓ Presente' : '✗ Ausente'}`);
 
         console.log('\n2️⃣ Testando conexão com WHM...');
-        const connectionTest = await whmExtractor.testConnection();
+        const connectionTest = await testConnection();
 
         if (connectionTest) {
             console.log('\n3️⃣ Extraindo dados de domínios...');
-            const data = await whmExtractor.extractAccountsAndDomains();
+            const data = await extractAccountsAndDomains();
 
-            console.log(`\n   📊 Estatísticas:`);
+            console.log('\n   📊 Estatísticas:');
             console.log(`   • Domínios encontrados: ${data.domains.length}`);
             console.log(`   • Contas encontradas: ${data.accounts.length}`);
 
@@ -38,8 +38,7 @@ async function runTests() {
             console.log('\n❌ Falha na conexão com WHM');
             process.exit(1);
         }
-
-    } catch (error) {
+    } catch (error: any) {
         console.error('\n❌ Erro durante o teste:', error.message);
         process.exit(1);
     }

@@ -1,13 +1,63 @@
 const https = require('https');
+require('dotenv').config();
 
-const WHM_CONFIG = {
-    host: 'servolam.olamulticom.com.br',
-    port: 2087,
-    username: 'root',
+function getEnvBoolean(name: string, defaultValue: boolean): boolean {
+    const value = process.env[name];
+    if (value == null || value === '') return defaultValue;
+    return ['1', 'true', 'yes', 'on'].includes(String(value).toLowerCase());
+}
+
+function getEnvNumber(name: string, defaultValue: number): number {
+    const value = Number(process.env[name]);
+    return Number.isFinite(value) && value > 0 ? value : defaultValue;
+}
+
+interface WHMConfig {
+    host: string;
+    port: number;
+    username: string;
+    apiToken?: string;
+    timeout: number;
+    rejectUnauthorized: boolean;
+}
+
+interface WHMRequestResponse {
+    data?: any[];
+}
+
+interface DomainInfo {
+    domain: string;
+    username: string;
+    status: string;
+    type: 'addon' | 'subdominio' | 'principal';
+    mainDomain: string;
+    ip: string;
+    addon: boolean;
+    subdomain: boolean;
+}
+
+interface AccountInfo {
+    username: string;
+    domains: string[];
+    suspended: boolean;
+}
+
+interface ExtractResult {
+    domains: DomainInfo[];
+    accounts: AccountInfo[];
+    timestamp?: string;
+}
+
+const WHM_CONFIG: WHMConfig = {
+    host: process.env.WHM_HOST || 'servolam.olamulticom.com.br',
+    port: getEnvNumber('WHM_PORT', 2087),
+    username: process.env.WHM_USERNAME || 'root',
     apiToken: process.env.WHM_API_TOKEN,
+    timeout: getEnvNumber('WHM_TIMEOUT_MS', 10000),
+    rejectUnauthorized: getEnvBoolean('WHM_REJECT_UNAUTHORIZED', true),
 };
 
-function makeWHMRequest(endpoint, params = {}) {
+function makeWHMRequest(endpoint: string, params: Record<string, string | number> = {}): Promise<WHMRequestResponse> {
     return new Promise((resolve, reject) => {
         try {
             if (!WHM_CONFIG.apiToken) {
@@ -16,7 +66,7 @@ function makeWHMRequest(endpoint, params = {}) {
 
             const queryParams = new URLSearchParams({
                 'api.version': '1',
-                ...params
+                ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)]))
             });
 
             const path = `/json-api/${endpoint}?${queryParams.toString()}`;
@@ -24,53 +74,58 @@ function makeWHMRequest(endpoint, params = {}) {
             const options = {
                 hostname: WHM_CONFIG.host,
                 port: WHM_CONFIG.port,
-                path: path,
+                path,
                 method: 'GET',
                 headers: {
-                    'Authorization': `WHM ${WHM_CONFIG.username}:${WHM_CONFIG.apiToken}`,
+                    Authorization: `WHM ${WHM_CONFIG.username}:${WHM_CONFIG.apiToken}`,
                     'Content-Type': 'application/json',
                     'User-Agent': 'Mozilla/5.0 (WHM Monitor)'
                 },
-                rejectUnauthorized: false,
+                rejectUnauthorized: WHM_CONFIG.rejectUnauthorized,
             };
 
-            const request = https.get(options, (response) => {
+            const request = https.get(options, (response: any) => {
                 let data = '';
 
-                response.on('data', (chunk) => {
+                response.on('data', (chunk: Buffer | string) => {
                     data += chunk;
                 });
 
                 response.on('end', () => {
+                    clearTimeout(hardTimeout);
                     try {
                         if (response.statusCode >= 200 && response.statusCode < 300) {
-                            const result = JSON.parse(data);
-                            resolve(result);
+                            resolve(JSON.parse(data));
                         } else {
                             reject(new Error(`WHM API Error: HTTP ${response.statusCode}`));
                         }
-                    } catch (error) {
+                    } catch (error: any) {
                         reject(new Error(`Failed to parse WHM response: ${error.message}`));
                     }
                 });
             });
 
-            request.on('error', (error) => {
+            request.on('error', (error: Error) => {
+                clearTimeout(hardTimeout);
                 reject(new Error(`WHM Request failed: ${error.message}`));
             });
 
-            request.setTimeout(10000, () => {
+            request.setTimeout(WHM_CONFIG.timeout, () => {
                 request.destroy();
+                clearTimeout(hardTimeout);
                 reject(new Error('WHM Request timeout'));
             });
 
+            const hardTimeout = setTimeout(() => {
+                request.destroy(new Error('WHM hard timeout'));
+            }, WHM_CONFIG.timeout + 1000);
         } catch (error) {
             reject(error);
         }
     });
 }
 
-async function extractAccountsAndDomains() {
+async function extractAccountsAndDomains(): Promise<ExtractResult> {
     try {
         console.log('🔗 Conectando com WHM...');
         const response = await makeWHMRequest('get_domain_info');
@@ -80,13 +135,13 @@ async function extractAccountsAndDomains() {
             return { domains: [], accounts: [] };
         }
 
-        const domains = [];
-        const accounts = new Map();
+        const domains: DomainInfo[] = [];
+        const accounts = new Map<string, AccountInfo>();
 
         if (Array.isArray(response.data)) {
-            response.data.forEach((item) => {
+            response.data.forEach((item: any) => {
                 if (item.domain) {
-                    const domainInfo = {
+                    const domainInfo: DomainInfo = {
                         domain: item.domain,
                         username: item.user || item.username || 'unknown',
                         status: item.suspended ? 'Suspensa' : 'Activa',
@@ -108,7 +163,7 @@ async function extractAccountsAndDomains() {
                     }
 
                     if (accounts.has(domainInfo.username)) {
-                        accounts.get(domainInfo.username).domains.push(domainInfo.domain);
+                        accounts.get(domainInfo.username)?.domains.push(domainInfo.domain);
                     }
                 }
             });
@@ -117,18 +172,17 @@ async function extractAccountsAndDomains() {
         console.log(`✅ Extraídos ${domains.length} domínios de ${accounts.size} contas`);
 
         return {
-            domains: domains,
+            domains,
             accounts: Array.from(accounts.values()),
             timestamp: new Date().toISOString()
         };
-
-    } catch (error) {
+    } catch (error: any) {
         console.error('❌ Erro ao extrair dados do WHM:', error.message);
         throw error;
     }
 }
 
-function identifyDomainType(domainData) {
+function identifyDomainType(domainData: any): 'addon' | 'subdominio' | 'principal' {
     if (domainData.addon === 1 || domainData.addon === true) {
         return 'addon';
     }
@@ -138,7 +192,7 @@ function identifyDomainType(domainData) {
     return 'principal';
 }
 
-async function testConnection() {
+async function testConnection(): Promise<boolean> {
     try {
         console.log('🧪 Testando conexão com WHM...');
         console.log(`   Host: ${WHM_CONFIG.host}:${WHM_CONFIG.port}`);
@@ -150,16 +204,16 @@ async function testConnection() {
             return false;
         }
 
-        const result = await makeWHMRequest('get_domain_info');
+        await makeWHMRequest('get_domain_info');
         console.log('✅ Conexão bem-sucedida!');
         return true;
-    } catch (error) {
+    } catch (error: any) {
         console.error('❌ Erro na conexão:', error.message);
         return false;
     }
 }
 
-module.exports = {
+export {
     WHM_CONFIG,
     makeWHMRequest,
     extractAccountsAndDomains,

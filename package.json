@@ -1,0 +1,25 @@
+{
+  "name": "status-olamulticom",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website and WHM status monitor",
+  "main": "monitor.ts",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "monitor": "ts-node monitor.ts",
+    "whm:test": "ts-node test-whm.ts",
+    "typecheck": "tsc --noEmit",
+    "validate:syntax": "npm run typecheck",
+    "test:full": "bash FULL_TEST.sh"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

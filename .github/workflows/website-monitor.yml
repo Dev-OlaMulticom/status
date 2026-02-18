@@ -36,30 +36,22 @@ jobs:
 
       - name: Install dependencies
         run: |
-          if [ -f package.json ]; then
-            if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ] || [ -f yarn.lock ]; then
-              echo "Lock file found, using npm ci for faster installation"
-              npm ci
-            else
-              echo "No lock file found, using npm install"
-              npm install
-            fi
+          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ] || [ -f yarn.lock ]; then
+            echo "Lock file found, using npm ci for faster installation"
+            npm ci
           else
-            echo "No package.json found, skipping dependency installation"
+            echo "No lock file found, using npm install"
+            npm install
           fi
+
+      - name: Validate source syntax
+        run: npm run validate:syntax
 
       - name: Run website monitor
         id: monitor
-        run: node monitor.js
+        run: npm run monitor
         env:
           WHM_API_TOKEN: ${{ secrets.WHM_API_TOKEN }}
-        continue-on-error: true
-
-      - name: Check monitor result
-        if: steps.monitor.outcome == 'failure'
-        run: |
-          echo "⚠️ Website monitor encountered errors but continuing..."
-          echo "Check the logs above for details"
 
       - name: Verify required files exist
         run: |
