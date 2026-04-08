@@ -43,6 +43,13 @@ jobs:
             echo "No lock file found, using npm install"
             npm install
           fi
+          if [ -f frontend/package-lock.json ] || [ -f frontend/npm-shrinkwrap.json ] || [ -f frontend/yarn.lock ]; then
+            echo "Frontend lock file found, using npm ci --prefix frontend"
+            npm ci --prefix frontend
+          else
+            echo "No frontend lock file found, using npm install --prefix frontend"
+            npm install --prefix frontend
+          fi
 
       - name: Validate source syntax
         run: npm run validate:syntax
@@ -53,9 +60,12 @@ jobs:
         env:
           WHM_API_TOKEN: ${{ secrets.WHM_API_TOKEN }}
 
+      - name: Build frontend dashboard
+        run: npm run frontend:build
+
       - name: Verify required files exist
         run: |
-          files=("status.json" "index.html")
+          files=("status.json" "frontend/dist/index.html" "frontend/dist/status.json")
           for file in "${files[@]}"; do
             if [ ! -f "$file" ]; then
               echo "❌ Required file $file not found"
@@ -67,13 +77,7 @@ jobs:
       - name: Prepare public directory for Pages
         run: |
           mkdir -p public
-          cp index.html public/
-          cp status.json public/
-          # Copiar archivos adicionales si existen
-          [ -f sites-config.json ] && cp sites-config.json public/ || echo "sites-config.json not found, skipping"
-          [ -d assets ] && cp -r assets public/ || echo "assets directory not found, skipping"
-          [ -d css ] && cp -r css public/ || echo "css directory not found, skipping"
-          [ -d js ] && cp -r js public/ || echo "js directory not found, skipping"
+          cp -r frontend/dist/. public/
 
       - name: Commit and push changes
         id: commit
@@ -81,8 +85,8 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Añadir archivos principales
-          git add status.json index.html
+          # Añadir archivos principales de datos
+          git add status.json
           
           # Añadir archivos opcionales si existen
           [ -f sites-config.json ] && git add sites-config.json

@@ -1,0 +1,350 @@
+{
+  "manualSites": [
+    {
+      "name": "Smartbox Brasil",
+      "url": "https://smartboxbrasil.com.br",
+      "category": "manual",
+      "priority": "normal"
+    },
+    {
+      "name": "Tecnuv",
+      "url": "https://tecnuv.com.br",
+      "category": "manual",
+      "priority": "normal"
+    },
+    {
+      "name": "Postogestor",
+      "url": "https://postogestor.com.br",
+      "category": "manual",
+      "priority": "normal"
+    },
+    {
+      "name": "Epsy",
+      "url": "https://epsy.com.br",
+      "category": "manual",
+      "priority": "normal"
+    }
+  ],
+  "whmSites": [
+    {
+      "name": "biofhitus.com.br",
+      "url": "https://biofhitus.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "addon",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "biofhitus.com.br.olapropaganda.net",
+      "url": "https://biofhitus.com.br.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "dev.voghieraslim.com.br",
+      "url": "https://dev.voghieraslim.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "geeffe.com.br",
+      "url": "https://geeffe.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "addon",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "geeffe.com.br.olapropaganda.net",
+      "url": "https://geeffe.com.br.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "idealtelecomsc.com.br",
+      "url": "https://idealtelecomsc.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "principal",
+        "username": "idealtelecomscco",
+        "status": "Activa",
+        "expirationDate": "2026-04-09T19:11:06Z",
+        "renewalDate": "2023-08-18T15:00:05Z",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "idealtelecomsc.com.br.208-109-245-134.cprapid.com",
+      "url": "https://idealtelecomsc.com.br.208-109-245-134.cprapid.com",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "principal",
+        "username": "idealtelecomscco",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "lpvog.voghieraslim.com.br",
+      "url": "https://lpvog.voghieraslim.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "ola.postogestor.com.br",
+      "url": "https://ola.postogestor.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "addon",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "olapropaganda.net",
+      "url": "https://olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "principal",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "olapropaganda.net.208-109-245-134.cprapid.com",
+      "url": "https://olapropaganda.net.208-109-245-134.cprapid.com",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "principal",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "paygas.olapropaganda.net",
+      "url": "https://paygas.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "pg.olapropaganda.net",
+      "url": "https://pg.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "postogestor.net.br",
+      "url": "https://postogestor.net.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "addon",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "pradoweb.com.br",
+      "url": "https://pradoweb.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "addon",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "pradoweb.olapropaganda.net",
+      "url": "https://pradoweb.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "realnobhotel.com.br",
+      "url": "https://realnobhotel.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "principal",
+        "username": "realnobhotelcom",
+        "status": "Activa",
+        "expirationDate": "2027-03-25T19:48:54Z",
+        "renewalDate": "2024-03-26T08:20:57Z",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "tecnuv-postogestor.olapropaganda.net",
+      "url": "https://tecnuv-postogestor.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "tfrancisconi.com.br",
+      "url": "https://tfrancisconi.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "addon",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "tfrancisconinovo.com.br.olapropaganda.net",
+      "url": "https://tfrancisconinovo.com.br.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "voghieranutrition.com.br",
+      "url": "https://voghieranutrition.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "addon",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "voghieranutrition.com.br.olapropaganda.net",
+      "url": "https://voghieranutrition.com.br.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "voghieranutrition.olapropaganda.net",
+      "url": "https://voghieranutrition.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "voghieraslim.com.br",
+      "url": "https://voghieraslim.com.br",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "addon",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    },
+    {
+      "name": "voghieraslim.olapropaganda.net",
+      "url": "https://voghieraslim.olapropaganda.net",
+      "category": "whm",
+      "priority": "normal",
+      "whmInfo": {
+        "type": "subdominio",
+        "username": "wwserv",
+        "status": "Activa",
+        "mailAccountsCount": null
+      }
+    }
+  ],
+  "lastWhmSync": "2026-04-08T20:29:24.720Z",
+  "serverInfo": {
+    "host": "servolam.olamulticom.com.br",
+    "ip": "208.109.245.134",
+    "plan": "VPS Linux",
+    "system": "No disponible",
+    "reverseDns": "servolam.olamulticom.com.br",
+    "httpServer": null,
+    "whoisOrg": null,
+    "whoisCountry": null,
+    "whoisNetName": null,
+    "whoisAsn": null,
+    "osGuess": null,
+    "probedAt": "2026-04-08T20:41:09.122Z"
+  },
+  "lastUpdate": "2026-04-08T20:41:09.122Z"
+}

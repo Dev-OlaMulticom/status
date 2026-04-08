@@ -1,4 +1,7 @@
 import * as whmExtractor from './whm-extractor';
+import { RDAP_CONFIG, getDomainDates } from './rdap-client';
+import { execFile } from 'node:child_process';
+import { lookup } from 'node:dns/promises';
 const fs = require('fs');
 const https = require('https');
 const http = require('http');
@@ -34,6 +37,9 @@ interface Site {
         type: string;
         username: string;
         status: string;
+        expirationDate?: string;
+        renewalDate?: string;
+        mailAccountsCount?: number | null;
     };
 }
 
@@ -51,6 +57,28 @@ interface CheckResult {
     timestamp: string;
     results: SiteResult[];
     stats: ReturnType<SiteManager['getStats']>;
+}
+
+interface ServerInfo {
+    host: string;
+    ip: string | null;
+    plan: string;
+    system: string;
+    reverseDns?: string | null;
+    whoisOrg?: string | null;
+    whoisCountry?: string | null;
+    whoisNetName?: string | null;
+    whoisAsn?: string | null;
+    httpServer?: string | null;
+    osGuess?: string | null;
+    isp?: string | null;
+    asName?: string | null;
+    geoCity?: string | null;
+    geoRegion?: string | null;
+    geoCountry?: string | null;
+    geoTimezone?: string | null;
+    ipApiSource?: string | null;
+    probedAt?: string;
 }
 
 const MANUAL_SITES: Site[] = [
@@ -79,6 +107,10 @@ const WHM_CONFIG = {
             'ftp.',
             'autodiscover.'
         ]
+    },
+    rdap: {
+        enabled: getEnvBoolean('WHM_RDAP_ENABLED', true),
+        concurrency: getEnvNumber('WHM_RDAP_CONCURRENCY', 3, 1)
     }
 };
 
@@ -90,6 +122,23 @@ const MONITOR_CONFIG = {
     historyLimit: getEnvNumber('MONITOR_HISTORY_LIMIT', 100),
 };
 
+const OUTPUT_CONFIG = {
+    generateLegacyHtml: getEnvBoolean('MONITOR_GENERATE_LEGACY_HTML', false),
+};
+
+const SERVER_PROBE_CONFIG = {
+    enabled: getEnvBoolean('WHM_SERVER_PROBE_ENABLED', true),
+    timeoutMs: getEnvNumber('WHM_SERVER_PROBE_TIMEOUT_MS', 12000, 1000),
+};
+
+const SERVER_IP_ENRICHMENT_CONFIG = {
+    enabled: getEnvBoolean('WHM_IP_ENRICHMENT_ENABLED', true),
+    timeoutMs: getEnvNumber('WHM_IP_ENRICHMENT_TIMEOUT_MS', 8000, 1000),
+    ipWhoisEnabled: getEnvBoolean('WHM_IPWHOIS_ENABLED', true),
+    ipInfoEnabled: getEnvBoolean('WHM_IPINFO_ENABLED', true),
+    ipInfoToken: process.env.IPINFO_TOKEN || ''
+};
+
 function escapeHtml(value: unknown): string {
     return String(value)
         .replace(/&/g, '&amp;')
@@ -99,15 +148,164 @@ function escapeHtml(value: unknown): string {
         .replace(/'/g, '&#39;');
 }
 
+async function mapWithConcurrency<T, R>(
+    items: T[],
+    limit: number,
+    mapper: (item: T, index: number) => Promise<R>
+): Promise<R[]> {
+    const results: R[] = new Array(items.length);
+    let current = 0;
+
+    async function worker(): Promise<void> {
+        while (current < items.length) {
+            const idx = current;
+            current += 1;
+            results[idx] = await mapper(items[idx], idx);
+        }
+    }
+
+    const workers = Array.from({ length: Math.min(limit, items.length) }, () => worker());
+    await Promise.all(workers);
+    return results;
+}
+
+function extractFirstMatch(content: string | null, regexes: RegExp[]): string | null {
+    if (!content) return null;
+    for (const regex of regexes) {
+        const match = content.match(regex);
+        if (match && match[1]) {
+            return String(match[1]).trim();
+        }
+    }
+    return null;
+}
+
+function runLinuxCommand(command: string, timeoutMs: number): Promise<string | null> {
+    return new Promise((resolve) => {
+        execFile(
+            'bash',
+            ['-lc', command],
+            { timeout: timeoutMs, maxBuffer: 1024 * 1024 },
+            (error, stdout) => {
+                if (error) {
+                    resolve(null);
+                    return;
+                }
+                const value = String(stdout || '').trim();
+                resolve(value || null);
+            }
+        );
+    });
+}
+
+async function commandExists(name: string): Promise<boolean> {
+    const result = await runLinuxCommand(`command -v ${name} >/dev/null 2>&1 && echo yes || echo no`, 2000);
+    return result === 'yes';
+}
+
+function fetchJson(url: string, timeoutMs: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        try {
+            const request = https.get(url, {
+                headers: {
+                    'User-Agent': MONITOR_CONFIG.userAgent
+                }
+            }, (response: any) => {
+                let data = '';
+                response.on('data', (chunk: Buffer | string) => {
+                    data += chunk;
+                });
+                response.on('end', () => {
+                    clearTimeout(hardTimeout);
+                    if (!response.statusCode || response.statusCode < 200 || response.statusCode >= 300) {
+                        reject(new Error(`HTTP ${response.statusCode || 0}`));
+                        return;
+                    }
+                    try {
+                        resolve(JSON.parse(data));
+                    } catch (error: any) {
+                        reject(new Error(`Invalid JSON: ${error.message}`));
+                    }
+                });
+            });
+
+            request.on('error', (error: Error) => {
+                clearTimeout(hardTimeout);
+                reject(error);
+            });
+
+            request.setTimeout(timeoutMs, () => {
+                request.destroy();
+                clearTimeout(hardTimeout);
+                reject(new Error('Request timeout'));
+            });
+
+            const hardTimeout = setTimeout(() => {
+                request.destroy(new Error('Hard timeout'));
+            }, timeoutMs + 1000);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+async function enrichFromIpWhoIs(ip: string, timeoutMs: number): Promise<Partial<ServerInfo> | null> {
+    try {
+        const payload = await fetchJson(`https://ipwho.is/${encodeURIComponent(ip)}`, timeoutMs);
+        if (!payload || payload.success === false) return null;
+
+        const asn = payload?.connection?.asn ? `AS${String(payload.connection.asn).replace(/^AS/i, '')}` : null;
+        return {
+            isp: payload?.connection?.isp || payload?.connection?.org || null,
+            asName: payload?.connection?.org || null,
+            whoisAsn: asn,
+            geoCity: payload?.city || null,
+            geoRegion: payload?.region || null,
+            geoCountry: payload?.country || null,
+            geoTimezone: payload?.timezone?.id || payload?.timezone?.utc || null,
+            ipApiSource: 'ipwho.is'
+        };
+    } catch {
+        return null;
+    }
+}
+
+async function enrichFromIpInfo(ip: string, timeoutMs: number, token: string): Promise<Partial<ServerInfo> | null> {
+    try {
+        const tokenPart = token ? `?token=${encodeURIComponent(token)}` : '';
+        const payload = await fetchJson(`https://ipinfo.io/${encodeURIComponent(ip)}/json${tokenPart}`, timeoutMs);
+        if (!payload) return null;
+
+        return {
+            isp: payload?.org || null,
+            asName: payload?.org || null,
+            geoCity: payload?.city || null,
+            geoRegion: payload?.region || null,
+            geoCountry: payload?.country || null,
+            geoTimezone: payload?.timezone || null,
+            ipApiSource: token ? 'ipinfo.io (token)' : 'ipinfo.io'
+        };
+    } catch {
+        return null;
+    }
+}
+
 class SiteManager {
     sites: Site[];
     whmSites: Site[];
     lastWhmSync: string | null;
+    serverInfo: ServerInfo;
 
     constructor() {
         this.sites = [];
         this.whmSites = [];
         this.lastWhmSync = null;
+        this.serverInfo = {
+            host: WHM_CONFIG.host,
+            ip: null,
+            plan: process.env.WHM_SERVER_PLAN || 'VPS Linux',
+            system: process.env.WHM_SERVER_SYSTEM || 'No disponible'
+        };
         this.initManualSites();
     }
 
@@ -140,11 +338,37 @@ class SiteManager {
                 this.lastWhmSync = data.lastWhmSync || null;
             }
 
+            if (data && typeof data.serverInfo === 'object' && data.serverInfo) {
+                this.serverInfo = {
+                    host: String((data.serverInfo as any).host || WHM_CONFIG.host),
+                    ip: (data.serverInfo as any).ip ? String((data.serverInfo as any).ip) : null,
+                    plan: String((data.serverInfo as any).plan || this.serverInfo.plan),
+                    system: String((data.serverInfo as any).system || this.serverInfo.system),
+                    reverseDns: (data.serverInfo as any).reverseDns ? String((data.serverInfo as any).reverseDns) : null,
+                    whoisOrg: (data.serverInfo as any).whoisOrg ? String((data.serverInfo as any).whoisOrg) : null,
+                    whoisCountry: (data.serverInfo as any).whoisCountry ? String((data.serverInfo as any).whoisCountry) : null,
+                    whoisNetName: (data.serverInfo as any).whoisNetName ? String((data.serverInfo as any).whoisNetName) : null,
+                    whoisAsn: (data.serverInfo as any).whoisAsn ? String((data.serverInfo as any).whoisAsn) : null,
+                    httpServer: (data.serverInfo as any).httpServer ? String((data.serverInfo as any).httpServer) : null,
+                    osGuess: (data.serverInfo as any).osGuess ? String((data.serverInfo as any).osGuess) : null,
+                    isp: (data.serverInfo as any).isp ? String((data.serverInfo as any).isp) : null,
+                    asName: (data.serverInfo as any).asName ? String((data.serverInfo as any).asName) : null,
+                    geoCity: (data.serverInfo as any).geoCity ? String((data.serverInfo as any).geoCity) : null,
+                    geoRegion: (data.serverInfo as any).geoRegion ? String((data.serverInfo as any).geoRegion) : null,
+                    geoCountry: (data.serverInfo as any).geoCountry ? String((data.serverInfo as any).geoCountry) : null,
+                    geoTimezone: (data.serverInfo as any).geoTimezone ? String((data.serverInfo as any).geoTimezone) : null,
+                    ipApiSource: (data.serverInfo as any).ipApiSource ? String((data.serverInfo as any).ipApiSource) : null,
+                    probedAt: (data.serverInfo as any).probedAt ? String((data.serverInfo as any).probedAt) : undefined
+                };
+            }
+
             console.log(`Loaded ${this.sites.length} manual sites and ${this.whmSites.length} WHM sites`);
         } catch (error: any) {
             console.warn('Could not load previous site config, using defaults:', error.message);
             if (fs.existsSync('sites-config.json')) {
-                fs.unlinkSync('sites-config.json');
+                const backupName = `sites-config.invalid-${Date.now()}.json`;
+                fs.renameSync('sites-config.json', backupName);
+                console.warn(`Corrupted sites-config.json moved to ${backupName}`);
             }
             this.initManualSites();
             this.whmSites = [];
@@ -157,6 +381,7 @@ class SiteManager {
             manualSites: this.sites,
             whmSites: this.whmSites,
             lastWhmSync: this.lastWhmSync,
+            serverInfo: this.serverInfo,
             lastUpdate: new Date().toISOString()
         };
 
@@ -190,22 +415,59 @@ class SiteManager {
             });
 
             if (filteredDomains.length > 0) {
-                this.whmSites = filteredDomains.map((domain: any) => ({
-                    name: domain.domain,
-                    url: `https://${domain.domain}`,
-                    category: 'whm',
-                    priority: 'normal',
-                    whmInfo: {
-                        type: domain.type,
-                        username: domain.username,
-                        status: domain.status
+                const oldDatesByDomain = new Map<string, { expirationDate?: string; renewalDate?: string }>();
+                this.whmSites.forEach((site) => {
+                    if (site?.url && site?.whmInfo) {
+                        oldDatesByDomain.set(String(site.url).toLowerCase(), {
+                            expirationDate: (site.whmInfo as any).expirationDate,
+                            renewalDate: (site.whmInfo as any).renewalDate
+                        });
                     }
-                }));
+                });
+
+                const rdapDomains = filteredDomains.filter((d: any) => d.type === 'principal');
+                const rdapDateMap = new Map<string, { expirationDate: string | null; renewalDate: string | null }>();
+
+                if (WHM_CONFIG.rdap.enabled && RDAP_CONFIG.enabled) {
+                    const uniqueMainDomains = Array.from(new Set(rdapDomains.map((d: any) => String(d.domain).toLowerCase())));
+                    const rdapResults = await mapWithConcurrency(
+                        uniqueMainDomains,
+                        WHM_CONFIG.rdap.concurrency,
+                        async (domain) => ({ domain, dates: await getDomainDates(domain) })
+                    );
+                    rdapResults.forEach((item) => rdapDateMap.set(item.domain, item.dates));
+                    console.log(`RDAP checked for ${uniqueMainDomains.length} main domains (cache-aware)`);
+                }
+
+                this.whmSites = filteredDomains.map((domain: any) => {
+                    const url = `https://${domain.domain}`;
+                    const key = url.toLowerCase();
+                    const rdapDates = rdapDateMap.get(String(domain.domain).toLowerCase());
+                    const previous = oldDatesByDomain.get(key);
+                    const expirationDate = rdapDates?.expirationDate || previous?.expirationDate || undefined;
+                    const renewalDate = rdapDates?.renewalDate || previous?.renewalDate || undefined;
+
+                    return {
+                        name: domain.domain,
+                        url,
+                        category: 'whm',
+                        priority: 'normal',
+                        whmInfo: {
+                            type: domain.type,
+                            username: domain.username,
+                            status: domain.status,
+                            expirationDate,
+                            renewalDate,
+                            mailAccountsCount: domain.mailAccountsCount ?? null
+                        }
+                    };
+                });
             } else {
                 console.warn('WHM returned 0 valid domains. Keeping previous WHM data.');
             }
 
             this.lastWhmSync = new Date().toISOString();
+            await this.refreshServerInfo();
             this.saveSitesConfig();
             console.log(`WHM sync complete: ${this.whmSites.length} sites`);
             return true;
@@ -213,6 +475,102 @@ class SiteManager {
             console.error('WHM sync failed:', error.message);
             return false;
         }
+    }
+
+    async refreshServerInfo(): Promise<void> {
+        const host = WHM_CONFIG.host;
+        this.serverInfo.host = host;
+        this.serverInfo.plan = process.env.WHM_SERVER_PLAN || this.serverInfo.plan;
+        this.serverInfo.system = process.env.WHM_SERVER_SYSTEM || this.serverInfo.system;
+
+        try {
+            const resolved = await lookup(host, { family: 4 });
+            this.serverInfo.ip = resolved.address;
+        } catch {
+            try {
+                const resolved = await lookup(host);
+                this.serverInfo.ip = resolved.address;
+            } catch {
+                this.serverInfo.ip = null;
+            }
+        }
+
+        if (!SERVER_PROBE_CONFIG.enabled) {
+            this.serverInfo.probedAt = new Date().toISOString();
+            return;
+        }
+
+        const reverseRaw = await runLinuxCommand(`getent hosts ${host} | awk '{print $2}' | head -n1`, SERVER_PROBE_CONFIG.timeoutMs);
+        this.serverInfo.reverseDns = reverseRaw || null;
+
+        const whmHeaders = await runLinuxCommand(`curl -kIs --max-time 8 https://${host}:${WHM_CONFIG.port} | tr -d '\\r'`, SERVER_PROBE_CONFIG.timeoutMs);
+        this.serverInfo.httpServer = extractFirstMatch(whmHeaders, [/^server:\s*(.+)$/im]);
+
+        if (this.serverInfo.ip && await commandExists('whois')) {
+            const whoisOutput = await runLinuxCommand(`whois ${this.serverInfo.ip} | head -n 250`, SERVER_PROBE_CONFIG.timeoutMs);
+            this.serverInfo.whoisOrg = extractFirstMatch(whoisOutput, [
+                /^(?:OrgName|org-name|owner|Organization|descr)\s*:\s*(.+)$/im
+            ]);
+            this.serverInfo.whoisCountry = extractFirstMatch(whoisOutput, [
+                /^(?:Country|country)\s*:\s*(.+)$/im
+            ]);
+            this.serverInfo.whoisNetName = extractFirstMatch(whoisOutput, [
+                /^(?:NetName|netname)\s*:\s*(.+)$/im
+            ]);
+            this.serverInfo.whoisAsn = extractFirstMatch(whoisOutput, [
+                /^(?:OriginAS|origin|originas|aut-num)\s*:\s*(AS\d+)$/im
+            ]);
+        } else {
+            this.serverInfo.whoisOrg = null;
+            this.serverInfo.whoisCountry = null;
+            this.serverInfo.whoisNetName = null;
+            this.serverInfo.whoisAsn = null;
+        }
+
+        if (this.serverInfo.ip && await commandExists('nmap')) {
+            const nmapOutput = await runLinuxCommand(
+                `nmap -O -Pn --osscan-limit --max-retries 1 --host-timeout 15s ${this.serverInfo.ip}`,
+                SERVER_PROBE_CONFIG.timeoutMs
+            );
+            this.serverInfo.osGuess = extractFirstMatch(nmapOutput, [
+                /^OS details:\s*(.+)$/im,
+                /^Running:\s*(.+)$/im
+            ]);
+        } else {
+            this.serverInfo.osGuess = null;
+        }
+
+        if (this.serverInfo.ip && SERVER_IP_ENRICHMENT_CONFIG.enabled) {
+            let apiData: Partial<ServerInfo> | null = null;
+            if (SERVER_IP_ENRICHMENT_CONFIG.ipWhoisEnabled) {
+                apiData = await enrichFromIpWhoIs(this.serverInfo.ip, SERVER_IP_ENRICHMENT_CONFIG.timeoutMs);
+            }
+
+            if (!apiData && SERVER_IP_ENRICHMENT_CONFIG.ipInfoEnabled) {
+                apiData = await enrichFromIpInfo(
+                    this.serverInfo.ip,
+                    SERVER_IP_ENRICHMENT_CONFIG.timeoutMs,
+                    SERVER_IP_ENRICHMENT_CONFIG.ipInfoToken
+                );
+            }
+
+            if (apiData) {
+                this.serverInfo.isp = apiData.isp || this.serverInfo.isp || null;
+                this.serverInfo.asName = apiData.asName || this.serverInfo.asName || null;
+                this.serverInfo.whoisAsn = apiData.whoisAsn || this.serverInfo.whoisAsn || null;
+                this.serverInfo.geoCity = apiData.geoCity || this.serverInfo.geoCity || null;
+                this.serverInfo.geoRegion = apiData.geoRegion || this.serverInfo.geoRegion || null;
+                this.serverInfo.geoCountry = apiData.geoCountry || this.serverInfo.geoCountry || null;
+                this.serverInfo.geoTimezone = apiData.geoTimezone || this.serverInfo.geoTimezone || null;
+                this.serverInfo.ipApiSource = apiData.ipApiSource || null;
+            } else {
+                this.serverInfo.ipApiSource = null;
+            }
+        } else {
+            this.serverInfo.ipApiSource = null;
+        }
+
+        this.serverInfo.probedAt = new Date().toISOString();
     }
 
     getAllSites(): Site[] {
@@ -370,6 +728,7 @@ class IntegratedMonitor {
 
     async checkAllSites(): Promise<SiteResult[]> {
         this.siteManager.loadSitesFromFile();
+        await this.siteManager.refreshServerInfo();
 
         const shouldSync = !this.siteManager.lastWhmSync ||
             (Date.now() - new Date(this.siteManager.lastWhmSync).getTime()) > WHM_CONFIG.syncIntervalMs;
@@ -377,6 +736,7 @@ class IntegratedMonitor {
         if (shouldSync && WHM_CONFIG.enabled) {
             await this.siteManager.syncWithWHM();
         }
+        this.siteManager.saveSitesConfig();
 
         const allSites = this.siteManager.getAllSites();
         console.log(`Checking ${allSites.length} sites...`);
@@ -401,7 +761,9 @@ class IntegratedMonitor {
         }
 
         this.saveHistory();
-        this.generateStatusPage();
+        if (OUTPUT_CONFIG.generateLegacyHtml) {
+            this.generateStatusPage();
+        }
 
         return results;
     }
@@ -711,6 +1073,7 @@ async function main(): Promise<void> {
         console.log(`Manual: ${stats.manual}`);
         console.log(`WHM: ${stats.whm}`);
         console.log(`Last WHM sync: ${monitor.siteManager.lastWhmSync || 'Never'}`);
+        console.log(`Legacy HTML: ${OUTPUT_CONFIG.generateLegacyHtml ? 'ENABLED' : 'DISABLED'}`);
 
         if (offline > 0) {
             console.log('\nOffline sites:');

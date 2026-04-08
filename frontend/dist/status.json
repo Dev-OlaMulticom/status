@@ -1,531 +1,6 @@
 {
   "checks": [
     {
-      "timestamp": "2026-04-08T20:47:08.083Z",
-      "results": [
-        {
-          "name": "Smartbox Brasil",
-          "url": "https://smartboxbrasil.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 200,
-          "online": true,
-          "responseTime": 950,
-          "timestamp": "2026-04-08T20:47:02.743Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "Tecnuv",
-          "url": "https://tecnuv.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 301,
-          "online": true,
-          "responseTime": 738,
-          "timestamp": "2026-04-08T20:47:02.533Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "Postogestor",
-          "url": "https://postogestor.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:03.805Z",
-          "error": "Timeout",
-          "attempts": 1
-        },
-        {
-          "name": "Epsy",
-          "url": "https://epsy.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 200,
-          "online": true,
-          "responseTime": 954,
-          "timestamp": "2026-04-08T20:47:02.751Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "biofhitus.com.br",
-          "url": "https://biofhitus.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "addon",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 199,
-          "timestamp": "2026-04-08T20:47:01.997Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "biofhitus.com.br.olapropaganda.net",
-          "url": "https://biofhitus.com.br.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:01.808Z",
-          "error": "getaddrinfo ENOTFOUND biofhitus.com.br.olapropaganda.net",
-          "attempts": 1
-        },
-        {
-          "name": "dev.voghieraslim.com.br",
-          "url": "https://dev.voghieraslim.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 404,
-          "online": false,
-          "responseTime": 299,
-          "timestamp": "2026-04-08T20:47:02.099Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "geeffe.com.br",
-          "url": "https://geeffe.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "addon",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 307,
-          "timestamp": "2026-04-08T20:47:02.107Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "geeffe.com.br.olapropaganda.net",
-          "url": "https://geeffe.com.br.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:01.850Z",
-          "error": "getaddrinfo ENOTFOUND geeffe.com.br.olapropaganda.net",
-          "attempts": 1
-        },
-        {
-          "name": "idealtelecomsc.com.br",
-          "url": "https://idealtelecomsc.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "principal",
-            "username": "idealtelecomscco",
-            "status": "Activa",
-            "expirationDate": "2026-04-09T19:11:06Z",
-            "renewalDate": "2023-08-18T15:00:05Z",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 172,
-          "timestamp": "2026-04-08T20:47:01.975Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "idealtelecomsc.com.br.208-109-245-134.cprapid.com",
-          "url": "https://idealtelecomsc.com.br.208-109-245-134.cprapid.com",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "principal",
-            "username": "idealtelecomscco",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:03.815Z",
-          "error": "getaddrinfo ENOTFOUND idealtelecomsc.com.br.208-109-245-134.cprapid.com",
-          "attempts": 1
-        },
-        {
-          "name": "lpvog.voghieraslim.com.br",
-          "url": "https://lpvog.voghieraslim.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:03.976Z",
-          "error": "getaddrinfo ENOTFOUND lpvog.voghieraslim.com.br",
-          "attempts": 1
-        },
-        {
-          "name": "ola.postogestor.com.br",
-          "url": "https://ola.postogestor.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "addon",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:05.816Z",
-          "error": "Timeout",
-          "attempts": 1
-        },
-        {
-          "name": "olapropaganda.net",
-          "url": "https://olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "principal",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 301,
-          "online": true,
-          "responseTime": 629,
-          "timestamp": "2026-04-08T20:47:04.438Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "olapropaganda.net.208-109-245-134.cprapid.com",
-          "url": "https://olapropaganda.net.208-109-245-134.cprapid.com",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "principal",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:03.864Z",
-          "error": "getaddrinfo ENOTFOUND olapropaganda.net.208-109-245-134.cprapid.com",
-          "attempts": 1
-        },
-        {
-          "name": "paygas.olapropaganda.net",
-          "url": "https://paygas.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 1673,
-          "timestamp": "2026-04-08T20:47:05.484Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "pg.olapropaganda.net",
-          "url": "https://pg.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 830,
-          "timestamp": "2026-04-08T20:47:04.642Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "postogestor.net.br",
-          "url": "https://postogestor.net.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "addon",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:04.083Z",
-          "error": "getaddrinfo ENOTFOUND postogestor.net.br",
-          "attempts": 1
-        },
-        {
-          "name": "pradoweb.com.br",
-          "url": "https://pradoweb.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "addon",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 375,
-          "timestamp": "2026-04-08T20:47:04.188Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "pradoweb.olapropaganda.net",
-          "url": "https://pradoweb.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:04.082Z",
-          "error": "getaddrinfo ENOTFOUND pradoweb.olapropaganda.net",
-          "attempts": 1
-        },
-        {
-          "name": "realnobhotel.com.br",
-          "url": "https://realnobhotel.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "principal",
-            "username": "realnobhotelcom",
-            "status": "Activa",
-            "expirationDate": "2027-03-25T19:48:54Z",
-            "renewalDate": "2024-03-26T08:20:57Z",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 303,
-          "timestamp": "2026-04-08T20:47:06.119Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "tecnuv-postogestor.olapropaganda.net",
-          "url": "https://tecnuv-postogestor.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:05.823Z",
-          "error": "getaddrinfo ENOTFOUND tecnuv-postogestor.olapropaganda.net",
-          "attempts": 1
-        },
-        {
-          "name": "tfrancisconi.com.br",
-          "url": "https://tfrancisconi.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "addon",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 851,
-          "timestamp": "2026-04-08T20:47:06.668Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "tfrancisconinovo.com.br.olapropaganda.net",
-          "url": "https://tfrancisconinovo.com.br.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:05.833Z",
-          "error": "getaddrinfo ENOTFOUND tfrancisconinovo.com.br.olapropaganda.net",
-          "attempts": 1
-        },
-        {
-          "name": "voghieranutrition.com.br",
-          "url": "https://voghieranutrition.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "addon",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 200,
-          "online": true,
-          "responseTime": 898,
-          "timestamp": "2026-04-08T20:47:06.717Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "voghieranutrition.com.br.olapropaganda.net",
-          "url": "https://voghieranutrition.com.br.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:05.858Z",
-          "error": "getaddrinfo ENOTFOUND voghieranutrition.com.br.olapropaganda.net",
-          "attempts": 1
-        },
-        {
-          "name": "voghieranutrition.olapropaganda.net",
-          "url": "https://voghieranutrition.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 403,
-          "online": false,
-          "responseTime": 897,
-          "timestamp": "2026-04-08T20:47:06.716Z",
-          "ssl": true,
-          "attempts": 1
-        },
-        {
-          "name": "voghieraslim.com.br",
-          "url": "https://voghieraslim.com.br",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "addon",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:08.083Z",
-          "error": "Timeout",
-          "attempts": 1
-        },
-        {
-          "name": "voghieraslim.olapropaganda.net",
-          "url": "https://voghieraslim.olapropaganda.net",
-          "category": "whm",
-          "priority": "normal",
-          "whmInfo": {
-            "type": "subdominio",
-            "username": "wwserv",
-            "status": "Activa",
-            "mailAccountsCount": null
-          },
-          "status": 0,
-          "online": false,
-          "responseTime": -1,
-          "timestamp": "2026-04-08T20:47:05.968Z",
-          "error": "getaddrinfo ENOTFOUND voghieraslim.olapropaganda.net",
-          "attempts": 1
-        }
-      ],
-      "stats": {
-        "total": 29,
-        "manual": 4,
-        "whm": 25,
-        "byCategory": {
-          "externo": 0,
-          "whm": 25,
-          "api": 0,
-          "cdn": 0,
-          "manual": 4
-        },
-        "byPriority": {
-          "critical": 0,
-          "high": 0,
-          "normal": 29,
-          "low": 0
-        }
-      }
-    },
-    {
       "timestamp": "2026-04-08T20:41:14.257Z",
       "results": [
         {
@@ -24480,6 +23955,73 @@
           "online": true,
           "responseTime": 811,
           "timestamp": "2025-11-18T11:21:59.783Z",
+          "ssl": true
+        }
+      ],
+      "stats": {
+        "total": 4,
+        "manual": 4,
+        "whm": 0,
+        "byCategory": {
+          "externo": 0,
+          "whm": 0,
+          "api": 0,
+          "cdn": 0,
+          "manual": 4
+        },
+        "byPriority": {
+          "critical": 0,
+          "high": 0,
+          "normal": 4,
+          "low": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-11-18T11:00:12.819Z",
+      "results": [
+        {
+          "name": "Smartbox Brasil",
+          "url": "https://smartboxbrasil.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 200,
+          "online": true,
+          "responseTime": 770,
+          "timestamp": "2025-11-18T11:00:08.933Z",
+          "ssl": true
+        },
+        {
+          "name": "Tecnuv",
+          "url": "https://tecnuv.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 301,
+          "online": true,
+          "responseTime": 4592,
+          "timestamp": "2025-11-18T11:00:12.819Z",
+          "ssl": true
+        },
+        {
+          "name": "Postogestor",
+          "url": "https://postogestor.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 302,
+          "online": true,
+          "responseTime": 1001,
+          "timestamp": "2025-11-18T11:00:09.229Z",
+          "ssl": true
+        },
+        {
+          "name": "Epsy",
+          "url": "https://epsy.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 200,
+          "online": true,
+          "responseTime": 1511,
+          "timestamp": "2025-11-18T11:00:09.740Z",
           "ssl": true
         }
       ],

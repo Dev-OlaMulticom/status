@@ -8,11 +8,19 @@
     "node": ">=18"
   },
   "scripts": {
+    "dev": "npm run monitor && npm run frontend:dev",
     "monitor": "ts-node monitor.ts",
     "whm:test": "ts-node test-whm.ts",
     "typecheck": "tsc --noEmit",
     "validate:syntax": "npm run typecheck",
-    "test:full": "bash FULL_TEST.sh"
+    "test:full": "bash FULL_TEST.sh",
+    "cache:clear": "ts-node cache-tools.ts all",
+    "cache:clear:whm": "ts-node cache-tools.ts whm",
+    "cache:clear:cloudflare": "ts-node cache-tools.ts cloudflare",
+    "cache:clear:rdap": "ts-node cache-tools.ts rdap",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build",
+    "frontend:preview": "npm --prefix frontend run preview"
   },
   "dependencies": {
     "dotenv": "^16.6.1"
