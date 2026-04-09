@@ -331,7 +331,7 @@
       }
     }
   ],
-  "lastWhmSync": "2026-04-08T20:29:24.720Z",
+  "lastWhmSync": "2026-04-09T10:13:57.061Z",
   "serverInfo": {
     "host": "servolam.olamulticom.com.br",
     "ip": "208.109.245.134",
@@ -351,7 +351,7 @@
     "geoCountry": "United States",
     "geoTimezone": "America/New_York",
     "ipApiSource": "ipwho.is",
-    "probedAt": "2026-04-08T20:47:01.792Z"
+    "probedAt": "2026-04-09T10:13:58.463Z"
   },
-  "lastUpdate": "2026-04-08T20:47:01.792Z"
+  "lastUpdate": "2026-04-09T10:13:58.465Z"
 }
