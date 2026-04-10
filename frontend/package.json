@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,6 +13,6 @@
   },
   "devDependencies": {
     "typescript": "^5.9.3",
-    "vite": "^5.4.19"
+    "vite": "^5.4.21"
   }
 }

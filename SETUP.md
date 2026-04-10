@@ -8,7 +8,7 @@ O sistema está **100% pronto para uso**. Siga estes passos para ativar a integr
 
 ## 📋 Pré-requisitos
 
-- ✅ Node.js 20+ instalado
+- ✅ Node.js 24.x instalado
 - ✅ Repositório GitHub (com CI/CD configurado)
 - ✅ Token de API do ServoLam (WHM)
 
@@ -281,4 +281,3 @@ Localização GitHub:
 O sistema está configurado e pronto para monitorar seus websites e domínios WHM 24/7.
 
 **Próxima execução:** Em até 5 minutos
-
