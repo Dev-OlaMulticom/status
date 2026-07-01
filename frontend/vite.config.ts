@@ -108,5 +108,10 @@ function statusJsonBridge(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [statusJsonBridge()]
+  plugins: [statusJsonBridge()],
+  server: {
+    host: '0.0.0.0',
+    port: 5000,
+    allowedHosts: true,
+  }
 });
