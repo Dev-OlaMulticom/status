@@ -1,0 +1,174 @@
+import got from 'got';
+import { env } from '../utils/env';
+import { logger } from '../utils/logger';
+import { getCached } from '../cache/cache.service';
+import type { DomainInfo, AccountInfo, WhmExtractResult } from '../dto/whm.dto';
+import pLimit from 'p-limit';
+
+const WHM_CACHE_TTL = 10 * 60 * 1000;
+
+/**
+ * Make a raw GET request to the WHM JSON API.
+ */
+async function requestWhm(endpoint: string, params: Record<string, string | number> = {}): Promise<any> {
+  if (!env.whm.apiToken) throw new Error('WHM_API_TOKEN is not configured');
+
+  const searchParams: Record<string, string> = { 'api.version': '1' };
+  for (const [k, v] of Object.entries(params)) searchParams[k] = String(v);
+
+  const url = `https://${env.whm.host}:${env.whm.port}/json-api/${endpoint}`;
+
+  const response = await got(url, {
+    searchParams,
+    timeout: { request: env.whm.timeoutMs },
+    retry: { limit: 1, backoffLimit: 3000 },
+    headers: {
+      Authorization: `WHM ${env.whm.username}:${env.whm.apiToken}`,
+      'User-Agent': 'WHM-Monitor/2.0',
+    },
+    https: { rejectUnauthorized: env.whm.rejectUnauthorized },
+    responseType: 'json',
+    throwHttpErrors: true,
+  });
+
+  return response.body;
+}
+
+/**
+ * WHM request with intelligent caching.
+ */
+async function requestWhmCached(
+  endpoint: string,
+  params: Record<string, string | number> = {},
+  bypassCache = false,
+): Promise<any> {
+  const result = await getCached({
+    namespace: 'whm',
+    keyParts: [env.whm.host, env.whm.port, env.whm.username, endpoint, params],
+    ttlOverrideMs: WHM_CACHE_TTL,
+    bypassCache,
+    fetcher: () => requestWhm(endpoint, params),
+  });
+
+  if (result.source !== 'network') {
+    logger.debug({ endpoint, source: result.source }, 'WHM cache hit');
+  }
+
+  return result.value;
+}
+
+function identifyDomainType(raw: any): 'addon' | 'subdominio' | 'principal' {
+  if (raw.addon === 1 || raw.addon === true || raw.domain_type === 'addon') return 'addon';
+  if (raw.type === 'sub' || raw.sub_domain === 1 || raw.sub_domain === true || raw.domain_type === 'sub') return 'subdominio';
+  return 'principal';
+}
+
+function extractEmailEntries(payload: any): any[] {
+  const candidates = [
+    payload?.cpanelresult?.data,
+    payload?.cpanelresult?.result?.data,
+    payload?.cpanelresult?.result?.result?.data,
+    payload?.data,
+    payload?.result?.data,
+  ];
+  for (const c of candidates) {
+    if (Array.isArray(c)) return c;
+  }
+  return [];
+}
+
+async function getEmailCountForUser(username: string): Promise<number | null> {
+  if (!username) return null;
+
+  const result = await getCached<number | null>({
+    namespace: 'whm',
+    keyParts: ['email_count', env.whm.host, username],
+    ttlOverrideMs: 6 * 60 * 60 * 1000,
+    fetcher: async () => {
+      const payload = await requestWhm('cpanel', {
+        cpanel_jsonapi_user: username,
+        cpanel_jsonapi_apiversion: '2',
+        cpanel_jsonapi_module: 'Email',
+        cpanel_jsonapi_func: 'listpopswithdisk',
+      });
+      const entries = extractEmailEntries(payload);
+      return entries.length;
+    },
+  });
+
+  return result.value;
+}
+
+/**
+ * Extract all domains and accounts from WHM.
+ */
+export async function extractAccountsAndDomains(bypassCache = false): Promise<WhmExtractResult> {
+  logger.info({ host: env.whm.host }, 'Connecting to WHM');
+
+  const response = await requestWhmCached('get_domain_info', {}, bypassCache);
+
+  if (!response.data) {
+    logger.warn('WHM returned no data');
+    return { domains: [], accounts: [], timestamp: new Date().toISOString() };
+  }
+
+  const rawDomains: any[] = Array.isArray(response.data)
+    ? response.data
+    : Array.isArray(response.data?.domains)
+      ? response.data.domains
+      : [];
+
+  const domains: DomainInfo[] = [];
+  const accounts = new Map<string, AccountInfo>();
+
+  for (const item of rawDomains) {
+    if (!item.domain) continue;
+    const domain: DomainInfo = {
+      domain: item.domain,
+      username: item.user ?? item.username ?? 'unknown',
+      status: item.suspended ? 'Suspensa' : 'Activa',
+      type: identifyDomainType(item),
+      mainDomain: item.main_domain ?? item.parent_domain ?? item.domain,
+      ip: item.ip ?? item.ipv4 ?? 'N/A',
+      addon: item.addon === 1 || item.addon === true || item.domain_type === 'addon',
+      subdomain: item.type === 'sub' || item.sub_domain === 1 || item.domain_type === 'sub',
+    };
+    domains.push(domain);
+
+    if (!accounts.has(domain.username)) {
+      accounts.set(domain.username, { username: domain.username, domains: [], suspended: false });
+    }
+    accounts.get(domain.username)!.domains.push(domain.domain);
+  }
+
+  if (env.whm.emailStatsEnabled && accounts.size > 0) {
+    const limit = pLimit(env.whm.emailStatsConcurrency);
+    const usernames = Array.from(accounts.keys());
+    const counts = await Promise.all(
+      usernames.map((u) =>
+        limit(async () => {
+          try {
+            return { username: u, count: await getEmailCountForUser(u) };
+          } catch (error: any) {
+            logger.warn({ username: u, error: error.message }, 'Email stats failed');
+            return { username: u, count: null };
+          }
+        }),
+      ),
+    );
+
+    const countMap = new Map(counts.map(({ username, count }) => [username, count]));
+    accounts.forEach((a) => { a.mailAccountsCount = countMap.get(a.username) ?? null; });
+    domains.forEach((d) => { d.mailAccountsCount = countMap.get(d.username) ?? null; });
+  }
+
+  logger.info({ domains: domains.length, accounts: accounts.size }, 'WHM extraction complete');
+
+  return {
+    domains,
+    accounts: Array.from(accounts.values()),
+    timestamp: new Date().toISOString(),
+  };
+}
+
+export { requestWhmCached };

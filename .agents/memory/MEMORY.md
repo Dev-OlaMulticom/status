@@ -1,0 +1,2 @@
+- [Architecture refactor](architecture-refactor.md) — full Clean Architecture rewrite in src/; entry point is src/monitor.ts, legacy root .ts files removed.
+- [Library versions](library-versions.md) — got@12, p-limit@5, date-fns@3 required for CJS/ts-node compatibility; v14/v7/v4 are ESM-only and break ts-node.

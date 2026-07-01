@@ -7,8 +7,11 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,
-    "types": ["node"]
+    "types": ["node"],
+    "outDir": "dist",
+    "rootDir": ".",
+    "baseUrl": "."
   },
-  "include": ["*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "frontend", "dist"]
 }
