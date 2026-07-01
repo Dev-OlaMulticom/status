@@ -3,8 +3,22 @@ import { config } from 'dotenv';
 
 config();
 
+function parseWhmUrl(whmUrl?: string): { host: string; port: number } {
+  if (!whmUrl) return { host: 'servolam.olamulticom.com.br', port: 2087 };
+  try {
+    const u = new URL(whmUrl.includes('://') ? whmUrl : `https://${whmUrl}`);
+    return {
+      host: u.hostname,
+      port: u.port ? Number(u.port) : 2087,
+    };
+  } catch {
+    return { host: whmUrl, port: 2087 };
+  }
+}
+
 const envSchema = z.object({
   WHM_ENABLED: z.string().optional().default('true'),
+  WHM_URL: z.string().optional(),
   WHM_HOST: z.string().optional().default('servolam.olamulticom.com.br'),
   WHM_PORT: z.string().optional().default('2087'),
   WHM_USERNAME: z.string().optional().default('root'),
@@ -60,11 +74,13 @@ function parseNum(val: string | undefined, def: number, min = 0): number {
 
 const raw = envSchema.parse(process.env);
 
+const whmFromUrl = parseWhmUrl(raw.WHM_URL);
+
 export const env = {
   whm: {
     enabled: parseBool(raw.WHM_ENABLED, true),
-    host: raw.WHM_HOST,
-    port: parseNum(raw.WHM_PORT, 2087, 1),
+    host: raw.WHM_URL ? whmFromUrl.host : raw.WHM_HOST,
+    port: raw.WHM_URL ? whmFromUrl.port : parseNum(raw.WHM_PORT, 2087, 1),
     username: raw.WHM_USERNAME,
     apiToken: raw.WHM_API_TOKEN,
     timeoutMs: parseNum(raw.WHM_TIMEOUT_MS, 10000, 1000),
