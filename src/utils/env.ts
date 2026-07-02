@@ -1,18 +1,18 @@
-import { z } from 'zod';
-import { config } from 'dotenv';
+import { config } from 'dotenv'
+import { z } from 'zod'
 
-config();
+config()
 
 function parseWhmUrl(whmUrl?: string): { host: string; port: number } {
-  if (!whmUrl) return { host: 'servolam.olamulticom.com.br', port: 2087 };
+  if (!whmUrl) return { host: 'servolam.olamulticom.com.br', port: 2087 }
   try {
-    const u = new URL(whmUrl.includes('://') ? whmUrl : `https://${whmUrl}`);
+    const u = new URL(whmUrl.includes('://') ? whmUrl : `https://${whmUrl}`)
     return {
       host: u.hostname,
       port: u.port ? Number(u.port) : 2087,
-    };
+    }
   } catch {
-    return { host: whmUrl, port: 2087 };
+    return { host: whmUrl, port: 2087 }
   }
 }
 
@@ -60,21 +60,21 @@ const envSchema = z.object({
   IPINFO_TOKEN: z.string().optional().default(''),
   LOG_LEVEL: z.string().optional().default('info'),
   NODE_ENV: z.string().optional().default('development'),
-});
+})
 
 function parseBool(val: string | undefined, def: boolean): boolean {
-  if (val == null || val === '') return def;
-  return ['1', 'true', 'yes', 'on'].includes(val.toLowerCase());
+  if (val == null || val === '') return def
+  return ['1', 'true', 'yes', 'on'].includes(val.toLowerCase())
 }
 
 function parseNum(val: string | undefined, def: number, min = 0): number {
-  const n = Number(val);
-  return Number.isFinite(n) && n >= min ? n : def;
+  const n = Number(val)
+  return Number.isFinite(n) && n >= min ? n : def
 }
 
-const raw = envSchema.parse(process.env);
+const raw = envSchema.parse(process.env)
 
-const whmFromUrl = parseWhmUrl(raw.WHM_URL);
+const whmFromUrl = parseWhmUrl(raw.WHM_URL)
 
 export const env = {
   whm: {
@@ -122,4 +122,4 @@ export const env = {
     concurrency: parseNum(raw.MONITOR_CONCURRENCY, 10, 1),
   },
   ipInfoToken: raw.IPINFO_TOKEN,
-};
+}

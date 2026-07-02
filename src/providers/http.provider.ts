@@ -1,15 +1,15 @@
-import got from 'got';
-import { env } from '../utils/env';
-import { logger } from '../utils/logger';
-import { getCached } from '../cache/cache.service';
+import got from 'got'
+import { getCached } from '../cache/cache.service'
+import { env } from '../utils/env'
+import { logger } from '../utils/logger'
 
 export interface HttpCheckResult {
-  online: boolean;
-  statusCode: number;
-  responseTimeMs: number;
-  redirectUrls: string[];
-  finalUrl: string;
-  error?: string;
+  online: boolean
+  statusCode: number
+  responseTimeMs: number
+  redirectUrls: string[]
+  finalUrl: string
+  error?: string
 }
 
 /**
@@ -18,7 +18,7 @@ export interface HttpCheckResult {
  */
 export async function checkUrl(url: string, useCache = false): Promise<HttpCheckResult> {
   const check = async (): Promise<HttpCheckResult> => {
-    const start = Date.now();
+    const start = Date.now()
     try {
       const response = await got(url, {
         timeout: { request: env.monitor.timeoutMs },
@@ -26,10 +26,10 @@ export async function checkUrl(url: string, useCache = false): Promise<HttpCheck
         followRedirect: true,
         headers: { 'User-Agent': env.monitor.userAgent },
         throwHttpErrors: false,
-      });
+      })
 
-      const responseTimeMs = Date.now() - start;
-      const statusCode = response.statusCode;
+      const responseTimeMs = Date.now() - start
+      const statusCode = response.statusCode
 
       return {
         online: statusCode >= 200 && statusCode < 400,
@@ -37,10 +37,10 @@ export async function checkUrl(url: string, useCache = false): Promise<HttpCheck
         responseTimeMs,
         redirectUrls: response.redirectUrls?.map(String) ?? [],
         finalUrl: String(response.url ?? url),
-      };
+      }
     } catch (error: any) {
-      const responseTimeMs = Date.now() - start;
-      logger.debug({ url, error: error.message }, 'HTTP check failed');
+      const responseTimeMs = Date.now() - start
+      logger.debug({ url, error: error.message }, 'HTTP check failed')
       return {
         online: false,
         statusCode: 0,
@@ -48,19 +48,19 @@ export async function checkUrl(url: string, useCache = false): Promise<HttpCheck
         redirectUrls: [],
         finalUrl: url,
         error: String(error?.message ?? error),
-      };
+      }
     }
-  };
+  }
 
-  if (!useCache) return check();
+  if (!useCache) return check()
 
   const result = await getCached<HttpCheckResult>({
     namespace: 'http',
     keyParts: [url],
     fetcher: check,
-  });
+  })
 
-  return result.value;
+  return result.value
 }
 
 /**
@@ -72,6 +72,6 @@ export async function fetchJson<T = unknown>(url: string, timeoutMs?: number): P
     retry: { limit: 1 },
     headers: { 'User-Agent': env.monitor.userAgent },
     responseType: 'json',
-  });
-  return response.body;
+  })
+  return response.body
 }

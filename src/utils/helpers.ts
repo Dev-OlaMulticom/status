@@ -1,5 +1,5 @@
-import { execFile } from 'node:child_process';
-import { logger } from './logger';
+import { execFile } from 'node:child_process'
+import { logger } from './logger'
 
 /**
  * Run a bash command and return its stdout, or null on failure.
@@ -12,14 +12,14 @@ export function runLinuxCommand(command: string, timeoutMs: number): Promise<str
       { timeout: timeoutMs, maxBuffer: 1024 * 1024 },
       (error, stdout) => {
         if (error) {
-          resolve(null);
-          return;
+          resolve(null)
+          return
         }
-        const value = String(stdout ?? '').trim();
-        resolve(value || null);
+        const value = String(stdout ?? '').trim()
+        resolve(value || null)
       },
-    );
-  });
+    )
+  })
 }
 
 /**
@@ -29,27 +29,27 @@ export async function commandExists(name: string): Promise<boolean> {
   const result = await runLinuxCommand(
     `command -v ${name} >/dev/null 2>&1 && echo yes || echo no`,
     2000,
-  );
-  return result === 'yes';
+  )
+  return result === 'yes'
 }
 
 /**
  * Return the first regex capture group matched in content, or null.
  */
 export function extractFirstMatch(content: string | null, regexes: RegExp[]): string | null {
-  if (!content) return null;
+  if (!content) return null
   for (const regex of regexes) {
-    const match = content.match(regex);
-    if (match?.[1]) return String(match[1]).trim();
+    const match = content.match(regex)
+    if (match?.[1]) return String(match[1]).trim()
   }
-  return null;
+  return null
 }
 
 /**
  * Sleep for `ms` milliseconds.
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /**
@@ -57,9 +57,9 @@ export function sleep(ms: number): Promise<void> {
  */
 export function safeStringify(value: unknown): string {
   try {
-    return JSON.stringify(value);
+    return JSON.stringify(value)
   } catch {
-    return '';
+    return ''
   }
 }
 
@@ -72,5 +72,5 @@ export function escapeHtml(value: unknown): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(/'/g, '&#39;')
 }

@@ -1,5 +1,12 @@
 import './style.css';
 
+// ─── Constants ───────────────────────────────────────────────────────────────
+
+const WHM_SERVER_IP = '31.97.169.57';
+const PAGE_SIZE = 50;
+
+// ─── Types ───────────────────────────────────────────────────────────────────
+
 type WhmInfo = {
   type?: 'principal' | 'subdominio' | 'addon' | string;
   username?: string;
@@ -19,6 +26,8 @@ type SiteResult = {
   error?: string;
   category?: string;
   whmInfo?: WhmInfo;
+  ip?: string | null;
+  cloudflareIp?: string | null;
 };
 
 type SiteConfig = {
@@ -67,29 +76,26 @@ type SitesConfigData = {
 
 type DomainRecord = {
   site: SiteResult;
-  visits: number;
-  uniqueVisits: number;
   type: 'main' | 'sub';
   account: string;
-  subCount: number;
   expirationDate: string | null;
-  mailAccountsCount: number | null;
 };
 
 type DomainRow = {
   site: DomainRecord;
-  kind: 'parent' | 'child';
-  parentKey?: string;
 };
+
+type FilterType = 'all' | 'cuenta' | 'adicionado';
+type SortType = 'alpha' | 'venc-mais-proximo' | 'venc-mais-distante';
 
 type AppState = {
   status: StatusData | null;
   config: SitesConfigData | null;
   rows: DomainRow[];
   search: string;
-  statusFilter: 'all' | 'online' | 'offline';
-  expanded: Set<string>;
-  selectedYear: number;
+  filter: FilterType;
+  sortBy: SortType;
+  currentPage: number;
   networkLatencyMs: number | null;
   networkOnline: boolean;
   lastProbeAt: number | null;
@@ -98,16 +104,19 @@ type AppState = {
   adminAvailable: boolean;
   adminBusy: boolean;
   adminMessage: string;
+  sidebarOpen: boolean;
 };
+
+// ─── State ───────────────────────────────────────────────────────────────────
 
 const appState: AppState = {
   status: null,
   config: null,
   rows: [],
   search: '',
-  statusFilter: 'all',
-  expanded: new Set<string>(),
-  selectedYear: new Date().getFullYear(),
+  filter: 'all',
+  sortBy: 'alpha',
+  currentPage: 1,
   networkLatencyMs: null,
   networkOnline: false,
   lastProbeAt: null,
@@ -115,7 +124,8 @@ const appState: AppState = {
   rdapPending: new Set(),
   adminAvailable: false,
   adminBusy: false,
-  adminMessage: ''
+  adminMessage: '',
+  sidebarOpen: false,
 };
 
 const RDAP_CACHE_KEY = 'olamulticom_rdap_expiry_v1';
@@ -125,8 +135,10 @@ const RDAP_CONCURRENCY = 2;
 const rdapQueue: string[] = [];
 let rdapWorkers = 0;
 
+// ─── Utility functions ───────────────────────────────────────────────────────
+
 function formatNumber(value: number): string {
-  return new Intl.NumberFormat('es-ES').format(value);
+  return new Intl.NumberFormat('pt-BR').format(value);
 }
 
 function escapeHtml(value: string): string {
@@ -136,13 +148,6 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-}
-
-function formatDate(iso?: string): string {
-  if (!iso) return 'Nunca';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return 'Nunca';
-  return d.toLocaleString('es-ES');
 }
 
 function getHostname(rawUrl: string): string {
@@ -165,19 +170,6 @@ function sanitizeUrl(rawUrl: string): string {
   }
 }
 
-function scoreParentByAccount(hostname: string, account: string): number {
-  const h = hostname.toLowerCase();
-  const a = account.toLowerCase();
-  if (!a || a.startsWith('manual:')) return 0;
-
-  if (h === a || h.startsWith(`${a}.`) || h.includes(`.${a}.`)) return 1200;
-  if (h.includes(a)) return 700;
-
-  const baseToken = a.replace(/[^a-z0-9]/g, '');
-  if (baseToken && h.replace(/[^a-z0-9]/g, '').includes(baseToken)) return 500;
-  return 0;
-}
-
 function normalizeDateInput(value?: string): string | null {
   if (!value) return null;
   const d = new Date(value);
@@ -186,23 +178,36 @@ function normalizeDateInput(value?: string): string | null {
 }
 
 function formatShortDate(iso: string | null): string {
-  if (!iso) return 'Sin dato';
-  return new Date(iso).toLocaleDateString('es-ES');
+  if (!iso) return 'Sem dados';
+  return new Date(iso).toLocaleDateString('pt-BR');
 }
 
 function formatRemaining(iso: string | null): string {
-  if (!iso) return 'Sin dato';
+  if (!iso) return 'Sem dados';
   const ms = new Date(iso).getTime() - Date.now();
   const days = Math.ceil(ms / (1000 * 60 * 60 * 24));
-  if (days < 0) return `Vencido hace ${Math.abs(days)} dias`;
-  if (days === 0) return 'Vence hoy';
-  return `Faltan ${days} dias`;
+  if (days < 0) return `Vencido há ${Math.abs(days)} dias`;
+  if (days === 0) return 'Vence hoje';
+  return `Faltam ${days} dias`;
 }
 
 function isEligibleForRdap(domain: string): boolean {
   const d = domain.toLowerCase();
   return d.endsWith('.br') && !d.includes('cprapid.com');
 }
+
+function highlightText(escapedText: string, words: string[]): string {
+  if (!words.length) return escapedText;
+  let result = escapedText;
+  for (const w of words) {
+    const safe = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${safe})`, 'gi');
+    result = result.replace(regex, '<mark class="search-hl">$1</mark>');
+  }
+  return result;
+}
+
+// ─── RDAP cache ──────────────────────────────────────────────────────────────
 
 function loadRdapCacheFromStorage(): void {
   try {
@@ -216,30 +221,23 @@ function loadRdapCacheFromStorage(): void {
         appState.rdapExpiryCache.set(domain, value);
       }
     });
-  } catch {
-    // Ignore malformed cache.
-  }
+  } catch { /* Ignore */ }
 }
 
 function persistRdapCacheToStorage(): void {
   try {
     const obj = Object.fromEntries(appState.rdapExpiryCache.entries());
     localStorage.setItem(RDAP_CACHE_KEY, JSON.stringify(obj));
-  } catch {
-    // Ignore storage errors.
-  }
+  } catch { /* Ignore */ }
 }
 
 async function fetchRdapExpiration(domain: string): Promise<string | null> {
   const res = await fetch(`https://rdap.registro.br/domain/${encodeURIComponent(domain)}`, { cache: 'no-store' });
-  if (!res.ok) {
-    return null;
-  }
+  if (!res.ok) return null;
   const payload = await res.json();
   const events = Array.isArray(payload?.events) ? payload.events : [];
-  const expirationEvent = events.find((e: any) => String(e?.eventAction || '').trim().toLowerCase() === 'expiration');
-  const date = expirationEvent?.eventDate;
-  return typeof date === 'string' ? date : null;
+  const ev = events.find((e: any) => String(e?.eventAction || '').trim().toLowerCase() === 'expiration');
+  return typeof ev?.eventDate === 'string' ? ev.eventDate : null;
 }
 
 function getResolvedExpiration(record: DomainRecord): string | null {
@@ -255,49 +253,35 @@ function enqueueRdapLookup(domain: string): void {
   rdapQueue.push(d);
 }
 
-function prefetchRdapForExpandedParent(parentKey: string): void {
-  const children = appState.rows.filter((row) => row.kind === 'child' && row.parentKey === parentKey);
-  children.forEach((row) => {
-    if (row.site.expirationDate) return;
-    enqueueRdapLookup(getHostname(row.site.site.url));
-  });
-  processRdapQueue();
-}
-
 function processRdapQueue(): void {
   while (rdapWorkers < RDAP_CONCURRENCY && rdapQueue.length > 0) {
     const domain = rdapQueue.shift();
     if (!domain) break;
     rdapWorkers += 1;
     appState.rdapPending.add(domain);
-
     fetchRdapExpiration(domain)
       .then((expirationDate) => {
-        appState.rdapExpiryCache.set(domain, {
-          expirationDate,
-          fetchedAt: Date.now()
-        });
+        appState.rdapExpiryCache.set(domain, { expirationDate, fetchedAt: Date.now() });
         persistRdapCacheToStorage();
       })
       .catch(() => {
-        appState.rdapExpiryCache.set(domain, {
-          expirationDate: null,
-          fetchedAt: Date.now()
-        });
+        appState.rdapExpiryCache.set(domain, { expirationDate: null, fetchedAt: Date.now() });
         persistRdapCacheToStorage();
       })
       .finally(() => {
         appState.rdapPending.delete(domain);
         rdapWorkers -= 1;
-        if (appState.status) renderMain();
+        if (appState.status) renderTableBody();
         processRdapQueue();
       });
   }
 }
 
+// ─── Data loading ────────────────────────────────────────────────────────────
+
 async function loadStatus(): Promise<StatusData> {
   const res = await fetch('/status.json', { cache: 'no-store' });
-  if (!res.ok) throw new Error(`No se pudo leer status.json (${res.status})`);
+  if (!res.ok) throw new Error(`Não foi possível ler status.json (${res.status})`);
   return (await res.json()) as StatusData;
 }
 
@@ -316,34 +300,7 @@ async function loadSitesConfig(): Promise<SitesConfigData | null> {
   return (await res.json()) as SitesConfigData;
 }
 
-function getYears(checks: Check[]): number[] {
-  const years = new Set<number>();
-  checks.forEach((c) => {
-    const d = new Date(c.timestamp);
-    if (!Number.isNaN(d.getTime())) years.add(d.getFullYear());
-  });
-  if (!years.size) years.add(new Date().getFullYear());
-  return Array.from(years).sort((a, b) => b - a);
-}
-
-function getVisitsMap(checks: Check[], year: number): Map<string, { checks: number; online: number }> {
-  const map = new Map<string, { checks: number; online: number }>();
-
-  checks.forEach((c) => {
-    const d = new Date(c.timestamp);
-    if (Number.isNaN(d.getTime()) || d.getFullYear() !== year) return;
-
-    c.results.forEach((r) => {
-      const key = r.url.toLowerCase();
-      const current = map.get(key) ?? { checks: 0, online: 0 };
-      current.checks += 1;
-      if (r.online) current.online += 1;
-      map.set(key, current);
-    });
-  });
-
-  return map;
-}
+// ─── Data processing ─────────────────────────────────────────────────────────
 
 function normalizeType(site: SiteResult): 'main' | 'sub' {
   return site.whmInfo?.type === 'principal' || site.category !== 'whm' ? 'main' : 'sub';
@@ -352,172 +309,129 @@ function normalizeType(site: SiteResult): 'main' | 'sub' {
 function buildMergedSites(status: StatusData, config: SitesConfigData | null): SiteResult[] {
   const latest = status.checks?.[0];
   const merged = new Map<string, SiteResult>();
-
   if (latest?.results?.length) {
     latest.results.forEach((site) => merged.set(site.url.toLowerCase(), site));
   }
-
   const allCatalog = [...(config?.manualSites ?? []), ...(config?.whmSites ?? [])];
-
   allCatalog.forEach((site) => {
     const key = site.url.toLowerCase();
     if (!merged.has(key)) {
       merged.set(key, {
-        name: site.name,
-        url: site.url,
-        online: false,
-        responseTime: -1,
-        status: -1,
-        error: 'Sin verificacion reciente',
-        category: site.category,
-        whmInfo: site.whmInfo
+        name: site.name, url: site.url, online: false, responseTime: -1,
+        status: -1, error: 'Sem verificação recente', category: site.category, whmInfo: site.whmInfo,
       });
     }
   });
-
   return Array.from(merged.values());
 }
 
-function toDomainRecord(site: SiteResult, visitsMap: Map<string, { checks: number; online: number }>): DomainRecord {
-  const key = site.url.toLowerCase();
-  const stats = visitsMap.get(key) ?? { checks: 0, online: 0 };
-  const visits = stats.checks;
-  const uniqueVisits = stats.online;
-
+function toDomainRecord(site: SiteResult): DomainRecord {
   return {
     site,
-    visits,
-    uniqueVisits,
     type: normalizeType(site),
     account: site.whmInfo?.username || `manual:${site.name}`,
-    subCount: 0,
-    expirationDate: normalizeDateInput(
-      site.whmInfo?.expirationDate || site.whmInfo?.expiresAt
-    ),
-    mailAccountsCount: site.whmInfo?.mailAccountsCount ?? null
+    expirationDate: normalizeDateInput(site.whmInfo?.expirationDate || site.whmInfo?.expiresAt),
   };
 }
 
-function buildRows(status: StatusData, config: SitesConfigData | null, year: number): DomainRow[] {
-  const visitsMap = getVisitsMap(status.checks, year);
-  const allSites = buildMergedSites(status, config).map((site) => toDomainRecord(site, visitsMap));
-
-  const groups = new Map<string, DomainRecord[]>();
-  allSites.forEach((record) => {
-    const arr = groups.get(record.account) ?? [];
-    arr.push(record);
-    groups.set(record.account, arr);
-  });
-
-  const rows: DomainRow[] = [];
-
-  Array.from(groups.keys()).sort((a, b) => a.localeCompare(b, 'es')).forEach((account) => {
-    const records = groups.get(account) ?? [];
-    const mains = records.filter((r) => r.type === 'main').sort((a, b) => b.visits - a.visits);
-    const sortedAll = [...records].sort((a, b) => b.visits - a.visits);
-
-    if (!sortedAll.length) return;
-
-    const chooseParent = (candidates: DomainRecord[]): DomainRecord => {
-      return [...candidates].sort((a, b) => {
-        const aHost = getHostname(a.site.url);
-        const bHost = getHostname(b.site.url);
-        const aMatch = scoreParentByAccount(aHost, account);
-        const bMatch = scoreParentByAccount(bHost, account);
-        if (aMatch !== bMatch) return bMatch - aMatch;
-        const aPenalty = aHost.includes('cprapid.com') ? 1 : 0;
-        const bPenalty = bHost.includes('cprapid.com') ? 1 : 0;
-        if (aPenalty !== bPenalty) return aPenalty - bPenalty;
-        const aDots = (aHost.match(/\./g) || []).length;
-        const bDots = (bHost.match(/\./g) || []).length;
-        if (aDots !== bDots) return aDots - bDots;
-        if (aHost.length !== bHost.length) return aHost.length - bHost.length;
-        return b.visits - a.visits;
-      })[0];
-    };
-
-    const parent = mains.length ? chooseParent(mains) : chooseParent(sortedAll);
-    const parentKey = parent.site.url.toLowerCase();
-    const children = sortedAll.filter((record) => record.site.url.toLowerCase() !== parentKey);
-
-    parent.subCount = children.length;
-    rows.push({ site: parent, kind: 'parent' });
-    children.forEach((child) => {
-      if (child.mailAccountsCount == null && parent.mailAccountsCount != null) {
-        child.mailAccountsCount = parent.mailAccountsCount;
-      }
-      rows.push({ site: child, kind: 'child', parentKey });
-    });
-  });
-
-  return rows;
+function buildRows(status: StatusData, config: SitesConfigData | null): DomainRow[] {
+  const allSites = buildMergedSites(status, config).map((site) => toDomainRecord(site));
+  return allSites
+    .sort((a, b) => getHostname(a.site.url).localeCompare(getHostname(b.site.url)))
+    .map((site) => ({ site }));
 }
 
-function getFilteredRows(rows: DomainRow[]): DomainRow[] {
+// ─── Filtering & Sorting ─────────────────────────────────────────────────────
+
+function rowMatchesSearch(row: DomainRecord, words: string[]): boolean {
+  if (!words.length) return true;
+  const hostname = getHostname(row.site.url).toLowerCase();
+  const name = row.site.name.toLowerCase();
+  const account = row.account.toLowerCase();
+  return words.every((w) => hostname.includes(w) || name.includes(w) || account.includes(w));
+}
+
+function getFilteredAndSortedRows(rows: DomainRow[]): DomainRow[] {
   const query = appState.search.trim().toLowerCase();
-  const parentVisible = new Set<string>();
+  const words = query ? query.split(/\s+/).filter(Boolean) : [];
 
-  rows.forEach((row) => {
-    const matchesQuery = !query
-      || row.site.site.name.toLowerCase().includes(query)
-      || row.site.site.url.toLowerCase().includes(query)
-      || row.site.account.toLowerCase().includes(query);
-
-    const matchesStatus = appState.statusFilter === 'all'
-      || (appState.statusFilter === 'online' && row.site.site.online)
-      || (appState.statusFilter === 'offline' && !row.site.site.online);
-
-    if (matchesQuery && matchesStatus) {
-      if (row.kind === 'parent') {
-        parentVisible.add(row.site.site.url.toLowerCase());
-      } else if (row.parentKey) {
-        parentVisible.add(row.parentKey);
-      }
-    }
+  let filtered = rows.filter((row) => {
+    if (!rowMatchesSearch(row.site, words)) return false;
+    if (appState.filter === 'cuenta') return row.site.type === 'main';
+    if (appState.filter === 'adicionado') return row.site.type === 'sub';
+    return true;
   });
 
-  return rows.filter((row) => {
-    if (row.kind === 'parent') {
-      return parentVisible.has(row.site.site.url.toLowerCase());
-    }
+  if (appState.sortBy === 'alpha') {
+    filtered.sort((a, b) => getHostname(a.site.site.url).localeCompare(getHostname(b.site.site.url), 'pt-BR'));
+  } else if (appState.sortBy === 'venc-mais-proximo') {
+    filtered.sort((a, b) => {
+      const ea = getResolvedExpiration(a.site);
+      const eb = getResolvedExpiration(b.site);
+      if (!ea && !eb) return 0;
+      if (!ea) return 1;
+      if (!eb) return -1;
+      return new Date(ea).getTime() - new Date(eb).getTime();
+    });
+  } else if (appState.sortBy === 'venc-mais-distante') {
+    filtered.sort((a, b) => {
+      const ea = getResolvedExpiration(a.site);
+      const eb = getResolvedExpiration(b.site);
+      if (!ea && !eb) return 0;
+      if (!ea) return 1;
+      if (!eb) return -1;
+      return new Date(eb).getTime() - new Date(ea).getTime();
+    });
+  }
 
-    if (!row.parentKey) return false;
-    return parentVisible.has(row.parentKey) && appState.expanded.has(row.parentKey);
-  });
+  return filtered;
 }
 
-function getUniqueRecords(rows: DomainRow[]): DomainRecord[] {
-  const map = new Map<string, DomainRecord>();
-  rows.forEach((row) => {
-    map.set(row.site.site.url.toLowerCase(), row.site);
-  });
-  return Array.from(map.values());
-}
+// ─── Rendering: Sidebar ──────────────────────────────────────────────────────
 
 function renderSidebar(rows: DomainRow[]): string {
-  const parents = rows.filter((r) => r.kind === 'parent');
-  const uniqueRecords = getUniqueRecords(rows);
-  const mains = uniqueRecords.filter((r) => r.type === 'main').length;
-  const subs = uniqueRecords.filter((r) => r.type === 'sub').length;
+  const allRecords = rows.map((r) => r.site);
+  const mains = allRecords.filter((r) => r.type === 'main').length;
+  const subs = allRecords.filter((r) => r.type === 'sub').length;
+  const whmAccounts = new Set(
+    allRecords.filter((r) => r.account && !r.account.startsWith('manual:')).map((r) => r.account),
+  ).size;
   const latencyLabel = appState.networkLatencyMs == null ? '--' : `${appState.networkLatencyMs}ms`;
   const networkStateLabel = appState.networkOnline ? 'Servidor online' : 'Servidor offline';
   const networkClass = appState.networkOnline ? 'ok' : 'bad';
 
   return `
-    <aside class="left-panel">
+    <aside class="left-panel ${appState.sidebarOpen ? 'open' : ''}">
+      <div class="sidebar-header-mobile">
+        <span>Filtros</span>
+        <button class="sidebar-close" id="sidebarCloseBtn" aria-label="Fechar menu">✕</button>
+      </div>
       <div class="search-box">
-        <input id="searchInput" type="text" placeholder="Buscar por dominio..." value="${escapeHtml(appState.search)}" />
+        <input id="searchInput" type="text" placeholder="Buscar domínio..." value="${escapeHtml(appState.search)}" />
       </div>
       <article class="metric-card">
-        <div class="metric-label">Total de Dominios</div>
-        <div class="metric-value">${formatNumber(mains)}</div>
+        <div class="metric-label">Servidor</div>
+        <div class="metric-grid">
+          <div class="metric-item">
+            <span class="metric-item-label">Contas WHM</span>
+            <span class="metric-item-value">${formatNumber(whmAccounts)}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-item-label">Domínios</span>
+            <span class="metric-item-value">${formatNumber(mains + subs)}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-item-label">Conta</span>
+            <span class="metric-item-value">${formatNumber(mains)}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-item-label">Adicionado</span>
+            <span class="metric-item-value">${formatNumber(subs)}</span>
+          </div>
+        </div>
       </article>
       <article class="metric-card">
-        <div class="metric-label">Total de Subdominios</div>
-        <div class="metric-value">${formatNumber(subs)}</div>
-      </article>
-      <article class="metric-card latency">
-        <div class="metric-label">Latencia de Red</div>
+        <div class="metric-label">Latência de Rede</div>
         <div class="metric-value ${networkClass}">${latencyLabel}</div>
         <div class="metric-sub">${networkStateLabel}</div>
       </article>
@@ -525,256 +439,350 @@ function renderSidebar(rows: DomainRow[]): string {
   `;
 }
 
+// ─── Rendering: Table helpers ────────────────────────────────────────────────
+
 function statusBadge(site: SiteResult): string {
-  if (site.status < 0) return '<span class="badge unknown">Sin check</span>';
+  if (site.status < 0) return '<span class="badge unknown">Sem check</span>';
   return site.online
     ? '<span class="badge online">Online</span>'
     : '<span class="badge offline">Offline</span>';
 }
 
+function getEffectiveIp(site: SiteResult): string | null {
+  return site.cloudflareIp ?? site.ip ?? null;
+}
+
+function hostingBadge(effectiveIp: string | null): string {
+  if (effectiveIp === null) return '<span class="hosting-label hosting-no">Não</span>';
+  const matches = effectiveIp === WHM_SERVER_IP;
+  return matches
+    ? `<span class="hosting-label hosting-yes" title="A Record: ${WHM_SERVER_IP} (WHM)">Sim</span>`
+    : `<span class="hosting-label hosting-no" title="A Record: ${effectiveIp} (fora WHM)">Não</span>`;
+}
+
+function typeBadge(record: DomainRecord): string {
+  if (record.type === 'main') {
+    return '<span class="type-badge type-cuenta">Conta</span>';
+  }
+  const accountName = record.account.startsWith('manual:') ? 'Manual' : record.account;
+  return `<span class="type-badge type-adicionado" title="Pertence à conta: ${escapeHtml(accountName)}">Adicionado</span>`;
+}
+
+function accountInfo(record: DomainRecord): string {
+  if (record.type === 'main') return '';
+  const accountName = record.account.startsWith('manual:') ? 'Manual' : record.account;
+  return `<span class="account-detail">→ ${escapeHtml(accountName)}</span>`;
+}
+
 function rowHtml(row: DomainRow, index: number): string {
-  const parentKey = row.kind === 'parent' ? row.site.site.url.toLowerCase() : row.parentKey ?? '';
-  const isExpanded = appState.expanded.has(parentKey);
-  const canExpand = row.kind === 'parent' && row.site.subCount > 0;
   const hostname = getHostname(row.site.site.url);
   const safeUrl = sanitizeUrl(row.site.site.url);
-
   const resolvedExpiration = getResolvedExpiration(row.site);
-  const mailCount = row.site.mailAccountsCount;
-  const mailLabel = mailCount == null
-    ? (row.site.site.category === 'whm' ? 'Sin permiso' : 'N/A')
-    : formatNumber(mailCount);
+  const query = appState.search.trim().toLowerCase();
+  const words = query ? query.split(/\s+/).filter(Boolean) : [];
+  const highlightedHostname = highlightText(escapeHtml(hostname), words);
+  const effectiveIp = getEffectiveIp(row.site.site);
+  const ipSource = row.site.site.cloudflareIp ? 'CF' : row.site.site.ip ? 'DNS' : null;
 
   return `
-    <tr class="${row.kind === 'child' ? 'child-row' : ''}">
-      <td>${row.kind === 'parent' ? index + 1 : ''}</td>
-      <td>
-        <div class="domain-cell ${row.kind === 'child' ? 'is-child' : ''}">
-          ${canExpand ? `<button class="toggle" data-toggle="${parentKey}">${isExpanded ? '▾' : '▸'}</button>` : '<span class="toggle placeholder"></span>'}
-          <div>
-            <div class="domain-name">${escapeHtml(hostname)}</div>
-            ${row.kind === 'parent' && row.site.subCount > 0 ? `<div class="domain-sub">+${row.site.subCount} dominios/subdominios en la cuenta</div>` : ''}
-          </div>
+    <tr>
+      <td data-label="#">${index + 1}</td>
+      <td data-label="Domínio">
+        <div class="domain-cell">
+          <div class="domain-name">${highlightedHostname}</div>
         </div>
       </td>
-      <td>${statusBadge(row.site.site)}</td>
-      <td>
+      <td data-label="Tipo">
+        <div class="type-cell">
+          ${typeBadge(row.site)}
+          ${accountInfo(row.site)}
+        </div>
+      </td>
+      <td data-label="Status">${statusBadge(row.site.site)}</td>
+      <td data-label="Vencimento">
         <div class="date-main">${formatShortDate(resolvedExpiration)}</div>
         <div class="date-sub">${formatRemaining(resolvedExpiration)}</div>
       </td>
-      <td>
-        <div class="visit-main">${formatNumber(row.site.visits)}</div>
-        <div class="visit-sub">${formatNumber(row.site.uniqueVisits)} online</div>
+      <td data-label="Servidor">
+        <div class="hosting-cell">
+          ${hostingBadge(effectiveIp)}
+          ${effectiveIp ? `<span class="ip-detail" title="A Record via ${ipSource}">${escapeHtml(effectiveIp)}</span>` : ''}
+        </div>
       </td>
-      <td>
-        <div class="date-main">${mailLabel}</div>
+      <td data-label="Ação">
+        <div class="actions-cell">
+          <a class="visit-link" href="${escapeHtml(safeUrl)}" target="_blank" rel="noreferrer" title="Abrir domínio">↗</a>
+        </div>
       </td>
-      <td><a class="visit-link" href="${escapeHtml(safeUrl)}" target="_blank" rel="noreferrer">↗</a></td>
     </tr>
   `;
 }
+
+// ─── Rendering: Pagination ───────────────────────────────────────────────────
+
+function renderPagination(totalRows: number): string {
+  const totalPages = Math.ceil(totalRows / PAGE_SIZE);
+  if (totalPages <= 1) return '';
+  const from = (appState.currentPage - 1) * PAGE_SIZE + 1;
+  const to = Math.min(appState.currentPage * PAGE_SIZE, totalRows);
+
+  let buttons = '';
+  const maxVisible = 7;
+  let start = Math.max(1, appState.currentPage - Math.floor(maxVisible / 2));
+  let end = Math.min(totalPages, start + maxVisible - 1);
+  if (end - start < maxVisible - 1) start = Math.max(1, end - maxVisible + 1);
+
+  if (start > 1) buttons += `<button class="page-btn" data-page="1">1</button>`;
+  if (start > 2) buttons += `<span class="page-ellipsis">…</span>`;
+  for (let i = start; i <= end; i++) {
+    buttons += `<button class="page-btn ${i === appState.currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+  }
+  if (end < totalPages - 1) buttons += `<span class="page-ellipsis">…</span>`;
+  if (end < totalPages) buttons += `<button class="page-btn" data-page="${totalPages}">${totalPages}</button>`;
+
+  return `
+    <div class="pagination-bar">
+      <span class="page-info">Mostrando ${from}–${to} de ${formatNumber(totalRows)}</span>
+      <div class="page-controls">
+        <button class="page-btn page-nav" data-page="${appState.currentPage - 1}" ${appState.currentPage <= 1 ? 'disabled' : ''}>‹</button>
+        ${buttons}
+        <button class="page-btn page-nav" data-page="${appState.currentPage + 1}" ${appState.currentPage >= totalPages ? 'disabled' : ''}>›</button>
+      </div>
+    </div>
+  `;
+}
+
+// ─── Rendering: Table body (lightweight) ─────────────────────────────────────
+
+let searchRafId = 0;
+
+function renderTableBody(): void {
+  const tbody = document.querySelector<HTMLTableSectionElement>('#tableBody');
+  const emptyMsg = document.querySelector<HTMLDivElement>('#emptyResults');
+  const table = document.querySelector<HTMLTableElement>('#mainTable');
+  const pag = document.querySelector<HTMLDivElement>('#pagination');
+  if (!tbody || !emptyMsg || !table || !appState.status) return;
+
+  const filteredRows = getFilteredAndSortedRows(appState.rows);
+  const total = filteredRows.length;
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+
+  if (appState.currentPage > totalPages) appState.currentPage = Math.max(1, totalPages);
+
+  if (total === 0) {
+    tbody.innerHTML = '';
+    table.style.display = 'none';
+    emptyMsg.style.display = 'block';
+    emptyMsg.textContent = appState.search.trim()
+      ? `Não encontrado para: "${appState.search.trim()}"`
+      : 'Sem resultados para este filtro.';
+    if (pag) pag.innerHTML = '';
+  } else {
+    table.style.display = '';
+    emptyMsg.style.display = 'none';
+    emptyMsg.textContent = '';
+    const start = (appState.currentPage - 1) * PAGE_SIZE;
+    const pageRows = filteredRows.slice(start, start + PAGE_SIZE);
+    tbody.innerHTML = pageRows.map((row, i) => rowHtml(row, start + i)).join('');
+    if (pag) pag.innerHTML = renderPagination(total);
+  }
+}
+
+// ─── Rendering: Main ─────────────────────────────────────────────────────────
 
 function renderMain(): void {
   const app = document.querySelector<HTMLDivElement>('#app');
   if (!app || !appState.status) return;
 
   const allRows = appState.rows;
-  const visibleRows = getFilteredRows(allRows);
-  const years = getYears(appState.status.checks);
-
-  const serverHost = appState.config?.serverInfo?.host || 'No disponible';
-  const serverIp = appState.config?.serverInfo?.ip || 'No disponible';
-  const serverPlan = appState.config?.serverInfo?.plan || 'No disponible';
-  const serverSystem = appState.config?.serverInfo?.system || 'No disponible';
-  const serverReverseDns = appState.config?.serverInfo?.reverseDns || 'No disponible';
-  const serverWhoisOrg = appState.config?.serverInfo?.whoisOrg || 'No disponible';
-  const serverWhoisCountry = appState.config?.serverInfo?.whoisCountry || 'No disponible';
-  const serverWhoisNetName = appState.config?.serverInfo?.whoisNetName || 'No disponible';
-  const serverWhoisAsn = appState.config?.serverInfo?.whoisAsn || 'No disponible';
-  const serverHttpServer = appState.config?.serverInfo?.httpServer || 'No disponible';
-  const serverOsGuess = appState.config?.serverInfo?.osGuess || 'No disponible';
-  const serverIsp = appState.config?.serverInfo?.isp || 'No disponible';
-  const serverAsName = appState.config?.serverInfo?.asName || 'No disponible';
-  const serverGeoCity = appState.config?.serverInfo?.geoCity || 'No disponible';
-  const serverGeoRegion = appState.config?.serverInfo?.geoRegion || 'No disponible';
-  const serverGeoCountry = appState.config?.serverInfo?.geoCountry || 'No disponible';
-  const serverGeoTimezone = appState.config?.serverInfo?.geoTimezone || 'No disponible';
-  const serverIpApiSource = appState.config?.serverInfo?.ipApiSource || 'No disponible';
-  const serverProbedAt = formatDate(appState.config?.serverInfo?.probedAt);
+  const filteredCount = getFilteredAndSortedRows(allRows).length;
 
   const mainHtml = `
     <section class="main-panel">
-      <h1>Gestao de Dominios</h1>
-      <article class="server-card">
-        <div class="server-title">Servidor Ola Multicom</div>
-        <div class="server-grid">
-          <div><span>Host:</span> ${escapeHtml(serverHost)}</div>
-          <div><span>IP:</span> ${escapeHtml(serverIp)}</div>
-          <div><span>Reverse DNS:</span> ${escapeHtml(serverReverseDns)}</div>
-          <div><span>HTTP Server:</span> ${escapeHtml(serverHttpServer)}</div>
-          <div><span>ASN:</span> ${escapeHtml(serverWhoisAsn)}</div>
-          <div><span>WHOIS Org:</span> ${escapeHtml(serverWhoisOrg)}</div>
-          <div><span>WHOIS Pais:</span> ${escapeHtml(serverWhoisCountry)}</div>
-          <div><span>WHOIS NetName:</span> ${escapeHtml(serverWhoisNetName)}</div>
-          <div><span>ISP:</span> ${escapeHtml(serverIsp)}</div>
-          <div><span>ASN Org:</span> ${escapeHtml(serverAsName)}</div>
-          <div><span>Ciudad:</span> ${escapeHtml(serverGeoCity)}</div>
-          <div><span>Region:</span> ${escapeHtml(serverGeoRegion)}</div>
-          <div><span>Pais:</span> ${escapeHtml(serverGeoCountry)}</div>
-          <div><span>Timezone:</span> ${escapeHtml(serverGeoTimezone)}</div>
-          <div><span>API Fuente:</span> ${escapeHtml(serverIpApiSource)}</div>
-          <div><span>OS Guess:</span> ${escapeHtml(serverOsGuess)}</div>
-          <div><span>Plano:</span> ${escapeHtml(serverPlan)}</div>
-          <div><span>Sistema:</span> ${escapeHtml(serverSystem)}</div>
-          <div><span>WHM Sync:</span> ${formatDate(appState.config?.lastWhmSync)}</div>
-          <div><span>Analisis:</span> ${escapeHtml(serverProbedAt)}</div>
-        </div>
-      </article>
-
+      <h1 class="desktop-title">Gestão de Domínios</h1>
       <div class="toolbar">
         <div class="tabs">
-          <button class="tab ${appState.statusFilter === 'all' ? 'active' : ''}" data-filter="all">Todos</button>
-          <button class="tab ${appState.statusFilter === 'online' ? 'active' : ''}" data-filter="online">Online</button>
-          <button class="tab ${appState.statusFilter === 'offline' ? 'active' : ''}" data-filter="offline">Offline</button>
+          <button class="tab ${appState.filter === 'all' ? 'active' : ''}" data-filter="all">Todos (${formatNumber(allRows.length)})</button>
+          <button class="tab ${appState.filter === 'cuenta' ? 'active' : ''}" data-filter="cuenta">Conta</button>
+          <button class="tab ${appState.filter === 'adicionado' ? 'active' : ''}" data-filter="adicionado">Adicionado</button>
         </div>
         <div class="actions">
-          <select id="yearSelect">
-            ${years.map((y) => `<option value="${y}" ${y === appState.selectedYear ? 'selected' : ''}>Checks (${y})</option>`).join('')}
+          <select id="sortSelect">
+            <option value="alpha" ${appState.sortBy === 'alpha' ? 'selected' : ''}>Ordenar: A–Z</option>
+            <option value="venc-mais-proximo" ${appState.sortBy === 'venc-mais-proximo' ? 'selected' : ''}>Vencimento: mais próximo</option>
+            <option value="venc-mais-distante" ${appState.sortBy === 'venc-mais-distante' ? 'selected' : ''}>Vencimento: mais distante</option>
           </select>
-          ${appState.adminAvailable ? `<button id="regenerateBtn" class="ghost" ${appState.adminBusy ? 'disabled' : ''}>${appState.adminBusy ? 'Regenerando...' : 'Limpiar cache y regenerar'}</button>` : ''}
-          <button id="expandAllBtn" class="ghost">Expandir todos</button>
-          <button id="collapseAllBtn" class="ghost">Contraer todos</button>
+          ${appState.adminAvailable ? `<button id="regenerateBtn" class="ghost" ${appState.adminBusy ? 'disabled' : ''}>${appState.adminBusy ? 'Regenerando...' : 'Limpar cache'}</button>` : ''}
         </div>
       </div>
       ${appState.adminMessage ? `<p class="admin-note">${escapeHtml(appState.adminMessage)}</p>` : ''}
-
+      <div id="emptyResults" class="empty-results" style="display:none"></div>
       <div class="table-wrap">
-        <table>
+        <table id="mainTable">
           <thead>
             <tr>
               <th>#</th>
-              <th>Dominio Principal</th>
+              <th>Domínio</th>
+              <th>Tipo</th>
               <th>Status</th>
-              <th>Vencimiento</th>
-              <th>Checks (${appState.selectedYear})</th>
-              <th>Correos</th>
-              <th>Accion</th>
+              <th>Vencimento</th>
+              <th>Servidor</th>
+              <th>Ação</th>
             </tr>
           </thead>
-          <tbody>
-            ${visibleRows.map((row, i) => rowHtml(row, i)).join('')}
-          </tbody>
+          <tbody id="tableBody"></tbody>
         </table>
+        <div id="pagination"></div>
+      </div>
+      <div class="table-footer">
+        <span class="total-count">Total: ${formatNumber(filteredCount)} domínios</span>
       </div>
     </section>
   `;
 
-  app.innerHTML = `<main class="app-shell">${renderSidebar(allRows)}${mainHtml}</main>`;
+  const sidebarOpen = appState.sidebarOpen ? ' open' : '';
+  app.innerHTML = `
+    <header class="mobile-header">
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+      <h1 class="mobile-title">Gestão de Domínios</h1>
+    </header>
+    <div class="sidebar-overlay ${sidebarOpen}" id="sidebarOverlay"></div>
+    <main class="app-shell">
+      ${renderSidebar(allRows)}
+      ${mainHtml}
+    </main>
+  `;
   bindEvents();
+  renderTableBody();
 }
 
+// ─── Event binding ───────────────────────────────────────────────────────────
+
 function bindEvents(): void {
+  // Sidebar toggle (hamburger)
+  document.getElementById('hamburgerBtn')?.addEventListener('click', () => {
+    appState.sidebarOpen = !appState.sidebarOpen;
+    updateSidebarState();
+  });
+
+  document.getElementById('sidebarOverlay')?.addEventListener('click', () => {
+    appState.sidebarOpen = false;
+    updateSidebarState();
+  });
+
+  document.getElementById('sidebarCloseBtn')?.addEventListener('click', () => {
+    appState.sidebarOpen = false;
+    updateSidebarState();
+  });
+
+  // Search
   const searchInput = document.getElementById('searchInput') as HTMLInputElement | null;
   searchInput?.addEventListener('input', () => {
     appState.search = searchInput.value;
-    renderMain();
+    appState.currentPage = 1;
+    if (searchRafId) cancelAnimationFrame(searchRafId);
+    searchRafId = requestAnimationFrame(() => {
+      searchRafId = 0;
+      renderTableBody();
+    });
   });
 
+  // Filter tabs
   document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((button) => {
     button.addEventListener('click', () => {
-      const next = button.dataset.filter as AppState['statusFilter'];
-      appState.statusFilter = next;
+      appState.filter = button.dataset.filter as FilterType;
+      appState.currentPage = 1;
       renderMain();
     });
   });
 
-  document.querySelectorAll<HTMLButtonElement>('[data-toggle]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const key = button.dataset.toggle;
-      if (!key) return;
-      if (appState.expanded.has(key)) appState.expanded.delete(key);
-      else {
-        appState.expanded.add(key);
-        prefetchRdapForExpandedParent(key);
-      }
-      renderMain();
-    });
-  });
-
-  const yearSelect = document.getElementById('yearSelect') as HTMLSelectElement | null;
-  yearSelect?.addEventListener('change', () => {
-    appState.selectedYear = Number(yearSelect.value);
-    if (appState.status) {
-      appState.rows = buildRows(appState.status, appState.config, appState.selectedYear);
-    }
+  // Sort select
+  const sortSelect = document.getElementById('sortSelect') as HTMLSelectElement | null;
+  sortSelect?.addEventListener('change', () => {
+    appState.sortBy = sortSelect.value as SortType;
+    appState.currentPage = 1;
     renderMain();
   });
 
-  document.getElementById('expandAllBtn')?.addEventListener('click', () => {
-    appState.rows.filter((r) => r.kind === 'parent' && r.site.subCount > 0).forEach((r) => {
-      appState.expanded.add(r.site.site.url.toLowerCase());
-    });
-    renderMain();
-  });
-
-  document.getElementById('collapseAllBtn')?.addEventListener('click', () => {
-    appState.expanded.clear();
-    renderMain();
-  });
-
+  // Admin regenerate
   document.getElementById('regenerateBtn')?.addEventListener('click', async () => {
     if (appState.adminBusy) return;
     appState.adminBusy = true;
-    appState.adminMessage = 'Regenerando datos...';
+    appState.adminMessage = 'Regenerando dados...';
     renderMain();
-
     try {
       const res = await fetch('/__admin/regenerate', { method: 'POST' });
       if (!res.ok) {
         let reason = `HTTP ${res.status}`;
-        try {
-          const payload = (await res.json()) as { error?: string };
-          if (payload?.error) reason = payload.error;
-        } catch {
-          // Keep HTTP message.
-        }
+        try { const p = (await res.json()) as { error?: string }; if (p?.error) reason = p.error; } catch { /* keep */ }
         throw new Error(reason);
       }
-
       const [status, config] = await Promise.all([loadStatus(), loadSitesConfig()]);
       appState.status = status;
       appState.config = config;
-      appState.rows = buildRows(status, config, appState.selectedYear);
-      appState.adminMessage = 'Cache limpiado y datos regenerados correctamente.';
+      appState.rows = buildRows(status, config);
+      appState.adminMessage = 'Cache limpo e dados regenerados com sucesso.';
     } catch (error) {
-      appState.adminMessage = `No se pudo regenerar: ${(error as Error).message}`;
+      appState.adminMessage = `Não foi possível regenerar: ${(error as Error).message}`;
     } finally {
       appState.adminBusy = false;
       renderMain();
     }
   });
+
+  // Pagination
+  document.querySelector('#pagination')?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName !== 'BUTTON' || target.hasAttribute('disabled')) return;
+    const page = Number(target.dataset.page);
+    if (page >= 1) {
+      appState.currentPage = page;
+      renderTableBody();
+      document.querySelector('.table-wrap')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+}
+
+function updateSidebarState(): void {
+  const sidebar = document.querySelector<HTMLElement>('.left-panel');
+  const overlay = document.getElementById('sidebarOverlay');
+  if (sidebar) {
+    sidebar.classList.toggle('open', appState.sidebarOpen);
+  }
+  if (overlay) {
+    overlay.classList.toggle('open', appState.sidebarOpen);
+  }
+}
+
+// ─── Bootstrap ───────────────────────────────────────────────────────────────
+
+function enqueueMainDomainsRdap(): void {
+  appState.rows.forEach(({ site }) => {
+    if (site.type === 'main') {
+      const domain = getHostname(site.site.url).toLowerCase();
+      enqueueRdapLookup(domain);
+    }
+  });
+  processRdapQueue();
 }
 
 async function bootstrap(): Promise<void> {
   const app = document.querySelector<HTMLDivElement>('#app');
   if (!app) return;
-
   try {
     const [status, config] = await Promise.all([loadStatus(), loadSitesConfig()]);
     appState.status = status;
     appState.config = config;
     appState.adminAvailable = await checkAdminAvailability();
     loadRdapCacheFromStorage();
-
-    const years = getYears(status.checks);
-    appState.selectedYear = years[0];
-    appState.rows = buildRows(status, config, appState.selectedYear);
-
-    appState.expanded.clear();
-
+    appState.rows = buildRows(status, config);
+    appState.currentPage = 1;
     renderMain();
+    enqueueMainDomainsRdap();
   } catch (error) {
-    app.innerHTML = `<main class="app-shell"><p class="error">Error cargando dashboard: ${(error as Error).message}</p></main>`;
+    app.innerHTML = `<main class="app-shell"><p class="error">Erro ao carregar painel: ${(error as Error).message}</p></main>`;
   }
 }
 
@@ -789,7 +797,6 @@ async function probeNetwork(): Promise<void> {
       if (appState.status) renderMain();
       return;
     }
-
     appState.networkOnline = true;
     appState.networkLatencyMs = Date.now() - started;
     appState.lastProbeAt = Date.now();
@@ -798,14 +805,9 @@ async function probeNetwork(): Promise<void> {
     appState.networkLatencyMs = null;
     appState.lastProbeAt = Date.now();
   }
-
-  if (appState.status) {
-    renderMain();
-  }
+  if (appState.status) renderMain();
 }
 
 bootstrap();
 probeNetwork();
-setInterval(() => {
-  probeNetwork();
-}, 15000);
+setInterval(() => probeNetwork(), 15000);

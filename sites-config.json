@@ -1829,25 +1829,30 @@
   ],
   "lastWhmSync": "2026-07-01T16:52:51.592Z",
   "serverInfo": {
-    "host": "servidorm.olamulticom.com.br",
-    "ip": "31.97.169.57",
+    "host": "servolam.olamulticom.com.br",
+    "ip": "208.109.245.134",
     "plan": "VPS Linux",
     "system": "No disponible",
-    "reverseDns": "servidorm.olamulticom.com.br",
+    "reverseDns": "servolam.olamulticom.com.br",
     "whoisOrg": null,
     "whoisCountry": null,
     "whoisNetName": null,
-    "whoisAsn": "AS47583",
+    "whoisAsn": "AS398101",
     "httpServer": null,
     "osGuess": null,
-    "isp": "Hostinger International Limited",
-    "asName": "HOSTINGER HOSTING",
-    "geoCity": "São Paulo",
-    "geoRegion": "State of São Paulo",
-    "geoCountry": "Brazil",
-    "geoTimezone": "America/Sao_Paulo",
+    "isp": "Godaddy.com, LLC",
+    "asName": "Godaddy.com, LLC",
+    "geoCity": "Tempe",
+    "geoRegion": "Arizona",
+    "geoCountry": "United States",
+    "geoTimezone": "America/Phoenix",
     "ipApiSource": "ipwho.is",
-    "probedAt": "2026-07-01T16:52:53.116Z"
+    "probedAt": "2026-07-02T20:42:41.594Z"
   },
-  "lastUpdate": "2026-07-01T16:52:53.119Z"
+  "lastUpdate": "2026-07-02T20:43:18.619Z",
+  "cloudflareOverview": {
+    "totalZones": 20,
+    "accountEmail": "criacao_dois@olamulticom.com.br",
+    "lastSync": "2026-07-02T20:43:18.617Z"
+  }
 }

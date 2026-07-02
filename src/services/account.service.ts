@@ -1,31 +1,35 @@
-import { readFileSync, writeFileSync, existsSync, renameSync } from 'node:fs';
-import { lookup } from 'node:dns/promises';
-import pLimit from 'p-limit';
-import { env } from '../utils/env';
-import { logger } from '../utils/logger';
-import { runLinuxCommand, commandExists, extractFirstMatch } from '../utils/helpers';
-import { fetchJson } from '../providers/http.provider';
-import { extractAccountsAndDomains } from '../providers/whm.provider';
-import { getRdapDates } from '../providers/rdap.provider';
-import type { Site, ServerInfo, SitesConfig } from '../models/site.model';
+import { lookup } from 'node:dns/promises'
+import { existsSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import pLimit from 'p-limit'
+import type { ServerInfo, Site, SitesConfig, WhmUsageSummary } from '../models/site.model'
+import { getAccountInfo, listZonesWithDetails } from '../providers/cloudflare.provider'
+import { fetchJson } from '../providers/http.provider'
+import { getRdapDates } from '../providers/rdap.provider'
+import type { WhmAccountDetail } from '../dto/whm.dto'
+import { extractAccountsAndDomains, getAccountDetails, getWhmUsageSummary } from '../providers/whm.provider'
+import { env } from '../utils/env'
+import { commandExists, extractFirstMatch, runLinuxCommand } from '../utils/helpers'
+import { logger } from '../utils/logger'
 
-const SITES_CONFIG_FILE = 'sites-config.json';
+const SITES_CONFIG_FILE = 'sites-config.json'
 
 const MANUAL_SITES: Site[] = [
   { name: 'Smartbox Brasil', url: 'https://smartboxbrasil.com.br' },
   { name: 'Tecnuv', url: 'https://tecnuv.com.br' },
   { name: 'Postogestor', url: 'https://postogestor.com.br' },
   { name: 'Epsy', url: 'https://epsy.com.br' },
-];
+]
 
 async function enrichFromIpWhoIs(ip: string): Promise<Partial<ServerInfo> | null> {
   try {
     const payload = await fetchJson<any>(
       `https://ipwho.is/${encodeURIComponent(ip)}`,
       env.whm.ipEnrichmentTimeoutMs,
-    );
-    if (!payload || payload.success === false) return null;
-    const asn = payload?.connection?.asn ? `AS${String(payload.connection.asn).replace(/^AS/i, '')}` : null;
+    )
+    if (!payload || payload.success === false) return null
+    const asn = payload?.connection?.asn
+      ? `AS${String(payload.connection.asn).replace(/^AS/i, '')}`
+      : null
     return {
       isp: payload?.connection?.isp ?? payload?.connection?.org ?? null,
       asName: payload?.connection?.org ?? null,
@@ -35,20 +39,20 @@ async function enrichFromIpWhoIs(ip: string): Promise<Partial<ServerInfo> | null
       geoCountry: payload?.country ?? null,
       geoTimezone: payload?.timezone?.id ?? payload?.timezone?.utc ?? null,
       ipApiSource: 'ipwho.is',
-    };
+    }
   } catch {
-    return null;
+    return null
   }
 }
 
 async function enrichFromIpInfo(ip: string): Promise<Partial<ServerInfo> | null> {
   try {
-    const tokenPart = env.ipInfoToken ? `?token=${encodeURIComponent(env.ipInfoToken)}` : '';
+    const tokenPart = env.ipInfoToken ? `?token=${encodeURIComponent(env.ipInfoToken)}` : ''
     const payload = await fetchJson<any>(
       `https://ipinfo.io/${encodeURIComponent(ip)}/json${tokenPart}`,
       env.whm.ipEnrichmentTimeoutMs,
-    );
-    if (!payload) return null;
+    )
+    if (!payload) return null
     return {
       isp: payload?.org ?? null,
       asName: payload?.org ?? null,
@@ -57,63 +61,83 @@ async function enrichFromIpInfo(ip: string): Promise<Partial<ServerInfo> | null>
       geoCountry: payload?.country ?? null,
       geoTimezone: payload?.timezone ?? null,
       ipApiSource: env.ipInfoToken ? 'ipinfo.io (token)' : 'ipinfo.io',
-    };
+    }
   } catch {
-    return null;
+    return null
   }
 }
 
 export class AccountService {
-  manualSites: Site[] = [];
-  whmSites: Site[] = [];
-  lastWhmSync: string | null = null;
+  manualSites: Site[] = []
+  whmSites: Site[] = []
+  lastWhmSync: string | null = null
   serverInfo: ServerInfo = {
     host: env.whm.host,
     ip: null,
     plan: env.whm.serverPlan,
     system: env.whm.serverSystem,
-  };
+  }
+  whmUsage: WhmUsageSummary | null = null
+  cloudflareOverview: SitesConfig['cloudflareOverview'] = null
 
   constructor() {
-    this.manualSites = MANUAL_SITES.map((s) => ({ ...s, category: 'manual' as const, priority: 'normal' as const }));
+    this.manualSites = MANUAL_SITES.map((s) => ({
+      ...s,
+      category: 'manual' as const,
+      priority: 'normal' as const,
+    }))
   }
 
   loadFromFile(): void {
     try {
-      if (!existsSync(SITES_CONFIG_FILE)) return;
-      const data: SitesConfig = JSON.parse(readFileSync(SITES_CONFIG_FILE, 'utf8'));
+      if (!existsSync(SITES_CONFIG_FILE)) return
+      const data: SitesConfig = JSON.parse(readFileSync(SITES_CONFIG_FILE, 'utf8'))
 
       if (Array.isArray(data.manualSites)) {
         this.manualSites = data.manualSites.map((s) => ({
           ...s,
           category: s.category ?? 'manual',
           priority: s.priority ?? 'normal',
-        }));
+        }))
       }
 
       if (Array.isArray(data.whmSites)) {
-        this.whmSites = data.whmSites;
-        this.lastWhmSync = data.lastWhmSync ?? null;
+        this.whmSites = data.whmSites
+        this.lastWhmSync = data.lastWhmSync ?? null
       }
 
       if (data.serverInfo && typeof data.serverInfo === 'object') {
-        this.serverInfo = { ...this.serverInfo, ...data.serverInfo };
+        this.serverInfo = { ...this.serverInfo, ...data.serverInfo }
+      }
+
+      if (data.whmUsage && typeof data.whmUsage === 'object') {
+        this.whmUsage = data.whmUsage
+      }
+
+      if (data.cloudflareOverview && typeof data.cloudflareOverview === 'object') {
+        this.cloudflareOverview = data.cloudflareOverview
       }
 
       logger.info(
         { manual: this.manualSites.length, whm: this.whmSites.length },
         'Loaded sites config',
-      );
+      )
     } catch (error: any) {
-      logger.warn({ error: error.message }, 'Could not load sites config, using defaults');
+      logger.warn({ error: error.message }, 'Could not load sites config, using defaults')
       if (existsSync(SITES_CONFIG_FILE)) {
-        const backup = `sites-config.invalid-${Date.now()}.json`;
-        renameSync(SITES_CONFIG_FILE, backup);
-        logger.warn({ backup }, 'Corrupted config backed up');
+        const backup = `sites-config.invalid-${Date.now()}.json`
+        renameSync(SITES_CONFIG_FILE, backup)
+        logger.warn({ backup }, 'Corrupted config backed up')
       }
-      this.manualSites = MANUAL_SITES.map((s) => ({ ...s, category: 'manual' as const, priority: 'normal' as const }));
-      this.whmSites = [];
-      this.lastWhmSync = null;
+      this.manualSites = MANUAL_SITES.map((s) => ({
+        ...s,
+        category: 'manual' as const,
+        priority: 'normal' as const,
+      }))
+      this.whmSites = []
+      this.lastWhmSync = null
+      this.whmUsage = null
+      this.cloudflareOverview = null
     }
   }
 
@@ -124,16 +148,18 @@ export class AccountService {
       lastWhmSync: this.lastWhmSync,
       serverInfo: this.serverInfo,
       lastUpdate: new Date().toISOString(),
-    };
-    writeFileSync(SITES_CONFIG_FILE, `${JSON.stringify(config, null, 2)}\n`);
+      cloudflareOverview: this.cloudflareOverview ?? undefined,
+      whmUsage: this.whmUsage ?? undefined,
+    }
+    writeFileSync(SITES_CONFIG_FILE, `${JSON.stringify(config, null, 2)}\n`)
   }
 
   getAllSites(): Site[] {
-    return [...this.manualSites, ...this.whmSites];
+    return [...this.manualSites, ...this.whmSites]
   }
 
   getStats() {
-    const all = this.getAllSites();
+    const all = this.getAllSites()
     return {
       total: all.length,
       manual: this.manualSites.length,
@@ -151,60 +177,83 @@ export class AccountService {
         normal: all.filter((s) => s.priority === 'normal').length,
         low: all.filter((s) => s.priority === 'low').length,
       },
-    };
+    }
   }
 
   async syncWithWhm(): Promise<boolean> {
     if (!env.whm.enabled) {
-      logger.info('WHM sync disabled');
-      return false;
+      logger.info('WHM sync disabled')
+      return false
     }
 
     try {
-      logger.info('Starting WHM sync');
-      const whmData = await extractAccountsAndDomains();
+      logger.info('Starting WHM sync')
+      const [whmData, accountDetails, usageSummary] = await Promise.all([
+        extractAccountsAndDomains(),
+        getAccountDetails().catch((): WhmAccountDetail[] => []),
+        getWhmUsageSummary().catch((): WhmUsageSummary => ({
+          totalDiskUsedMb: 0,
+          totalDiskQuotaMb: 0,
+          totalBwUsedMb: 0,
+          totalBwQuotaMb: 0,
+          totalAccounts: 0,
+        })),
+      ])
+
+      const detailMap = new Map<string, WhmAccountDetail>(accountDetails.map((d) => [d.username.toLowerCase(), d]))
 
       const filtered = whmData.domains.filter((d) => {
-        if (env.whm.excludeSuspended && d.status !== 'Activa') return false;
-        if (env.whm.onlyMainDomains && d.type !== 'principal') return false;
-        if (env.whm.excludeSubdomains && d.type === 'subdominio') return false;
-        if (env.whm.excludeAddonDomains && d.type === 'addon') return false;
-        return !env.whm.excludePatterns.some((p) => d.domain.toLowerCase().includes(p.toLowerCase()));
-      });
+        if (env.whm.excludeSuspended && d.status !== 'Activa') return false
+        if (env.whm.onlyMainDomains && d.type !== 'principal') return false
+        if (env.whm.excludeSubdomains && d.type === 'subdominio') return false
+        if (env.whm.excludeAddonDomains && d.type === 'addon') return false
+        return !env.whm.excludePatterns.some((p) =>
+          d.domain.toLowerCase().includes(p.toLowerCase()),
+        )
+      })
 
       if (filtered.length === 0) {
-        logger.warn('WHM returned 0 valid domains, keeping previous data');
-        return false;
+        logger.warn('WHM returned 0 valid domains, keeping previous data')
+        return false
       }
 
-      const oldDates = new Map<string, { expirationDate?: string; renewalDate?: string }>();
+      const oldDates = new Map<string, { expirationDate?: string; renewalDate?: string }>()
       this.whmSites.forEach((s) => {
         if (s.url && s.whmInfo) {
           oldDates.set(s.url.toLowerCase(), {
             expirationDate: s.whmInfo.expirationDate,
             renewalDate: s.whmInfo.renewalDate,
-          });
+          })
         }
-      });
+      })
 
-      const rdapDateMap = new Map<string, { expirationDate: string | null; renewalDate: string | null }>();
+      const rdapDateMap = new Map<
+        string,
+        { expirationDate: string | null; renewalDate: string | null }
+      >()
 
       if (env.whm.rdapEnabled && env.rdap.enabled) {
         const mainDomains = Array.from(
-          new Set(filtered.filter((d) => d.type === 'principal').map((d) => d.domain.toLowerCase())),
-        );
-        const limit = pLimit(env.whm.rdapConcurrency);
+          new Set(
+            filtered.filter((d) => d.type === 'principal').map((d) => d.domain.toLowerCase()),
+          ),
+        )
+        const limit = pLimit(env.whm.rdapConcurrency)
         const rdapResults = await Promise.all(
-          mainDomains.map((domain) => limit(async () => ({ domain, dates: await getRdapDates(domain) }))),
-        );
-        rdapResults.forEach(({ domain, dates }) => rdapDateMap.set(domain, dates));
-        logger.info({ count: mainDomains.length }, 'RDAP checked for main domains');
+          mainDomains.map((domain) =>
+            limit(async () => ({ domain, dates: await getRdapDates(domain) })),
+          ),
+        )
+        rdapResults.forEach(({ domain, dates }) => rdapDateMap.set(domain, dates))
+        logger.info({ count: mainDomains.length }, 'RDAP checked for main domains')
       }
 
       this.whmSites = filtered.map((d) => {
-        const url = `https://${d.domain}`;
-        const rdap = rdapDateMap.get(d.domain.toLowerCase());
-        const prev = oldDates.get(url.toLowerCase());
+        const url = `https://${d.domain}`
+        const rdap = rdapDateMap.get(d.domain.toLowerCase())
+        const prev = oldDates.get(url.toLowerCase())
+        const detail = detailMap.get(d.username.toLowerCase())
+
         return {
           name: d.domain,
           url,
@@ -218,82 +267,135 @@ export class AccountService {
             renewalDate: rdap?.renewalDate ?? prev?.renewalDate,
             mailAccountsCount: d.mailAccountsCount ?? null,
           },
-        };
-      });
+          whmUsage: detail
+            ? {
+                diskUsedMb: detail.diskused,
+                diskQuotaMb: detail.diskquota,
+                diskPercent: detail.diskpercent,
+                bwUsedMb: detail.bwused,
+                bwQuotaMb: detail.bwquota,
+                bwPercent: detail.bwpercent,
+                plan: detail.plan || null,
+                startdate: detail.startdate,
+              }
+            : undefined,
+        }
+      })
 
-      this.lastWhmSync = new Date().toISOString();
-      await this.refreshServerInfo();
-      this.saveToFile();
-      logger.info({ count: this.whmSites.length }, 'WHM sync complete');
-      return true;
+      this.whmUsage = usageSummary
+      this.lastWhmSync = new Date().toISOString()
+      await this.refreshServerInfo()
+      this.saveToFile()
+      logger.info({ count: this.whmSites.length }, 'WHM sync complete')
+      return true
     } catch (error: any) {
-      logger.error({ error: error.message }, 'WHM sync failed');
-      return false;
+      logger.error({ error: error.message }, 'WHM sync failed')
+      return false
+    }
+  }
+
+  /**
+   * Sync Cloudflare zone overview data.
+   */
+  async syncCloudflareOverview(): Promise<void> {
+    if (!env.cloudflare.apiToken) {
+      logger.debug('Cloudflare API token not configured, skipping overview sync')
+      return
+    }
+
+    try {
+      logger.info('Syncing Cloudflare overview')
+      const [zones, account] = await Promise.all([
+        listZonesWithDetails(),
+        getAccountInfo().catch(() => null),
+      ])
+
+      this.cloudflareOverview = {
+        totalZones: zones.length,
+        accountEmail: account?.email ?? null,
+        lastSync: new Date().toISOString(),
+      }
+
+      this.saveToFile()
+      logger.info({ zones: zones.length }, 'Cloudflare overview sync complete')
+    } catch (error: any) {
+      logger.warn({ error: error.message }, 'Cloudflare overview sync failed')
     }
   }
 
   async refreshServerInfo(): Promise<void> {
-    this.serverInfo.host = env.whm.host;
-    this.serverInfo.plan = env.whm.serverPlan;
-    this.serverInfo.system = env.whm.serverSystem;
+    this.serverInfo.host = env.whm.host
+    this.serverInfo.plan = env.whm.serverPlan
+    this.serverInfo.system = env.whm.serverSystem
 
     try {
-      const resolved = await lookup(env.whm.host, { family: 4 });
-      this.serverInfo.ip = resolved.address;
+      const resolved = await lookup(env.whm.host, { family: 4 })
+      this.serverInfo.ip = resolved.address
     } catch {
       try {
-        const resolved = await lookup(env.whm.host);
-        this.serverInfo.ip = resolved.address;
+        const resolved = await lookup(env.whm.host)
+        this.serverInfo.ip = resolved.address
       } catch {
-        this.serverInfo.ip = null;
+        this.serverInfo.ip = null
       }
     }
 
     if (!env.whm.serverProbeEnabled) {
-      this.serverInfo.probedAt = new Date().toISOString();
-      return;
+      this.serverInfo.probedAt = new Date().toISOString()
+      return
     }
 
-    const timeoutMs = env.whm.serverProbeTimeoutMs;
+    const timeoutMs = env.whm.serverProbeTimeoutMs
 
     this.serverInfo.reverseDns = await runLinuxCommand(
       `getent hosts ${env.whm.host} | awk '{print $2}' | head -n1`,
       timeoutMs,
-    );
+    )
 
     const headers = await runLinuxCommand(
       `curl -kIs --max-time 8 https://${env.whm.host}:${env.whm.port} | tr -d '\\r'`,
       timeoutMs,
-    );
-    this.serverInfo.httpServer = extractFirstMatch(headers, [/^server:\s*(.+)$/im]);
+    )
+    this.serverInfo.httpServer = extractFirstMatch(headers, [/^server:\s*(.+)$/im])
 
     if (this.serverInfo.ip && (await commandExists('whois'))) {
-      const whoisOut = await runLinuxCommand(`whois ${this.serverInfo.ip} | head -n 250`, timeoutMs);
-      this.serverInfo.whoisOrg = extractFirstMatch(whoisOut, [/^(?:OrgName|org-name|owner|Organization|descr)\s*:\s*(.+)$/im]);
-      this.serverInfo.whoisCountry = extractFirstMatch(whoisOut, [/^(?:Country|country)\s*:\s*(.+)$/im]);
-      this.serverInfo.whoisNetName = extractFirstMatch(whoisOut, [/^(?:NetName|netname)\s*:\s*(.+)$/im]);
-      this.serverInfo.whoisAsn = extractFirstMatch(whoisOut, [/^(?:OriginAS|origin|originas|aut-num)\s*:\s*(AS\d+)$/im]);
+      const whoisOut = await runLinuxCommand(`whois ${this.serverInfo.ip} | head -n 250`, timeoutMs)
+      this.serverInfo.whoisOrg = extractFirstMatch(whoisOut, [
+        /^(?:OrgName|org-name|owner|Organization|descr)\s*:\s*(.+)$/im,
+      ])
+      this.serverInfo.whoisCountry = extractFirstMatch(whoisOut, [
+        /^(?:Country|country)\s*:\s*(.+)$/im,
+      ])
+      this.serverInfo.whoisNetName = extractFirstMatch(whoisOut, [
+        /^(?:NetName|netname)\s*:\s*(.+)$/im,
+      ])
+      this.serverInfo.whoisAsn = extractFirstMatch(whoisOut, [
+        /^(?:OriginAS|origin|originas|aut-num)\s*:\s*(AS\d+)$/im,
+      ])
     } else {
-      this.serverInfo.whoisOrg = null;
-      this.serverInfo.whoisCountry = null;
-      this.serverInfo.whoisNetName = null;
-      this.serverInfo.whoisAsn = null;
+      this.serverInfo.whoisOrg = null
+      this.serverInfo.whoisCountry = null
+      this.serverInfo.whoisNetName = null
+      this.serverInfo.whoisAsn = null
     }
 
     if (this.serverInfo.ip && (await commandExists('nmap'))) {
       const nmapOut = await runLinuxCommand(
         `nmap -O -Pn --osscan-limit --max-retries 1 --host-timeout 15s ${this.serverInfo.ip}`,
         timeoutMs,
-      );
-      this.serverInfo.osGuess = extractFirstMatch(nmapOut, [/^OS details:\s*(.+)$/im, /^Running:\s*(.+)$/im]);
+      )
+      this.serverInfo.osGuess = extractFirstMatch(nmapOut, [
+        /^OS details:\s*(.+)$/im,
+        /^Running:\s*(.+)$/im,
+      ])
     } else {
-      this.serverInfo.osGuess = null;
+      this.serverInfo.osGuess = null
     }
 
     if (this.serverInfo.ip && env.whm.ipEnrichmentEnabled) {
-      let geoData: Partial<ServerInfo> | null = null;
-      geoData = await enrichFromIpWhoIs(this.serverInfo.ip);
-      if (!geoData) geoData = await enrichFromIpInfo(this.serverInfo.ip);
+      let geoData: Partial<ServerInfo> | null = null
+      geoData = await enrichFromIpWhoIs(this.serverInfo.ip)
+      if (!geoData) geoData = await enrichFromIpInfo(this.serverInfo.ip)
 
       if (geoData) {
         Object.assign(this.serverInfo, {
@@ -305,10 +407,10 @@ export class AccountService {
           geoCountry: geoData.geoCountry ?? this.serverInfo.geoCountry ?? null,
           geoTimezone: geoData.geoTimezone ?? this.serverInfo.geoTimezone ?? null,
           ipApiSource: geoData.ipApiSource ?? null,
-        });
+        })
       }
     }
 
-    this.serverInfo.probedAt = new Date().toISOString();
+    this.serverInfo.probedAt = new Date().toISOString()
   }
 }

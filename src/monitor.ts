@@ -1,27 +1,27 @@
-import 'dotenv/config';
-import { logger } from './utils/logger';
-import { MonitorService } from './services/monitor.service';
+import 'dotenv/config'
+import { MonitorService } from './services/monitor.service'
+import { logger } from './utils/logger'
 
 process.on('unhandledRejection', (reason) => {
-  logger.fatal({ reason }, 'Unhandled Rejection');
-  process.exit(254);
-});
+  logger.fatal({ reason }, 'Unhandled Rejection')
+  process.exit(254)
+})
 
 process.on('uncaughtException', (error) => {
-  logger.fatal({ error: error.message, stack: error.stack }, 'Uncaught Exception');
-  process.exit(254);
-});
+  logger.fatal({ error: error.message, stack: error.stack }, 'Uncaught Exception')
+  process.exit(254)
+})
 
 async function main(): Promise<void> {
-  logger.info('Monitor starting...');
+  logger.info('Monitor starting...')
 
-  const monitor = new MonitorService();
+  const monitor = new MonitorService()
 
   try {
-    const results = await monitor.run();
-    const online = results.filter((r) => r.online).length;
-    const offline = results.length - online;
-    const stats = monitor.accountService.getStats();
+    const results = await monitor.run()
+    const online = results.filter((r) => r.online).length
+    const offline = results.length - online
+    const stats = monitor.accountService.getStats()
 
     logger.info(
       {
@@ -34,18 +34,21 @@ async function main(): Promise<void> {
         lastWhmSync: monitor.accountService.lastWhmSync ?? 'never',
       },
       'Monitor run complete',
-    );
+    )
 
     if (offline > 0) {
-      const offlineSites = results.filter((r) => !r.online);
+      const offlineSites = results.filter((r) => !r.online)
       for (const site of offlineSites) {
-        logger.warn({ name: site.name, url: site.url, error: site.error ?? `HTTP ${site.status}` }, 'Site offline');
+        logger.warn(
+          { name: site.name, url: site.url, error: site.error ?? `HTTP ${site.status}` },
+          'Site offline',
+        )
       }
     }
   } catch (error: any) {
-    logger.fatal({ error: error.message }, 'Monitor run failed');
-    process.exit(1);
+    logger.fatal({ error: error.message }, 'Monitor run failed')
+    process.exit(1)
   }
 }
 
-main();
+main()

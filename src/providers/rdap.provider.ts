@@ -1,25 +1,30 @@
-import got from 'got';
-import { env } from '../utils/env';
-import { logger } from '../utils/logger';
-import { getCached } from '../cache/cache.service';
-import type { RdapDates } from '../dto/rdap.dto';
+import got from 'got'
+import { getCached } from '../cache/cache.service'
+import type { RdapDates } from '../dto/rdap.dto'
+import { env } from '../utils/env'
+import { logger } from '../utils/logger'
 
-const RDAP_TTL = 24 * 60 * 60 * 1000;
+const RDAP_TTL = 24 * 60 * 60 * 1000
 
 function isDomainEligible(domain: string): boolean {
-  if (!domain || domain.includes(' ') || domain.startsWith('*.')) return false;
-  if (env.rdap.onlyBr && !domain.toLowerCase().endsWith('.br')) return false;
-  return true;
+  if (!domain || domain.includes(' ') || domain.startsWith('*.')) return false
+  if (env.rdap.onlyBr && !domain.toLowerCase().endsWith('.br')) return false
+  return true
 }
 
 function extractDates(payload: any): RdapDates {
-  const events: any[] = Array.isArray(payload?.events) ? payload.events : [];
-  const expEvent = events.find((e) => String(e?.eventAction ?? '').trim().toLowerCase() === 'expiration');
-  const expRaw = expEvent?.eventDate;
+  const events: any[] = Array.isArray(payload?.events) ? payload.events : []
+  const expEvent = events.find(
+    (e) =>
+      String(e?.eventAction ?? '')
+        .trim()
+        .toLowerCase() === 'expiration',
+  )
+  const expRaw = expEvent?.eventDate
   return {
     expirationDate: typeof expRaw === 'string' ? expRaw : null,
     renewalDate: null,
-  };
+  }
 }
 
 /**
@@ -28,7 +33,7 @@ function extractDates(payload: any): RdapDates {
  */
 export async function getRdapDates(domain: string, bypassCache = false): Promise<RdapDates> {
   if (!env.rdap.enabled || !isDomainEligible(domain)) {
-    return { expirationDate: null, renewalDate: null };
+    return { expirationDate: null, renewalDate: null }
   }
 
   const result = await getCached<RdapDates>({
@@ -47,24 +52,24 @@ export async function getRdapDates(domain: string, bypassCache = false): Promise
             responseType: 'json',
             throwHttpErrors: false,
           },
-        );
+        )
 
-        if (response.statusCode === 404) return { expirationDate: null, renewalDate: null };
+        if (response.statusCode === 404) return { expirationDate: null, renewalDate: null }
         if (response.statusCode < 200 || response.statusCode >= 300) {
-          throw new Error(`RDAP HTTP ${response.statusCode}`);
+          throw new Error(`RDAP HTTP ${response.statusCode}`)
         }
 
-        return extractDates(response.body);
+        return extractDates(response.body)
       } catch (error: any) {
-        logger.debug({ domain, error: error.message }, 'RDAP fetch failed');
-        throw error;
+        logger.debug({ domain, error: error.message }, 'RDAP fetch failed')
+        throw error
       }
     },
-  });
+  })
 
   if (result.source !== 'network') {
-    logger.debug({ domain, source: result.source }, 'RDAP cache hit');
+    logger.debug({ domain, source: result.source }, 'RDAP cache hit')
   }
 
-  return result.value;
+  return result.value
 }

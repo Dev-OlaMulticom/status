@@ -1,15 +1,22 @@
-import { resolve4, resolve6, resolveMx, resolveTxt, resolveNs, resolveCname } from 'node:dns/promises';
-import { logger } from '../utils/logger';
-import { getCached } from '../cache/cache.service';
-import type { DnsInfo } from '../dto/dns.dto';
+import {
+  resolve4,
+  resolve6,
+  resolveCname,
+  resolveMx,
+  resolveNs,
+  resolveTxt,
+} from 'node:dns/promises'
+import { getCached } from '../cache/cache.service'
+import type { DnsInfo } from '../dto/dns.dto'
+import { logger } from '../utils/logger'
 
-const DNS_TTL = 5 * 60 * 1000;
+const DNS_TTL = 5 * 60 * 1000
 
 async function safeResolve<T>(fn: () => Promise<T>): Promise<T | null> {
   try {
-    return await fn();
+    return await fn()
   } catch {
-    return null;
+    return null
   }
 }
 
@@ -31,7 +38,7 @@ export async function resolveDomain(domain: string, bypassCache = false): Promis
         safeResolve(() => resolveTxt(domain)),
         safeResolve(() => resolveNs(domain)),
         safeResolve(() => resolveCname(domain)),
-      ]);
+      ])
 
       return {
         ipv4: Array.isArray(a) && a.length > 0 ? a[0]! : null,
@@ -40,21 +47,21 @@ export async function resolveDomain(domain: string, bypassCache = false): Promis
         txt: (txt ?? []).flat(),
         ns: ns ?? [],
         cname: Array.isArray(cname) && cname.length > 0 ? cname[0]! : null,
-      };
+      }
     },
-  });
+  })
 
   if (result.source !== 'network') {
-    logger.debug({ domain, source: result.source }, 'DNS cache hit');
+    logger.debug({ domain, source: result.source }, 'DNS cache hit')
   }
 
-  return result.value;
+  return result.value
 }
 
 /**
  * Resolve a domain to its IPv4 address — lightweight single-record lookup.
  */
 export async function resolveIpv4(domain: string): Promise<string | null> {
-  const info = await resolveDomain(domain);
-  return info.ipv4;
+  const info = await resolveDomain(domain)
+  return info.ipv4
 }
