@@ -109,6 +109,9 @@ function statusJsonBridge(): Plugin {
 
 export default defineConfig({
   plugins: [statusJsonBridge()],
+  resolve: {
+    dedupe: ['dexie'],
+  },
   server: {
     host: '0.0.0.0',
     port: 5000,
