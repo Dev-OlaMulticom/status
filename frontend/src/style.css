@@ -422,8 +422,38 @@ mark.search-hl {
 
 /* ─── Table footer ────────────────────────────────────────────────────── */
 
-.table-footer { display: flex; justify-content: flex-end; padding: 8px 0; }
+.table-footer { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  padding: 8px 0; 
+  gap: 16px;
+}
 .total-count { font-size: 13px; color: var(--muted); font-weight: 600; }
+.export-btn {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  border: 1px solid #ff9500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.export-btn:hover {
+  background: linear-gradient(135deg, #ffda00, #ff8c00);
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
+  transform: translateY(-1px);
+}
+.export-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(255, 149, 0, 0.2);
+}
 
 /* ─── Misc ────────────────────────────────────────────────────────────── */
 
@@ -574,7 +604,16 @@ mark.search-hl {
   /* Pagination */
   .pagination-bar { flex-direction: column; align-items: center; }
 
-  .table-footer { justify-content: center; }
+  .table-footer { 
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .export-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 }
 
 /* ─── Very small: tighten spacing ─────────────────────────────────────── */

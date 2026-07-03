@@ -778,6 +778,7 @@ function renderMain(): void {
       </div>
       <div class="table-footer">
         <span class="total-count">Total: ${formatNumber(filteredCount)} domínios</span>
+        <button id="exportCsvBtn" class="export-btn" title="Descargar tabla en CSV">📥 Descargar CSV</button>
       </div>
     </section>
   `;
@@ -798,6 +799,66 @@ function renderMain(): void {
   `;
   bindEvents();
   renderTableBody();
+}
+
+// ─── CSV Export ───────────────────────────────────────────────────────────────
+
+function exportToCSV(): void {
+  const filteredRows = getFilteredAndSortedRows(appState.rows);
+  if (filteredRows.length === 0) {
+    alert('No hay registros para exportar');
+    return;
+  }
+
+  // Headers
+  const headers = ['#', 'Domínio', 'Tipo', 'Cuenta', 'Status', 'Vencimiento', 'IP', 'Servidor'];
+  
+  // Convert rows to CSV data
+  const csvData = filteredRows.map((row, index) => {
+    const hostname = getHostname(row.site.site.url);
+    const status = row.site.site.online ? 'Online' : (row.site.site.status < 0 ? 'Sin check' : 'Offline');
+    const expiration = getResolvedExpiration(row.site) || 'N/A';
+    const ip = getEffectiveIp(row.site.site) || 'N/A';
+    const isWhm = ip === WHM_SERVER_IP;
+    const isCf = row.site.site.cloudflareIp !== null;
+    let servidor = 'No';
+    if (isWhm && isCf) servidor = 'WHM+CF';
+    else if (isWhm) servidor = 'WHM';
+    else if (isCf) servidor = 'CF';
+    else if (ip !== 'N/A') servidor = 'Fora';
+    
+    return [
+      (index + 1).toString(),
+      hostname,
+      row.site.type,
+      row.site.account || 'N/A',
+      status,
+      expiration,
+      ip,
+      servidor
+    ];
+  });
+
+  // Create CSV content
+  const csvContent = [
+    headers.map(h => `"${h}"`).join(','),
+    ...csvData.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+  ].join('\n');
+
+  // Create blob and download
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+  const filename = `dominios-${timestamp}.csv`;
+  
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 // ─── Event binding ───────────────────────────────────────────────────────────
@@ -911,6 +972,11 @@ function bindEvents(): void {
       renderTableBody();
       document.querySelector('.table-wrap')?.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  });
+
+  // CSV Export
+  document.getElementById('exportCsvBtn')?.addEventListener('click', () => {
+    exportToCSV();
   });
 }
 

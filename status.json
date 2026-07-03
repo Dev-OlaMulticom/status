@@ -1,6 +1,5919 @@
 {
   "checks": [
     {
+      "timestamp": "2026-07-03T17:39:59.666Z",
+      "results": [
+        {
+          "name": "Smartbox Brasil",
+          "url": "https://smartboxbrasil.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 200,
+          "online": true,
+          "responseTime": 712,
+          "timestamp": "2026-07-03T17:38:44.736Z",
+          "ssl": true,
+          "ip": "23.108.35.8",
+          "cloudflareIp": null,
+          "hosting": "unknown",
+          "dnsRecords": {
+            "a": [
+              "23.108.35.8"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "mx.uhserver.com"
+            ],
+            "txt": [
+              "google-site-verification=MMekJdh4g28IFGEzfK6yhUpd39gK7s3Nr-WU5dPvzGo",
+              "v=spf1 include:mailgrid.net.br include:spf.whservidor.com include:amazonses.com ~all"
+            ],
+            "ns": [
+              "ns1.nossowebsite.net.br",
+              "ns2.nossowebsite.net.br"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "Tecnuv",
+          "url": "https://tecnuv.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 200,
+          "online": true,
+          "responseTime": 206,
+          "timestamp": "2026-07-03T17:38:44.232Z",
+          "ssl": true,
+          "ip": "147.15.5.13",
+          "cloudflareIp": null,
+          "hosting": "unknown",
+          "dnsRecords": {
+            "a": [
+              "147.15.5.13"
+            ],
+            "aaaa": [
+              "2603:c021:c00d:9e00:0:dd97:9618:f9e1"
+            ],
+            "cname": null,
+            "mx": [
+              "aspmx1.sevenkeys.com.br",
+              "aspmx2.sevenkeys.com.br"
+            ],
+            "txt": [
+              "v=spf1 a mx include:spf.sevenkeys.com.br include:amazonses.com ~all",
+              "MS=8A84512EA3ECA55C1C340086D1FAC6E1DFD7FC43"
+            ],
+            "ns": [
+              "dns1.sevenkeys.com.br",
+              "dns1.sevenkeys.net.br",
+              "dns2.sevenkeys.com.br"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "Postogestor",
+          "url": "https://postogestor.com.br",
+          "category": "manual",
+          "priority": "normal",
+          "status": 200,
+          "online": true,
+          "responseTime": 2132,
+          "timestamp": "2026-07-03T17:38:46.158Z",
+          "ssl": true,
+          "ip": "178.156.177.229",
+          "cloudflareIp": null,
+          "hosting": "unknown",
+          "dnsRecords": {
+            "a": [
+              "178.156.177.229"
+            ],
+            "aaaa": [
+              "2a01:4ff:f0:96ce::1"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.postogestor.com.br"
+            ],
+            "txt": [
+              "v=spf1 a mx include:spf.sevenkeys.com.br ~all",
+              "google-site-verification=K_OilYJMSMPuiq6LoRL0DCS8mgJtsoA1FRBmffS_OIY"
+            ],
+            "ns": [
+              "dns1.sevenkeys.com.br",
+              "dns1.sevenkeys.net.br",
+              "dns2.sevenkeys.com.br"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "academia.paygas.com.br",
+          "url": "https://academia.paygas.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 6164,
+          "timestamp": "2026-07-03T17:38:50.191Z",
+          "ssl": true,
+          "ip": "31.97.169.57",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "31.97.169.57"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "mail.olamulticom.com.br"
+            ],
+            "txt": [
+              "v=spf1 include:olamulticom.com.br include:amazonses.com ~all"
+            ],
+            "ns": []
+          },
+          "attempts": 1
+        },
+        {
+          "name": "academia.paygas.com.br.olamulticom.com.br",
+          "url": "https://academia.paygas.com.br.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 43,
+          "timestamp": "2026-07-03T17:38:44.153Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND academia.paygas.com.br.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "acqva.amgrupo.ind.br",
+          "url": "https://acqva.amgrupo.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 41,
+          "timestamp": "2026-07-03T17:38:44.192Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND acqva.amgrupo.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "10ebbbf397be247cde8902d9519bb15d",
+            "zoneName": "amgrupo.ind.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 41,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "acqva.com.br",
+          "url": "https://acqva.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 11682,
+          "timestamp": "2026-07-03T17:38:55.710Z",
+          "ssl": true,
+          "ip": "104.21.26.167",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.26.167"
+            ],
+            "aaaa": [
+              "2606:4700:3035::ac43:8963"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.acqva.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "edad63752212dbc5bb6587db0b86952a",
+            "zoneName": "acqva.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 25,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "aguagravatal.amgrupo.ind.br",
+          "url": "https://aguagravatal.amgrupo.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 38,
+          "timestamp": "2026-07-03T17:38:44.226Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND aguagravatal.amgrupo.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "10ebbbf397be247cde8902d9519bb15d",
+            "zoneName": "amgrupo.ind.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 41,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "aguagravatal.com.br",
+          "url": "https://aguagravatal.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 6900,
+          "timestamp": "2026-07-03T17:38:50.929Z",
+          "ssl": true,
+          "ip": "104.21.72.203",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.72.203"
+            ],
+            "aaaa": [
+              "2606:4700:3033::ac43:bb51"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.aguagravatal.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=WfQC7GUQbMS_39Ezl3XeISPw-bDTzqHYCINUt5aFzv8"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "4b915830196c03fce54f0c29bdbd6b5b",
+            "zoneName": "aguagravatal.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 47,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "amgrupo.ind.br",
+          "url": "https://amgrupo.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "amgrupo",
+            "status": "Activa",
+            "expirationDate": "2026-09-06T14:27:47Z",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10002,
+          "timestamp": "2026-07-03T17:39:14.050Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "104.21.53.16",
+          "cloudflareIp": "208.109.245.134",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.53.16"
+            ],
+            "aaaa": [
+              "2606:4700:3037::6815:3510"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.amgrupo.ind.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "10ebbbf397be247cde8902d9519bb15d",
+            "zoneName": "amgrupo.ind.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 41,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "arquivos.corsul.com.br",
+          "url": "https://arquivos.corsul.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "corsulcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 6644,
+          "timestamp": "2026-07-03T17:38:50.797Z",
+          "ssl": true,
+          "ip": "104.26.0.55",
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.26.0.55"
+            ],
+            "aaaa": [
+              "2606:4700:20::681a:37"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "777394977bd2435e263a53efa094eaea",
+            "zoneName": "corsul.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 62,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "arquivos.deps.com.br",
+          "url": "https://arquivos.deps.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "depscom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 6673,
+          "timestamp": "2026-07-03T17:38:50.866Z",
+          "ssl": true,
+          "ip": "104.26.3.22",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.26.3.22"
+            ],
+            "aaaa": [
+              "2606:4700:20::ac43:49ec"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "429ccc18ff09c9db00723eb15ffe44c0",
+            "zoneName": "deps.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 100,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "arquivos.imorezzoimoveis.com.br",
+          "url": "https://arquivos.imorezzoimoveis.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 6646,
+          "timestamp": "2026-07-03T17:38:50.872Z",
+          "ssl": true,
+          "ip": "104.21.80.134",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.80.134"
+            ],
+            "aaaa": [
+              "2606:4700:3031::ac43:b77d"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 1
+        },
+        {
+          "name": "ass.bellagraf.com.br",
+          "url": "https://ass.bellagraf.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "bellagrafcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 6645,
+          "timestamp": "2026-07-03T17:38:50.877Z",
+          "ssl": true,
+          "ip": "104.21.25.63",
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.25.63"
+            ],
+            "aaaa": [
+              "2606:4700:3036::ac43:df3f"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "07e048fb604c060c1eeec7b2c6ea52d5",
+            "zoneName": "bellagraf.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 48,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "atomo.eco.br",
+          "url": "https://atomo.eco.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "atomo",
+            "status": "Activa",
+            "expirationDate": "2027-05-17T14:34:59Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 7255,
+          "timestamp": "2026-07-03T17:38:51.991Z",
+          "ssl": true,
+          "ip": "104.21.5.228",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.5.228"
+            ],
+            "aaaa": [
+              "2606:4700:3031::ac43:85f1"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.atomo.eco.br"
+            ],
+            "txt": [
+              "google-site-verification=i2p9IKo-_kPOMSsZNj7wdisl7pxEeN-zc5R6-s8a4Fc",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "brevo-code:0264786e217cbf8e22d009ad8770aa8e"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "eed13311dfd519066b3b4c1119ddd2af",
+            "zoneName": "atomo.eco.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 51,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "b4engenharia.com",
+          "url": "https://b4engenharia.com",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 73,
+          "timestamp": "2026-07-03T17:39:06.236Z",
+          "ssl": true,
+          "ip": "172.67.139.17",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.139.17"
+            ],
+            "aaaa": [
+              "2606:4700:3031::6815:5952"
+            ],
+            "cname": null,
+            "mx": [
+              "smtp.google.com"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:208.109.245.134 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com +include:secureserver.net ~all",
+              "MS=008FA11833FEDC8AC86E037CA4198CE2B210386A"
+            ],
+            "ns": [
+              "brianna.ns.cloudflare.com",
+              "cullen.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "500bb9c59abda1800ed5340fffb8e80a",
+            "zoneName": "b4engenharia.com",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 12,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "b4engenharia.com.olamulticom.com.br",
+          "url": "https://b4engenharia.com.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 43,
+          "timestamp": "2026-07-03T17:38:50.337Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND b4engenharia.com.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "backup.deps.com.br",
+          "url": "https://backup.deps.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "depscom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 6,
+          "timestamp": "2026-07-03T17:38:50.356Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND backup.deps.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "429ccc18ff09c9db00723eb15ffe44c0",
+            "zoneName": "deps.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 100,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "bellagraf.com.br",
+          "url": "https://bellagraf.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "bellagrafcom",
+            "status": "Activa",
+            "expirationDate": "2028-06-01T21:44:13Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 7136,
+          "timestamp": "2026-07-03T17:38:57.492Z",
+          "ssl": true,
+          "ip": "172.67.223.63",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.223.63"
+            ],
+            "aaaa": [
+              "2606:4700:3031::6815:193f"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.bellagraf.com.br"
+            ],
+            "txt": [
+              "google-site-verification=lESa51A-mIZSDBjHHQjpoQVn5UTFxx655Ef90SNMH0Y",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "07e048fb604c060c1eeec7b2c6ea52d5",
+            "zoneName": "bellagraf.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 48,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "biofhitus.com.br",
+          "url": "https://biofhitus.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 5064,
+          "timestamp": "2026-07-03T17:38:55.861Z",
+          "ssl": true,
+          "ip": "172.67.207.83",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.207.83"
+            ],
+            "aaaa": [
+              "2606:4700:3033::ac43:cf53"
+            ],
+            "cname": null,
+            "mx": [
+              "mia1-load.dotmail.com.br"
+            ],
+            "txt": [
+              "v=spf1 include:spf.m9.network include:spf.dotmail.com.br include:_spf.google.com -all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "aef1869075afaeff236608936f638aaf",
+            "zoneName": "biofhitus.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 21,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "biofhitus.com.br.olapropaganda.net",
+          "url": "https://biofhitus.com.br.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 7,
+          "timestamp": "2026-07-03T17:38:50.888Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND biofhitus.com.br.olapropaganda.net",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "blog.corsul.com.br",
+          "url": "https://blog.corsul.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "corsulcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 5032,
+          "timestamp": "2026-07-03T17:38:55.904Z",
+          "ssl": true,
+          "ip": "172.67.68.73",
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.68.73"
+            ],
+            "aaaa": [
+              "2606:4700:20::681a:37"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "777394977bd2435e263a53efa094eaea",
+            "zoneName": "corsul.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 62,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "bluecolor.com.br",
+          "url": "https://bluecolor.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 5023,
+          "timestamp": "2026-07-03T17:38:55.900Z",
+          "ssl": true,
+          "ip": "172.67.140.90",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.140.90"
+            ],
+            "aaaa": [
+              "2606:4700:3037::6815:36a1"
+            ],
+            "cname": null,
+            "mx": [
+              "barracuda.penso.com.br"
+            ],
+            "txt": [
+              "google-site-verification=xA-ayoAOPYKEWTUe_rOWQKz2trFhIDYVaJ7UKBfYbt4",
+              "v=spf1 ip4:179.190.13.61 include:pensomail.com.br include:_spf.rdstation.com.br include:sendgrid.net -all",
+              "MS=ms82004392",
+              "google-site-verification=vl2QihHdidex9-vVqrNcnPK0lPxli7Qd0JbY3dHMuyg"
+            ],
+            "ns": [
+              "ashton.ns.cloudflare.com",
+              "tani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "bluecolor.com.br.safesea.com.br",
+          "url": "https://bluecolor.com.br.safesea.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:38:50.909Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND bluecolor.com.br.safesea.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "cgmengenharia.com.br",
+          "url": "https://cgmengenharia.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "cgmengenhariacom",
+            "status": "Activa",
+            "expirationDate": "2027-04-26T16:14:27Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 4948,
+          "timestamp": "2026-07-03T17:38:55.857Z",
+          "ssl": true,
+          "ip": "104.21.71.56",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.71.56"
+            ],
+            "aaaa": [
+              "2606:4700:3032::6815:4738"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.cgmengenharia.com.br"
+            ],
+            "txt": [
+              "google-site-verification=erL7VRGYjPIeok8mmV1B5JgMRGrv5RM2TRK2zOecJHo",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=eAET_0nytVObt-y2TFJ5XNpdJtMAFt_iQnlnYyhTGU0"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "047eac8fce3df9380a26e78b3636b3bf",
+            "zoneName": "cgmengenharia.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 51,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "ciadoxa.amgrupo.ind.br",
+          "url": "https://ciadoxa.amgrupo.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 40,
+          "timestamp": "2026-07-03T17:38:51.060Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND ciadoxa.amgrupo.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "10ebbbf397be247cde8902d9519bb15d",
+            "zoneName": "amgrupo.ind.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 41,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "ciadoxa.com.br",
+          "url": "https://ciadoxa.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 5466,
+          "timestamp": "2026-07-03T17:38:56.526Z",
+          "ssl": true,
+          "ip": "172.67.175.212",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.175.212"
+            ],
+            "aaaa": [
+              "2606:4700:3037::ac43:afd4"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.ciadoxa.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "5e60c852a9bd16ad08df5b52d844a6fb",
+            "zoneName": "ciadoxa.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 25,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "cinete.jgaidzinski.com.br",
+          "url": "https://cinete.jgaidzinski.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "jgaidzinski",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 6,
+          "timestamp": "2026-07-03T17:38:52.012Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND cinete.jgaidzinski.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [
+              "v=spf1 ip4:31.97.169.57 ip4:208.109.245.134 +a +mx +ip4:162.214.52.135 +ip4:162.214.53.93 +a:mx93.olamulticom.com.br +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "cobranca.aguagravatal.com.br",
+          "url": "https://cobranca.aguagravatal.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 39,
+          "timestamp": "2026-07-03T17:38:52.201Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND cobranca.aguagravatal.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [
+              "brevo-code:0264786e217cbf8e22d009ad8770aa8e"
+            ],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "4b915830196c03fce54f0c29bdbd6b5b",
+            "zoneName": "aguagravatal.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 47,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "construtoradepieri.com.br",
+          "url": "https://construtoradepieri.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "cdepieri",
+            "status": "Activa",
+            "expirationDate": "2030-09-26T19:08:59Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 149,
+          "timestamp": "2026-07-03T17:39:12.358Z",
+          "ssl": true,
+          "ip": "104.21.85.166",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.85.166"
+            ],
+            "aaaa": [
+              "2606:4700:3035::6815:55a6"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.construtoradepieri.com.br"
+            ],
+            "txt": [
+              "v=spf1 a mx include:websitewelcome.com ~all",
+              "google-site-verification=6zXO_2LX9qCe4oRrwQ38JVbrdj5Hx4csLSaGxrnCwq0",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "julian.ns.cloudflare.com",
+              "melody.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "bbfb82ec213a45d669089ca51e42a52d",
+            "zoneName": "construtoradepieri.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 43,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "corsul.com.br",
+          "url": "https://corsul.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "corsulcom",
+            "status": "Activa",
+            "expirationDate": "2035-05-24T18:08:58Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 110,
+          "timestamp": "2026-07-03T17:38:55.820Z",
+          "ssl": true,
+          "ip": "172.67.68.73",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.68.73"
+            ],
+            "aaaa": [
+              "2606:4700:20::681a:37"
+            ],
+            "cname": null,
+            "mx": [
+              "mx1.hc6164-24.iphmx.com",
+              "mx2.hc6164-24.iphmx.com"
+            ],
+            "txt": [
+              "MS=ms15976781",
+              "MS=ms23428110",
+              "MS=ms74572377",
+              "knowbe4-site-verification=6c51156ea494b7cd0e2f17c14f561a60",
+              "google-site-verification=vuyR_5ohEJWbZtNzpmca2Rw0fafUW0ZJj7Vr3PTfm1k",
+              "v=spf1 +mx +a +include:secureserver.net +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "MS=ms45198201",
+              "MS=CFCC645EDE5BD1B052130D7D86156A3F0E01E78F",
+              "MS=ms73733735",
+              "logmein-verification-code=TNYsIX793ZoSXiqKbPnW8AyZB"
+            ],
+            "ns": [
+              "ryan.ns.cloudflare.com",
+              "raegan.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "777394977bd2435e263a53efa094eaea",
+            "zoneName": "corsul.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 62,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "cypriano.adm.br",
+          "url": "https://cypriano.adm.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "cypriano",
+            "status": "Activa",
+            "expirationDate": "2026-12-22T11:57:36Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 6178,
+          "timestamp": "2026-07-03T17:39:01.998Z",
+          "ssl": true,
+          "ip": "172.67.153.9",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.153.9"
+            ],
+            "aaaa": [
+              "2606:4700:3035::6815:2890"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.cypriano.adm.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "8d5ee3287a3941a7580d902a6f1b4d80",
+            "zoneName": "cypriano.adm.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 36,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "dacdocesefestas.com.br",
+          "url": "https://dacdocesefestas.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 47,
+          "timestamp": "2026-07-03T17:39:06.005Z",
+          "ssl": true,
+          "ip": "104.21.78.208",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.78.208"
+            ],
+            "aaaa": [
+              "2606:4700:3032::ac43:8983"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.dacdocesefestas.com.br"
+            ],
+            "txt": [
+              "google-site-verification=VaHDc15OmQ4_lanDkPIZXqTpoPPPvkPUNmT9F7j0QwU",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "7cb62353cd124bcd33d7f4bed8656d07",
+            "zoneName": "dacdocesefestas.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 39,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "dacdocesefestas.com.br.olamulticom.com.br",
+          "url": "https://dacdocesefestas.com.br.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 40,
+          "timestamp": "2026-07-03T17:38:55.988Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND dacdocesefestas.com.br.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "dartoninox.com.br",
+          "url": "https://dartoninox.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:38:55.953Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND dartoninox.com.br",
+          "ip": null,
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "54c0f6576774288822db0cf6f7b5da1e",
+            "zoneName": "dartoninox.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 29,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "dartoninox.com.br.olamulticom.com.br",
+          "url": "https://dartoninox.com.br.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 35,
+          "timestamp": "2026-07-03T17:38:56.014Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND dartoninox.com.br.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "deps.com.br",
+          "url": "https://deps.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "depscom",
+            "status": "Activa",
+            "expirationDate": "2026-11-18T18:28:44Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 126,
+          "timestamp": "2026-07-03T17:38:56.079Z",
+          "ssl": true,
+          "ip": "104.26.2.22",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.26.2.22"
+            ],
+            "aaaa": [
+              "2606:4700:20::ac43:49ec"
+            ],
+            "cname": null,
+            "mx": [
+              "deps-com-br.mail.protection.outlook.com"
+            ],
+            "txt": [
+              "fk7uob3vfgtf1gio2hb34fdfng",
+              "li3pftvptrjtnjdqh16l15p2rd",
+              "google-site-verification=OijxZaeGuNshab3c8b3bXExrFt5YsX5SRLXngTG7FoM",
+              "v=spf1 +mx +a +a:mx93.olamulticom.com.br +ip4:162.214.53.93 +ip4:162.214.52.135 +include:spf.protection.outlook.com +include:amazonses.com +include:sendgrid.net ~all"
+            ],
+            "ns": [
+              "chin.ns.cloudflare.com",
+              "koa.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "429ccc18ff09c9db00723eb15ffe44c0",
+            "zoneName": "deps.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 100,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "dev.aguagravatal.com.br",
+          "url": "https://dev.aguagravatal.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10005,
+          "timestamp": "2026-07-03T17:39:26.002Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "104.21.72.203",
+          "cloudflareIp": "208.109.245.134",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.72.203"
+            ],
+            "aaaa": [
+              "2606:4700:3033::ac43:bb51"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "4b915830196c03fce54f0c29bdbd6b5b",
+            "zoneName": "aguagravatal.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 47,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "dev.bluecolor.com.br",
+          "url": "https://dev.bluecolor.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:38:56.038Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND dev.bluecolor.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "dev.santamotorhome.com.br",
+          "url": "https://dev.santamotorhome.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "santamotor",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 7204,
+          "timestamp": "2026-07-03T17:39:03.242Z",
+          "ssl": true,
+          "ip": "104.21.6.53",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.6.53"
+            ],
+            "aaaa": [
+              "2606:4700:3031::6815:635"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 1
+        },
+        {
+          "name": "dev.voghieraslim.com.br",
+          "url": "https://dev.voghieraslim.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 404,
+          "online": false,
+          "responseTime": 7372,
+          "timestamp": "2026-07-03T17:39:03.451Z",
+          "ssl": true,
+          "ip": "104.21.76.2",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.76.2"
+            ],
+            "aaaa": [
+              "2606:4700:3035::ac43:b890"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 1
+        },
+        {
+          "name": "docs.deps.com.br",
+          "url": "https://docs.deps.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "depscom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 7925,
+          "timestamp": "2026-07-03T17:39:04.451Z",
+          "ssl": true,
+          "ip": "172.67.73.236",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.73.236"
+            ],
+            "aaaa": [
+              "2606:4700:20::681a:316"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "429ccc18ff09c9db00723eb15ffe44c0",
+            "zoneName": "deps.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 100,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "educa.deps.com.br",
+          "url": "https://educa.deps.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "depscom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 361,
+          "timestamp": "2026-07-03T17:39:15.458Z",
+          "ssl": true,
+          "ip": "104.26.3.22",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.26.3.22"
+            ],
+            "aaaa": [
+              "2606:4700:20::681a:216"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "429ccc18ff09c9db00723eb15ffe44c0",
+            "zoneName": "deps.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 100,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "effercomercio.com.br",
+          "url": "https://effercomercio.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "effercomerciocom",
+            "status": "Activa",
+            "expirationDate": "2028-05-29T18:56:55Z",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 41,
+          "timestamp": "2026-07-03T17:39:12.137Z",
+          "ssl": true,
+          "ip": "172.67.190.229",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.190.229"
+            ],
+            "aaaa": [
+              "2606:4700:3033::6815:545c"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.effercomercio.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=5T5E5OHvvtp_KoNwbrNUERHFzNDp1kr9AVItEcjuRac"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "e1b3cab6a342ff97faa24a5899f29406",
+            "zoneName": "effercomercio.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 42,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "elevadoresrw.com.br",
+          "url": "https://elevadoresrw.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "elevadoresrwcom",
+            "status": "Activa",
+            "expirationDate": "2026-07-20T16:26:21Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 158,
+          "timestamp": "2026-07-03T17:39:03.400Z",
+          "ssl": true,
+          "ip": "172.67.136.152",
+          "cloudflareIp": "54.207.100.188",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "172.67.136.152"
+            ],
+            "aaaa": [
+              "2606:4700:3032::6815:5109"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.elevadoresrw.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:spf.protection.outlook.com +include:amazonses.com +include:_spf.rdstation.com.br +include:sendgrid.net ~all",
+              "amazonses:hV4EdJO0fHXJjQgBU3hEZ9BJ+yRje9eGpH1BobI4yyo=",
+              "google-site-verification=QvML5b8U76Q1H3o4NS8jzBeqT91cH90x56aZU_EH4hk",
+              "google-site-verification=tQ1RnNEJDXOGapbM5oj5wEoTLukHZdc_ybcTSeZQmOM"
+            ],
+            "ns": [
+              "chelsea.ns.cloudflare.com",
+              "cesar.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "5557e73a25d7851073cfc1f693872459",
+            "zoneName": "elevadoresrw.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 45,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "embrave.olapropaganda.net",
+          "url": "https://embrave.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10003,
+          "timestamp": "2026-07-03T17:39:13.565Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "104.21.84.166",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.84.166"
+            ],
+            "aaaa": [
+              "2606:4700:3035::ac43:c34e"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "expressonoponto.com.br",
+          "url": "https://expressonoponto.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "expressonoponto",
+            "status": "Activa",
+            "expirationDate": "2026-10-04T17:59:57Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 81,
+          "timestamp": "2026-07-03T17:39:03.532Z",
+          "ssl": true,
+          "ip": "104.21.19.32",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.21.19.32"
+            ],
+            "aaaa": [
+              "2606:4700:3035::6815:1320"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.expressonoponto.com.br"
+            ],
+            "txt": [
+              "amazonses:z70yQyCxHlpCDbN+NiiRstOfaeqdKFapA6BcyxPCmmo=",
+              "google-site-verification=hbvmqf_SE5keLo0kxtN_h3eI2s4gfIjB4kdNW7hCC-0",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "cloudflareInfo": {
+            "zoneId": "eda6ebeb0b0ac98fce6653d1cea0fe3b",
+            "zoneName": "expressonoponto.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 50,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 1
+        },
+        {
+          "name": "fbeempresas.com.br",
+          "url": "https://fbeempresas.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 41,
+          "timestamp": "2026-07-03T17:39:03.718Z",
+          "ssl": true,
+          "ip": "104.21.77.52",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.77.52"
+            ],
+            "aaaa": [
+              "2606:4700:3031::ac43:cca9"
+            ],
+            "cname": null,
+            "mx": [
+              "fbeempresas-com-br.mail.protection.outlook.com"
+            ],
+            "txt": [
+              "v=spf1 include:spf.protection.outlook.com include:amazonses.com ~all",
+              "ms89261384.msv1.invalid",
+              "@",
+              "MS=ms89261384",
+              "v=spf1 include:_spf.rdstation.com.br include:sendgrid.net ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "fbeempresas.com.br.olamulticom.com.br",
+          "url": "https://fbeempresas.com.br.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 39,
+          "timestamp": "2026-07-03T17:39:03.830Z",
+          "ssl": true,
+          "error": "write EPROTO 409DBCFD217E0000:error:0A000410:SSL routines:ssl3_read_bytes:ssl/tls alert handshake failure:../deps/openssl/openssl/ssl/record/rec_layer_s3.c:918:SSL alert number 40\n",
+          "ip": "172.67.222.31",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.222.31"
+            ],
+            "aaaa": [
+              "2606:4700:3034::6815:4e87"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "firmex.ind.br",
+          "url": "https://firmex.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "firmexind",
+            "status": "Activa",
+            "expirationDate": "2036-04-24T13:51:18Z",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 40,
+          "timestamp": "2026-07-03T17:39:03.970Z",
+          "ssl": true,
+          "error": "read ECONNRESET",
+          "ip": "31.97.169.57",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "31.97.169.57"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "a.mx.firmex.ind.br",
+              "b.mx.firmex.ind.br",
+              "c.mx.firmex.ind.br"
+            ],
+            "txt": [
+              "v=spf1 ip4:177.54.56.208/29 ip4:177.54.56.211 include:spf.protection.outlook.com ip4:31.97.169.57 ip4:177.135.86.98 -all",
+              "google-site-verification=YN0iaIglZiXvlUs32Cish6YyY0iuGrfbPo24Cicu8Ug"
+            ],
+            "ns": [
+              "dns.seti.com.br",
+              "ns1.firmex.ind.br"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "frigotitus.com.br",
+          "url": "https://frigotitus.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "frigo",
+            "status": "Activa",
+            "expirationDate": "2027-03-01T18:52:48Z",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 38,
+          "timestamp": "2026-07-03T17:39:14.100Z",
+          "ssl": true,
+          "ip": "104.21.68.24",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.68.24"
+            ],
+            "aaaa": [
+              "2606:4700:3032::ac43:b976"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.frigotitus.com.br"
+            ],
+            "txt": [
+              "google-site-verification=rYeZJfMNo7goLXTutfzTaQkGV7LzfW2ZrxmY07uFces",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "futuraconstrucoes.com",
+          "url": "https://futuraconstrucoes.com",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "futuraconstrucoe",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 196,
+          "timestamp": "2026-07-03T17:39:04.647Z",
+          "ssl": true,
+          "ip": "104.21.95.182",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.95.182"
+            ],
+            "aaaa": [
+              "2606:4700:3031::ac43:aaf9"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.futuraconstrucoes.com"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=5pGge4bKGD0uHP67FbZn6Wd4Sbe3zter9AtY5tle4KQ"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "gecomd.net",
+          "url": "https://gecomd.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 506,
+          "timestamp": "2026-07-03T17:39:15.260Z",
+          "ssl": true,
+          "ip": "104.21.88.43",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.88.43"
+            ],
+            "aaaa": [
+              "2606:4700:3036::6815:582b"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.gecomd.net"
+            ],
+            "txt": [
+              "google-site-verification=-BBJnVM9JrACJ0zEXfMGMXjX6xQq40zdAMVh3CuSLRE",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "gecomd.olamulticom.com.br",
+          "url": "https://gecomd.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 87,
+          "timestamp": "2026-07-03T17:39:06.221Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND gecomd.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "globalots.com.br",
+          "url": "https://globalots.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 35,
+          "timestamp": "2026-07-03T17:39:06.328Z",
+          "ssl": true,
+          "error": "read ECONNRESET",
+          "ip": "31.97.169.57",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "31.97.169.57"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "barracuda.penso.com.br"
+            ],
+            "txt": [
+              "v=spf1 ip4:179.190.13.61 include:pensomail.com.br -all"
+            ],
+            "ns": [
+              "dnsc1.penso.com.br",
+              "dnsc2.penso.com.br"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "globalots.safesea.com.br",
+          "url": "https://globalots.safesea.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 6,
+          "timestamp": "2026-07-03T17:39:06.255Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND globalots.safesea.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "hachi.ind.br",
+          "url": "https://hachi.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "hachimetalcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 525,
+          "online": false,
+          "responseTime": 47,
+          "timestamp": "2026-07-03T17:39:06.432Z",
+          "ssl": true,
+          "ip": "172.67.169.71",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.169.71"
+            ],
+            "aaaa": [
+              "2606:4700:3031::6815:5f16"
+            ],
+            "cname": null,
+            "mx": [
+              "route1.mx.cloudflare.net",
+              "route3.mx.cloudflare.net",
+              "route2.mx.cloudflare.net"
+            ],
+            "txt": [
+              "google-site-verification=WvqqWUyB_et75LhX5x2dWtqkiamJtVfNQL2twSobXhQ",
+              "v=spf1 include:_spf.mx.cloudflare.net ~all"
+            ],
+            "ns": [
+              "melody.ns.cloudflare.com",
+              "julian.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "hachi.ind.br.hachimetal.com.br",
+          "url": "https://hachi.ind.br.hachimetal.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "hachimetalcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 7,
+          "timestamp": "2026-07-03T17:39:06.349Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND hachi.ind.br.hachimetal.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "hachimetal.com.br",
+          "url": "https://hachimetal.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "hachimetalcom",
+            "status": "Activa",
+            "expirationDate": "2026-11-28T16:17:04Z",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 41,
+          "timestamp": "2026-07-03T17:39:06.570Z",
+          "ssl": true,
+          "ip": "104.21.7.21",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.7.21"
+            ],
+            "aaaa": [
+              "2606:4700:3032::ac43:8791"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.hachimetal.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=pt0fKC-7C2kFKWkGj82vzl7ZAMbePAqqe5Jsd49xHv0"
+            ],
+            "ns": [
+              "julian.ns.cloudflare.com",
+              "melody.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "hachimetalmecanica.com.br",
+          "url": "https://hachimetalmecanica.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "hachimetalcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 59,
+          "timestamp": "2026-07-03T17:39:06.699Z",
+          "ssl": true,
+          "ip": "104.21.66.241",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.66.241"
+            ],
+            "aaaa": [
+              "2606:4700:3031::6815:42f1"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.hachimetalmecanica.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "julian.ns.cloudflare.com",
+              "melody.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "hachimetalmecanica.com.br.hachimetal.com.br",
+          "url": "https://hachimetalmecanica.com.br.hachimetal.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "hachimetalcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 7,
+          "timestamp": "2026-07-03T17:39:06.596Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND hachimetalmecanica.com.br.hachimetal.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "happyface.org.br",
+          "url": "https://happyface.org.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "happyfaceorg",
+            "status": "Activa",
+            "expirationDate": "2028-09-19T13:55:17Z",
+            "mailAccountsCount": null
+          },
+          "status": 525,
+          "online": false,
+          "responseTime": 76,
+          "timestamp": "2026-07-03T17:39:06.837Z",
+          "ssl": true,
+          "ip": "172.67.181.207",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.181.207"
+            ],
+            "aaaa": [
+              "2606:4700:3033::ac43:b5cf"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.happyface.org.br"
+            ],
+            "txt": [
+              "google-site-verification=ok4Vnr360D7yichM3cGlQJnfdKR6PvnJygJe-s1RgKo",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "hiroautomacao.com.br",
+          "url": "https://hiroautomacao.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "verityadmcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 525,
+          "online": false,
+          "responseTime": 51,
+          "timestamp": "2026-07-03T17:39:06.880Z",
+          "ssl": true,
+          "ip": "104.21.43.252",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.43.252"
+            ],
+            "aaaa": [
+              "2606:4700:3033::ac43:c045"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.hiroautomacao.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "zainab.ns.cloudflare.com",
+              "darl.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "hiroautomacao.com.br.verityadm.com.br",
+          "url": "https://hiroautomacao.com.br.verityadm.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "verityadmcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 49,
+          "timestamp": "2026-07-03T17:39:06.972Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND hiroautomacao.com.br.verityadm.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "hrmetal.ind.br",
+          "url": "https://hrmetal.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "hrmetalind",
+            "status": "Activa",
+            "expirationDate": "2027-05-22T17:08:30Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 8088,
+          "timestamp": "2026-07-03T17:39:15.104Z",
+          "ssl": true,
+          "ip": "104.21.62.36",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.62.36"
+            ],
+            "aaaa": [
+              "2606:4700:3036::ac43:db6c"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.hrmetal.ind.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=4RJbo3bgX6o5Ph2t_-q9f5gn4-JHZIuFCocfGhrd5fc"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 2
+        },
+        {
+          "name": "hrsemfronteiras.com.br",
+          "url": "https://hrsemfronteiras.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 7739,
+          "timestamp": "2026-07-03T17:39:14.827Z",
+          "ssl": true,
+          "ip": "104.21.52.195",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.52.195"
+            ],
+            "aaaa": [
+              "2606:4700:3033::ac43:cb39"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.hrsemfronteiras.com.br"
+            ],
+            "txt": [
+              "google-site-verification=GSNupMK7qvUYdlS9_cNxLxpBYM_6eBmSyJSJ2SvrkVc",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 2
+        },
+        {
+          "name": "hrsemfronteiras.olamulticom.com.br",
+          "url": "https://hrsemfronteiras.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:39:12.163Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND hrsemfronteiras.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "idealtelecomsc.com.br",
+          "url": "https://idealtelecomsc.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "expirationDate": "2026-04-09T19:11:06Z",
+            "renewalDate": "2023-08-18T15:00:05Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 12842,
+          "timestamp": "2026-07-03T17:39:51.307Z",
+          "ssl": true,
+          "ip": "31.97.169.57",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "31.97.169.57"
+            ],
+            "aaaa": [
+              "2a02:4780:14:a5a0::1"
+            ],
+            "cname": null,
+            "mx": [
+              "mx-vip-02.kinghost.net",
+              "mx-vip-01.kinghost.net"
+            ],
+            "txt": [
+              "emktownership=t9mqfHXAe43D.",
+              "MS=ms82848949",
+              "v=spf1 include:_spf.kinghost.net -all"
+            ],
+            "ns": [
+              "dns6.kinghost.com.br",
+              "dns2.kinghost.com.br",
+              "dns1.kinghost.com.br",
+              "dns5.kinghost.com.br",
+              "dns3.kinghost.com.br",
+              "dns4.kinghost.com.br"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "idealtelecomsc.com.br.olamulticom.com.br",
+          "url": "https://idealtelecomsc.com.br.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 39,
+          "timestamp": "2026-07-03T17:39:12.489Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND idealtelecomsc.com.br.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "imorezzoimoveis.com.br",
+          "url": "https://imorezzoimoveis.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 525,
+          "online": false,
+          "responseTime": 49,
+          "timestamp": "2026-07-03T17:39:12.681Z",
+          "ssl": true,
+          "ip": "172.67.183.125",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.183.125"
+            ],
+            "aaaa": [
+              "2606:4700:3031::ac43:b77d"
+            ],
+            "cname": null,
+            "mx": [
+              "mx.ingaia.com.br"
+            ],
+            "txt": [
+              "v=spf1 include:spf.ingaia.com.br include:amazonses.com -all",
+              "google-site-verification=eGN8uFJIVbqvofGBcyTjG4JfSyzafxI6XlV0WjcnpaQ"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "imorezzoimoveis.com.br.olamulticom.com.br",
+          "url": "https://imorezzoimoveis.com.br.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 41,
+          "timestamp": "2026-07-03T17:39:12.813Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND imorezzoimoveis.com.br.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "jgaidzinski.com.br",
+          "url": "https://jgaidzinski.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "jgaidzinski",
+            "status": "Activa",
+            "expirationDate": "2026-09-01T16:20:44Z",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 70,
+          "timestamp": "2026-07-03T17:39:12.883Z",
+          "ssl": true,
+          "ip": "104.21.3.217",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.3.217"
+            ],
+            "aaaa": [
+              "2606:4700:3030::6815:3d9"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.jgaidzinski.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:208.109.245.134 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com +include:secureserver.net ~all",
+              "google-site-verification=rYeZJfMNo7goLXTutfzTaQkGV7LzfW2ZrxmY07uFces",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "julian.ns.cloudflare.com",
+              "melody.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "leomoveis.hrmetal.ind.br",
+          "url": "https://leomoveis.hrmetal.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "hrmetalind",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 37,
+          "timestamp": "2026-07-03T17:39:13.009Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND leomoveis.hrmetal.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "leomoveis.net.br",
+          "url": "https://leomoveis.net.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "hrmetalind",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 3781,
+          "timestamp": "2026-07-03T17:39:16.890Z",
+          "ssl": true,
+          "ip": "172.67.207.91",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.207.91"
+            ],
+            "aaaa": [
+              "2606:4700:3035::ac43:cf5b"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.leomoveis.net.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=e4cUxvOZxjmQsPpQTdhhKxr_dd9qc78HSIEV3A4fAcc"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 2
+        },
+        {
+          "name": "lojatransito.com.br",
+          "url": "https://lojatransito.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "lojatransitocom",
+            "status": "Activa",
+            "expirationDate": "2027-05-15T17:32:37Z",
+            "mailAccountsCount": null
+          },
+          "status": 525,
+          "online": false,
+          "responseTime": 103,
+          "timestamp": "2026-07-03T17:39:13.842Z",
+          "ssl": true,
+          "ip": "104.21.65.249",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.65.249"
+            ],
+            "aaaa": [
+              "2606:4700:3030::ac43:c3d1"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.lojatransito.com.br"
+            ],
+            "txt": [
+              "facebook-domain-verification=qo385xfe79bwk0wy9i6inmznluhsyg",
+              "google-site-verification=Hyiz8ry9CI9iQdd1nx6BxOonaS152iSNhOTqrd_u70Q",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "lpvog.voghieraslim.com.br",
+          "url": "https://lpvog.voghieraslim.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:39:13.869Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND lpvog.voghieraslim.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "mahospitalar.com.br",
+          "url": "https://mahospitalar.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "mahospitalarcom",
+            "status": "Activa",
+            "expirationDate": "2031-03-25T01:46:57Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 95,
+          "timestamp": "2026-07-03T17:39:13.964Z",
+          "ssl": true,
+          "ip": "172.67.74.108",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.74.108"
+            ],
+            "aaaa": [
+              "2606:4700:20::ac43:4a6c"
+            ],
+            "cname": null,
+            "mx": [
+              "mahospitalar-com-br.mail.protection.outlook.com"
+            ],
+            "txt": [
+              "facebook-domain-verification=m2pzwsqqzabm8qtqtu656s4zs4zzcf",
+              "v=spf1 ip4:20.96.184.146 ip4:20.96.200.191 include:spf.protection.outlook.com include:spf.hubspot.com include:44541701.spf03.hubspotemail.net ~all",
+              "google-site-verification=qIjhUoLZV2tC9xUdWPXez4on6WZOA4qE0hyT_Fm-rVw"
+            ],
+            "ns": [
+              "algin.ns.cloudflare.com",
+              "adi.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "manaequipamentos.com.br",
+          "url": "https://manaequipamentos.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "manaequipamentos",
+            "status": "Activa",
+            "expirationDate": "2030-03-14T10:47:09Z",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 65,
+          "timestamp": "2026-07-03T17:39:14.029Z",
+          "ssl": true,
+          "ip": "104.21.72.45",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.72.45"
+            ],
+            "aaaa": [
+              "2606:4700:3030::6815:482d"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.manaequipamentos.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "mateando.com.br",
+          "url": "https://mateando.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 64,
+          "timestamp": "2026-07-03T17:39:14.093Z",
+          "ssl": true,
+          "ip": "104.21.22.138",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.22.138"
+            ],
+            "aaaa": [
+              "2606:4700:3033::ac43:cd1c"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.mateando.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=VHxbZWsKXygFWnN6XHMIdij-XAuLsMQBLwi7trSxMFA"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "mateando.olamulticom.com.br",
+          "url": "https://mateando.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 37,
+          "timestamp": "2026-07-03T17:39:14.166Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND mateando.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "ola.marketing",
+          "url": "https://ola.marketing",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "olamarketing",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 164,
+          "timestamp": "2026-07-03T17:39:14.257Z",
+          "ssl": true,
+          "ip": "172.67.203.30",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.203.30"
+            ],
+            "aaaa": [
+              "2606:4700:3037::ac43:cb1e"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.ola.marketing"
+            ],
+            "txt": [
+              "google-site-verification=ex6bDnaiVmcQEXwpP9waggxYYiXOy2BIyy5AcuCXSLc",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=E4-Y4Vo936YL97qPXRH-yZE00uLdwuegCHoDLCLVISQ"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "olamulticom.com.br",
+          "url": "https://olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "expirationDate": "2028-03-09T23:50:12Z",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 38,
+          "timestamp": "2026-07-03T17:39:14.327Z",
+          "ssl": true,
+          "ip": "104.21.78.135",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.78.135"
+            ],
+            "aaaa": [
+              "2606:4700:3034::6815:4e87"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.olamulticom.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=7dqozacw22-uNio8LGB2hE7bq1x231CHe6iyjY4KPlo",
+              "facebook-domain-verification=vd593urqtd8zhr3eq4autspthp1jrc"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "olapropaganda.net",
+          "url": "https://olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 1061,
+          "timestamp": "2026-07-03T17:39:15.323Z",
+          "ssl": true,
+          "ip": "172.67.195.78",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.195.78"
+            ],
+            "aaaa": [
+              "2606:4700:3032::6815:54a6"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.olapropaganda.net"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 2
+        },
+        {
+          "name": "openmarket.com.br",
+          "url": "https://openmarket.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10002,
+          "timestamp": "2026-07-03T17:39:24.390Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "172.67.195.139",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.195.139"
+            ],
+            "aaaa": [
+              "2606:4700:3032::6815:4481"
+            ],
+            "cname": null,
+            "mx": [
+              "barracuda.penso.com.br"
+            ],
+            "txt": [
+              "google-site-verification=e9m8ez0-dCB8xnhrUupao2tG2Jpw1-qxAInJ5PRq1MQ",
+              "v=spf1 ip4:179.190.13.61 include:pensomail.com.br include:_spf.rdstation.com.br include:sendgrid.net -all"
+            ],
+            "ns": [
+              "laylah.ns.cloudflare.com",
+              "tadeo.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "openmarket.safesea.com.br",
+          "url": "https://openmarket.safesea.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 7,
+          "timestamp": "2026-07-03T17:39:14.353Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND openmarket.safesea.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "opmarket.com.br",
+          "url": "https://opmarket.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10004,
+          "timestamp": "2026-07-03T17:39:44.362Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "208.109.245.134",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "208.109.245.134"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "barracuda.penso.com.br"
+            ],
+            "txt": [
+              "v=spf1 ip4:177.54.57.203 a:rocky.nextinfra.com.br  -all"
+            ],
+            "ns": [
+              "ns2.opmarket.com.br",
+              "ns1.opmarket.com.br"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "opmarket.safesea.com.br",
+          "url": "https://opmarket.safesea.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:39:14.851Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND opmarket.safesea.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "painel01.ola.marketing",
+          "url": "https://painel01.ola.marketing",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamarketing",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 403,
+          "timestamp": "2026-07-03T17:39:15.254Z",
+          "ssl": true,
+          "ip": "104.21.82.151",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.82.151"
+            ],
+            "aaaa": [
+              "2606:4700:3030::6815:5297"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 1
+        },
+        {
+          "name": "paygas.olapropaganda.net",
+          "url": "https://paygas.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 6531,
+          "timestamp": "2026-07-03T17:39:31.639Z",
+          "ssl": true,
+          "ip": "172.67.195.78",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.195.78"
+            ],
+            "aaaa": [
+              "2606:4700:3032::6815:54a6"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 2
+        },
+        {
+          "name": "pdsistemas.com.br",
+          "url": "https://pdsistemas.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "youseniorcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10004,
+          "timestamp": "2026-07-03T17:39:45.266Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "162.214.52.135",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "162.214.52.135"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "pdsistemas-com-br.mail.protection.outlook.com"
+            ],
+            "txt": [
+              "v=spf1 include:spf.protection.outlook.com include:_spf.kmitd.com include:amazonses.com ~all",
+              "MS=ms21341936"
+            ],
+            "ns": [
+              "ns3.cloudostec.com.br",
+              "ns.cloudostec.com.br",
+              "ns2.cloudostec.com.br"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "pdsistemas.com.br.yousenior.com.br",
+          "url": "https://pdsistemas.com.br.yousenior.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "youseniorcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 39,
+          "timestamp": "2026-07-03T17:39:15.400Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND pdsistemas.com.br.yousenior.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "petcampo.com.br",
+          "url": "https://petcampo.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "petcampo",
+            "status": "Activa",
+            "expirationDate": "2026-07-09T15:03:36Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 155,
+          "timestamp": "2026-07-03T17:39:15.478Z",
+          "ssl": true,
+          "ip": "104.21.91.5",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.91.5"
+            ],
+            "aaaa": [
+              "2606:4700:3037::6815:5b05"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.petcampo.com.br"
+            ],
+            "txt": [
+              "google-site-verification=84dfp-UtmJBkdJLRUmUQpKKjgmPRDlc4nwddaUB2Jto",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "placidocontabilidade.com.br",
+          "url": "https://placidocontabilidade.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "placidocontabili",
+            "status": "Activa",
+            "expirationDate": "2027-02-19T17:49:14Z",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 160,
+          "timestamp": "2026-07-03T17:39:15.560Z",
+          "ssl": true,
+          "ip": "172.67.138.229",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.138.229"
+            ],
+            "aaaa": [
+              "2606:4700:3037::ac43:8ae5"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.placidocontabilidade.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "plasticossaopedro.com.br",
+          "url": "https://plasticossaopedro.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "plasticossaopedr",
+            "status": "Activa",
+            "expirationDate": "2030-07-03T17:10:27Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 4716,
+          "timestamp": "2026-07-03T17:39:30.177Z",
+          "ssl": true,
+          "ip": "104.21.79.20",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.79.20"
+            ],
+            "aaaa": [
+              "2606:4700:3030::6815:4f14"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.plasticossaopedro.com.br"
+            ],
+            "txt": [
+              "google-site-verification=r2WZbh6-COQOMoHmHhcMAx5pV3amYzdZCYUTX3Xk6fw",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 2
+        },
+        {
+          "name": "portalsoft.olapropaganda.net",
+          "url": "https://portalsoft.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 112,
+          "timestamp": "2026-07-03T17:39:35.595Z",
+          "ssl": true,
+          "ip": "104.21.84.166",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.84.166"
+            ],
+            "aaaa": [
+              "2606:4700:3035::ac43:c34e"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "postocarvoeiro.olapropaganda.net",
+          "url": "https://postocarvoeiro.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 2800,
+          "timestamp": "2026-07-03T17:39:18.360Z",
+          "ssl": true,
+          "ip": "104.21.84.166",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.84.166"
+            ],
+            "aaaa": [
+              "2606:4700:3032::6815:54a6"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 1
+        },
+        {
+          "name": "postoscarvoeiro.com.br",
+          "url": "https://postoscarvoeiro.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10004,
+          "timestamp": "2026-07-03T17:39:46.901Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "172.67.167.29",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.167.29"
+            ],
+            "aaaa": [
+              "2606:4700:3034::6815:32d1"
+            ],
+            "cname": null,
+            "mx": [
+              ""
+            ],
+            "txt": [
+              "v=spf1 -all"
+            ],
+            "ns": [
+              "julian.ns.cloudflare.com",
+              "melody.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "postoscarvoeiro.olamulticom.com.br",
+          "url": "https://postoscarvoeiro.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 44,
+          "timestamp": "2026-07-03T17:39:18.491Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND postoscarvoeiro.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "pradoweb.com.br",
+          "url": "https://pradoweb.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 126,
+          "timestamp": "2026-07-03T17:39:18.617Z",
+          "ssl": true,
+          "ip": "172.67.215.49",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.215.49"
+            ],
+            "aaaa": [
+              "2606:4700:3032::ac43:d731"
+            ],
+            "cname": null,
+            "mx": [
+              "route2.mx.cloudflare.net",
+              "route1.mx.cloudflare.net",
+              "route3.mx.cloudflare.net"
+            ],
+            "txt": [
+              "google-site-verification=vvRfGXJUhSew2Yo5z-wobgK2Fj0SrForm51T4Q9UkrU",
+              "v=spf1 include:_spf.mx.cloudflare.net ~all"
+            ],
+            "ns": [
+              "julian.ns.cloudflare.com",
+              "melody.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "pradoweb.olapropaganda.net",
+          "url": "https://pradoweb.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 9,
+          "timestamp": "2026-07-03T17:39:18.645Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND pradoweb.olapropaganda.net",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "precisa.olapropaganda.net",
+          "url": "https://precisa.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 34,
+          "timestamp": "2026-07-03T17:39:28.758Z",
+          "ssl": true,
+          "ip": "172.67.195.78",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.195.78"
+            ],
+            "aaaa": [
+              "2606:4700:3035::ac43:c34e"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "quesuco.amgrupo.ind.br",
+          "url": "https://quesuco.amgrupo.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 6,
+          "timestamp": "2026-07-03T17:39:24.409Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND quesuco.amgrupo.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "10ebbbf397be247cde8902d9519bb15d",
+            "zoneName": "amgrupo.ind.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 41,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "quesuco.com.br",
+          "url": "https://quesuco.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 875,
+          "timestamp": "2026-07-03T17:39:25.284Z",
+          "ssl": true,
+          "ip": "172.67.140.29",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.140.29"
+            ],
+            "aaaa": [
+              "2606:4700:3033::6815:4929"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.quesuco.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "realnobhotel.com.br",
+          "url": "https://realnobhotel.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "realnobhotelcom",
+            "status": "Activa",
+            "expirationDate": "2027-03-25T19:48:54Z",
+            "renewalDate": "2024-03-26T08:20:57Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 680,
+          "timestamp": "2026-07-03T17:39:25.964Z",
+          "ssl": true,
+          "ip": "177.154.191.231",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "177.154.191.231"
+            ],
+            "aaaa": [
+              "2606:4700:3031::6815:5ef7"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.realnobhotel.com.br"
+            ],
+            "txt": [
+              "google-site-verification=yFOQAHTk6rubRPfA9z8XHaSPgPVkb9eX--Ae-bQ-oBA",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "keyla.ns.cloudflare.com",
+              "cartman.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "reatechdobrasil.com.br",
+          "url": "https://reatechdobrasil.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "reatechdobrasilc",
+            "status": "Activa",
+            "expirationDate": "2027-03-20T17:53:47Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 149,
+          "timestamp": "2026-07-03T17:39:26.114Z",
+          "ssl": true,
+          "ip": "104.21.70.129",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.70.129"
+            ],
+            "aaaa": [
+              "2606:4700:3032::6815:4681"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.reatechdobrasil.com.br"
+            ],
+            "txt": [
+              "google-site-verification=9VmHf_EfDaNWnFSf6FcbbC_kKg1pWoWsQM3UHVDt1QI",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "refreshwater.amgrupo.ind.br",
+          "url": "https://refreshwater.amgrupo.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 43,
+          "timestamp": "2026-07-03T17:39:26.132Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND refreshwater.amgrupo.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "10ebbbf397be247cde8902d9519bb15d",
+            "zoneName": "amgrupo.ind.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 41,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "refreshwater.com.br",
+          "url": "https://refreshwater.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 72,
+          "timestamp": "2026-07-03T17:39:26.186Z",
+          "ssl": true,
+          "ip": "104.21.4.169",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.4.169"
+            ],
+            "aaaa": [
+              "2606:4700:3033::6815:4a9"
+            ],
+            "cname": null,
+            "mx": [
+              "_dc-mx.a94511a61186.refreshwater.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:208.109.245.134 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com +include:secureserver.net ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "riotelas.com.br",
+          "url": "https://riotelas.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "riotelascom",
+            "status": "Activa",
+            "expirationDate": "2026-09-19T16:25:42Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 2382,
+          "timestamp": "2026-07-03T17:39:28.515Z",
+          "ssl": true,
+          "ip": "172.67.174.37",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.174.37"
+            ],
+            "aaaa": [
+              "2606:4700:3037::6815:37e5"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.riotelas.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=jFWmuD_ZOuFNkBuoTxEmHlzSMN7tcGEfj26E4_ducQ4"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "rwelevadores.com.br",
+          "url": "https://rwelevadores.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "elevadoresrwcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 157,
+          "timestamp": "2026-07-03T17:39:26.344Z",
+          "ssl": true,
+          "ip": "104.21.38.190",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.38.190"
+            ],
+            "aaaa": [
+              "2606:4700:3034::ac43:89c7"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.rwelevadores.com.br"
+            ],
+            "txt": [
+              "v=spf1 include:_spf.rdstation.com.br include:sendgrid.net ~all",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "chelsea.ns.cloudflare.com",
+              "cesar.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "rwelevadores.com.br.elevadoresrw.com.br",
+          "url": "https://rwelevadores.com.br.elevadoresrw.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "elevadoresrwcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 51,
+          "timestamp": "2026-07-03T17:39:26.478Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND rwelevadores.com.br.elevadoresrw.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "5557e73a25d7851073cfc1f693872459",
+            "zoneName": "elevadoresrw.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 45,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "saferprotect.com.br",
+          "url": "https://saferprotect.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "corsulcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10003,
+          "timestamp": "2026-07-03T17:39:56.489Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "172.67.177.90",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.177.90"
+            ],
+            "aaaa": [
+              "2606:4700:3035::6815:4394"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.saferprotect.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:208.109.245.134 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com +include:secureserver.net ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "saferprotect.corsul.com.br",
+          "url": "https://saferprotect.corsul.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "corsulcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 7,
+          "timestamp": "2026-07-03T17:39:28.535Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND saferprotect.corsul.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "777394977bd2435e263a53efa094eaea",
+            "zoneName": "corsul.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 62,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "safesea.com.br",
+          "url": "https://safesea.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "safeseacom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 6,
+          "timestamp": "2026-07-03T17:39:28.554Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND safesea.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "santamotorhome.com.br",
+          "url": "https://santamotorhome.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "santamotor",
+            "status": "Activa",
+            "expirationDate": "2028-01-31T18:00:24Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 209,
+          "timestamp": "2026-07-03T17:39:28.763Z",
+          "ssl": true,
+          "ip": "104.21.6.53",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.6.53"
+            ],
+            "aaaa": [
+              "2606:4700:3037::ac43:9af3"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.santamotorhome.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "santuaturismo.com.br",
+          "url": "https://santuaturismo.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 185,
+          "timestamp": "2026-07-03T17:39:28.943Z",
+          "ssl": true,
+          "ip": "172.67.139.63",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.139.63"
+            ],
+            "aaaa": [
+              "2606:4700:3034::6815:3ece"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.santuaturismo.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=wj2m25BH02NnKF15ysNvV_QUBH8_D-v40bMHl1iTqpw"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "santuaturismo.com.br.olamulticom.com.br",
+          "url": "https://santuaturismo.com.br.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 37,
+          "timestamp": "2026-07-03T17:39:28.882Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND santuaturismo.com.br.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "souzaagroflorestal.com.br",
+          "url": "https://souzaagroflorestal.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "verdesul",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 38,
+          "timestamp": "2026-07-03T17:39:29.007Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND souzaagroflorestal.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "mail.souzaagroflorestal.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "souzaagroflorestal.com.br.viveiroverdesul.com.br",
+          "url": "https://souzaagroflorestal.com.br.viveiroverdesul.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "verdesul",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10,
+          "timestamp": "2026-07-03T17:39:28.971Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND souzaagroflorestal.com.br.viveiroverdesul.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "sslola.mahospitalar.com.br",
+          "url": "https://sslola.mahospitalar.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "mahospitalarcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 38,
+          "timestamp": "2026-07-03T17:39:29.165Z",
+          "ssl": true,
+          "error": "Client network socket disconnected before secure TLS connection was established",
+          "ip": "31.97.169.57",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "31.97.169.57"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "sslola.mahospitalar.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:162.214.161.77 ~all"
+            ],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "staging.deps.com.br",
+          "url": "https://staging.deps.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "depscom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 43,
+          "timestamp": "2026-07-03T17:39:29.215Z",
+          "ssl": true,
+          "ip": "104.26.3.22",
+          "cloudflareIp": "31.97.169.57",
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [
+              "104.26.3.22"
+            ],
+            "aaaa": [
+              "2606:4700:20::ac43:49ec"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "429ccc18ff09c9db00723eb15ffe44c0",
+            "zoneName": "deps.com.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 100,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tesaisaude.amgrupo.ind.br",
+          "url": "https://tesaisaude.amgrupo.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 41,
+          "timestamp": "2026-07-03T17:39:29.288Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND tesaisaude.amgrupo.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "10ebbbf397be247cde8902d9519bb15d",
+            "zoneName": "amgrupo.ind.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 41,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tesaisaude.com.br",
+          "url": "https://tesaisaude.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 130,
+          "timestamp": "2026-07-03T17:39:29.522Z",
+          "ssl": true,
+          "ip": "104.21.62.161",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.62.161"
+            ],
+            "aaaa": [
+              "2606:4700:3035::6815:3ea1"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.tesaisaude.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tfrancisconi.com.br",
+          "url": "https://tfrancisconi.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 39,
+          "timestamp": "2026-07-03T17:39:29.424Z",
+          "ssl": true,
+          "error": "Client network socket disconnected before secure TLS connection was established",
+          "ip": "31.97.169.57",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "31.97.169.57"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "mx1.apmx.com.br",
+              "mx2.apmx.com.br",
+              "mx3.apmx.com.br",
+              "mx4.apmx.com.br",
+              "mx5.apmx.com.br"
+            ],
+            "txt": [
+              "v=spf1 ip4:186.209.113.138 include:spf-c.mailbaby.net +a +mx +ip4:31.97.169.57 include:_spf.apmx.com.br ~all"
+            ],
+            "ns": [
+              "ns1.dataupcloud.com.br",
+              "ns2.dataupcloud.com.br"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tfrancisconinovo.com.br.olapropaganda.net",
+          "url": "https://tfrancisconinovo.com.br.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:39:29.451Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND tfrancisconinovo.com.br.olapropaganda.net",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tiwagi.jgaidzinski.com.br",
+          "url": "https://tiwagi.jgaidzinski.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "jgaidzinski",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 7,
+          "timestamp": "2026-07-03T17:39:29.474Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND tiwagi.jgaidzinski.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tramontogastronomiaeventos.com.br",
+          "url": "https://tramontogastronomiaeventos.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 500,
+          "online": false,
+          "responseTime": 32,
+          "timestamp": "2026-07-03T17:39:29.656Z",
+          "ssl": true,
+          "ip": "104.21.35.222",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.35.222"
+            ],
+            "aaaa": [
+              "2606:4700:3031::ac43:b43d"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.tramontogastronomiaeventos.com.br"
+            ],
+            "txt": [
+              "google-site-verification=hjtbNxi3NJ5psXpSdngS22WZHfpxdm0eWzb_n62-N-U",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tramontogastronomiaeventos.olamulticom.com.br",
+          "url": "https://tramontogastronomiaeventos.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 41,
+          "timestamp": "2026-07-03T17:39:29.653Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND tramontogastronomiaeventos.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tropillero.com.br",
+          "url": "https://tropillero.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamarketing",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 10007,
+          "timestamp": "2026-07-03T17:39:59.666Z",
+          "ssl": true,
+          "error": "Timeout awaiting 'request' for 10000ms",
+          "ip": "172.67.218.215",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.218.215"
+            ],
+            "aaaa": [
+              "2606:4700:3034::6815:35d3"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.tropillero.com.br"
+            ],
+            "txt": [
+              "v=spf1 ip4:208.109.245.134 +mx +a +a:mx93.olamulticom.com.br +ip4:162.214.53.93 +ip4:162.214.52.135 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tropillero.ola.marketing",
+          "url": "https://tropillero.ola.marketing",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamarketing",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 7,
+          "timestamp": "2026-07-03T17:39:29.675Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND tropillero.ola.marketing",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "tsali.com.br",
+          "url": "https://tsali.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "manaequipamentos",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 71,
+          "timestamp": "2026-07-03T17:39:29.746Z",
+          "ssl": true,
+          "ip": "172.67.217.149",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.217.149"
+            ],
+            "aaaa": [
+              "2606:4700:3037::ac43:d995"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.tsali.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "julian.ns.cloudflare.com",
+              "melody.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "tsali.manaequipamentos.com.br",
+          "url": "https://tsali.manaequipamentos.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "manaequipamentos",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 38,
+          "timestamp": "2026-07-03T17:39:29.863Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND tsali.manaequipamentos.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "unnicola.com.br",
+          "url": "https://unnicola.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "firmexind",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 7788,
+          "timestamp": "2026-07-03T17:39:37.715Z",
+          "ssl": true,
+          "ip": "31.97.169.57",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "31.97.169.57"
+            ],
+            "aaaa": [],
+            "cname": null,
+            "mx": [
+              "a.mx.unnicola.com.br",
+              "b.mx.unnicola.com.br",
+              "c.mx.unnicola.com.br"
+            ],
+            "txt": [
+              "v=spf1 ip4:177.54.56.208/29 ip4:177.135.86.98 -all"
+            ],
+            "ns": [
+              "ns2.unnicola.com.br",
+              "ns1.unnicola.com.br"
+            ]
+          },
+          "attempts": 2
+        },
+        {
+          "name": "unnicola.firmex.ind.br",
+          "url": "https://unnicola.firmex.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "firmexind",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:39:30.201Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND unnicola.firmex.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "uploads.ola.marketing",
+          "url": "https://uploads.ola.marketing",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamarketing",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 403,
+          "online": false,
+          "responseTime": 128,
+          "timestamp": "2026-07-03T17:39:30.329Z",
+          "ssl": true,
+          "ip": "172.67.203.30",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.203.30"
+            ],
+            "aaaa": [
+              "2606:4700:3037::ac43:cb1e"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [
+              "v=spf1 ip4:31.97.169.57 ip4:208.109.245.134 +a +mx +ip4:162.214.52.135 ~all"
+            ],
+            "ns": []
+          },
+          "attempts": 1
+        },
+        {
+          "name": "verityadm.com.br",
+          "url": "https://verityadm.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "verityadmcom",
+            "status": "Activa",
+            "expirationDate": "2031-06-16T17:39:04Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 7526,
+          "timestamp": "2026-07-03T17:39:48.010Z",
+          "ssl": true,
+          "ip": "104.21.86.177",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.86.177"
+            ],
+            "aaaa": [
+              "2606:4700:3033::ac43:df4c"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.verityadm.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "zainab.ns.cloudflare.com",
+              "darl.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 2
+        },
+        {
+          "name": "vestro.olapropaganda.net",
+          "url": "https://vestro.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 1789,
+          "timestamp": "2026-07-03T17:39:33.428Z",
+          "ssl": true,
+          "ip": "104.21.84.166",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.84.166"
+            ],
+            "aaaa": [
+              "2606:4700:3035::ac43:c34e"
+            ],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 1
+        },
+        {
+          "name": "vinhostrevisol.com.br",
+          "url": "https://vinhostrevisol.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "vinhos74",
+            "status": "Activa",
+            "expirationDate": "2026-08-20T12:53:30Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 3597,
+          "timestamp": "2026-07-03T17:39:37.025Z",
+          "ssl": true,
+          "ip": "104.21.36.234",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.36.234"
+            ],
+            "aaaa": [
+              "2606:4700:3030::6815:24ea"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.vinhostrevisol.com.br"
+            ],
+            "txt": [
+              "google-site-verification=7qapmdDl5y3lsOdhZoK3SM-uORkIbJlPcJEHR0XTIfQ",
+              "google-site-verification=gxFLLmHsQt-KGdc-KqIUkZ-sPZC8tqN7EFwrRrXNjT0",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "viveiroverdesul.com.br",
+          "url": "https://viveiroverdesul.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "verdesul",
+            "status": "Activa",
+            "expirationDate": "2032-08-03T14:26:01Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 151,
+          "timestamp": "2026-07-03T17:39:35.746Z",
+          "ssl": true,
+          "ip": "172.67.177.21",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.177.21"
+            ],
+            "aaaa": [
+              "2606:4700:3031::6815:1f8c"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.viveiroverdesul.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=inyrQVMjWg3fnM_L2-4dcEkdPyYWr4sZ9DGdIoBykkQ"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "voghieranutrition.com.br",
+          "url": "https://voghieranutrition.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 503,
+          "online": false,
+          "responseTime": 61,
+          "timestamp": "2026-07-03T17:39:36.459Z",
+          "ssl": true,
+          "ip": "104.21.10.94",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.10.94"
+            ],
+            "aaaa": [
+              "2606:4700:3037::ac43:a2c4"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.voghieranutrition.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "melody.ns.cloudflare.com",
+              "julian.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "voghieranutrition.com.br.olapropaganda.net",
+          "url": "https://voghieranutrition.com.br.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 8,
+          "timestamp": "2026-07-03T17:39:36.484Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND voghieranutrition.com.br.olapropaganda.net",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "voghieraslim.com.br",
+          "url": "https://voghieraslim.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 503,
+          "online": false,
+          "responseTime": 60,
+          "timestamp": "2026-07-03T17:39:36.882Z",
+          "ssl": true,
+          "ip": "172.67.184.144",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.184.144"
+            ],
+            "aaaa": [
+              "2606:4700:3037::6815:4c02"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.voghieraslim.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 3
+        },
+        {
+          "name": "voghieraslim.olapropaganda.net",
+          "url": "https://voghieraslim.olapropaganda.net",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "wwserv",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 7,
+          "timestamp": "2026-07-03T17:39:36.906Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND voghieraslim.olapropaganda.net",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "voltshotdrink.amgrupo.ind.br",
+          "url": "https://voltshotdrink.amgrupo.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 49,
+          "timestamp": "2026-07-03T17:39:37.036Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND voltshotdrink.amgrupo.ind.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "both",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "cloudflareInfo": {
+            "zoneId": "10ebbbf397be247cde8902d9519bb15d",
+            "zoneName": "amgrupo.ind.br",
+            "sslMode": null,
+            "securityLevel": null,
+            "alwaysUseHttps": null,
+            "dnssecEnabled": null,
+            "totalRecords": 41,
+            "nameservers": [],
+            "proxied": null
+          },
+          "attempts": 3
+        },
+        {
+          "name": "voltshotdrink.com.br",
+          "url": "https://voltshotdrink.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "amgrupo",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 2106,
+          "timestamp": "2026-07-03T17:39:39.131Z",
+          "ssl": true,
+          "ip": "104.21.24.46",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.24.46"
+            ],
+            "aaaa": [
+              "2606:4700:3031::6815:182e"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.voltshotdrink.com.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "kehlani.ns.cloudflare.com",
+              "javier.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "vsr.ind.br",
+          "url": "https://vsr.ind.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "vsrind",
+            "status": "Activa",
+            "expirationDate": "2027-03-07T20:30:13Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 163,
+          "timestamp": "2026-07-03T17:39:37.199Z",
+          "ssl": true,
+          "ip": "172.67.132.196",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.132.196"
+            ],
+            "aaaa": [
+              "2606:4700:3036::6815:518"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.vsr.ind.br"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "google-site-verification=B1kxP104YU8Ym9yxED8H8iT9vrxebRVpQN0jsoi4pj0"
+            ],
+            "ns": [
+              "javier.ns.cloudflare.com",
+              "kehlani.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "xokodog.com.br",
+          "url": "https://xokodog.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 8290,
+          "timestamp": "2026-07-03T17:39:55.494Z",
+          "ssl": true,
+          "ip": "104.21.28.32",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "104.21.28.32"
+            ],
+            "aaaa": [
+              "2606:4700:3035::ac43:aa39"
+            ],
+            "cname": null,
+            "mx": [
+              "mail.xokodog.com.br"
+            ],
+            "txt": [
+              "google-site-verification=Y4gouryhvCmmVt8wYLuuiUHEOKD_7nYE_r2rCVM7-XU",
+              "v=spf1 +mx +a +ip4:31.97.169.57 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all"
+            ],
+            "ns": [
+              "melody.ns.cloudflare.com",
+              "julian.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 2
+        },
+        {
+          "name": "xokodog.com.br.olamulticom.com.br",
+          "url": "https://xokodog.com.br.olamulticom.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "olamulticomcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 44,
+          "timestamp": "2026-07-03T17:39:37.839Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND xokodog.com.br.olamulticom.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "youpratico.com.br",
+          "url": "https://youpratico.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "addon",
+            "username": "youseniorcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 8258,
+          "timestamp": "2026-07-03T17:39:46.097Z",
+          "ssl": true,
+          "ip": "172.67.141.32",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.141.32"
+            ],
+            "aaaa": [
+              "2606:4700:3032::6815:2905"
+            ],
+            "cname": null,
+            "mx": [
+              "youpratico-com-br.mail.protection.outlook.com"
+            ],
+            "txt": [
+              "v=spf1 include:spf.protection.outlook.com -all",
+              "MS=ms41747924"
+            ],
+            "ns": [
+              "demi.ns.cloudflare.com",
+              "johnny.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "name": "youpratico.yousenior.com.br",
+          "url": "https://youpratico.yousenior.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "subdominio",
+            "username": "youseniorcom",
+            "status": "Activa",
+            "mailAccountsCount": null
+          },
+          "status": 0,
+          "online": false,
+          "responseTime": 49,
+          "timestamp": "2026-07-03T17:39:39.264Z",
+          "ssl": true,
+          "error": "getaddrinfo ENOTFOUND youpratico.yousenior.com.br",
+          "ip": null,
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [],
+            "aaaa": [],
+            "cname": null,
+            "mx": [],
+            "txt": [],
+            "ns": []
+          },
+          "attempts": 3
+        },
+        {
+          "name": "yousenior.com.br",
+          "url": "https://yousenior.com.br",
+          "category": "whm",
+          "priority": "normal",
+          "whmInfo": {
+            "type": "principal",
+            "username": "youseniorcom",
+            "status": "Activa",
+            "expirationDate": "2026-09-30T11:57:42Z",
+            "mailAccountsCount": null
+          },
+          "status": 200,
+          "online": true,
+          "responseTime": 219,
+          "timestamp": "2026-07-03T17:39:39.483Z",
+          "ssl": true,
+          "ip": "172.67.173.171",
+          "cloudflareIp": null,
+          "hosting": "whm",
+          "dnsRecords": {
+            "a": [
+              "172.67.173.171"
+            ],
+            "aaaa": [
+              "2606:4700:3033::6815:5022"
+            ],
+            "cname": null,
+            "mx": [
+              "yousenior-com-br.mail.protection.outlook.com"
+            ],
+            "txt": [
+              "v=spf1 +mx +a +a:mx93.olamulticom.com.br +ip4:162.214.53.93 +ip4:162.214.52.135 +include:_spf.google.com +include:spf.protection.outlook.com +include:amazonses.com ~all",
+              "MS=ms92318700"
+            ],
+            "ns": [
+              "demi.ns.cloudflare.com",
+              "johnny.ns.cloudflare.com"
+            ]
+          },
+          "attempts": 1
+        }
+      ],
+      "stats": {
+        "total": 150,
+        "manual": 3,
+        "whm": 147,
+        "byCategory": {
+          "externo": 0,
+          "whm": 147,
+          "api": 0,
+          "cdn": 0,
+          "manual": 3
+        },
+        "byPriority": {
+          "critical": 0,
+          "high": 0,
+          "normal": 150,
+          "low": 0
+        }
+      }
+    },
+    {
       "timestamp": "2026-07-02T20:43:58.840Z",
       "results": [
         {
@@ -62168,73 +68081,6 @@
           "online": true,
           "responseTime": 1196,
           "timestamp": "2025-11-18T14:33:54.713Z",
-          "ssl": true
-        }
-      ],
-      "stats": {
-        "total": 4,
-        "manual": 4,
-        "whm": 0,
-        "byCategory": {
-          "externo": 0,
-          "whm": 0,
-          "api": 0,
-          "cdn": 0,
-          "manual": 4
-        },
-        "byPriority": {
-          "critical": 0,
-          "high": 0,
-          "normal": 4,
-          "low": 0
-        }
-      }
-    },
-    {
-      "timestamp": "2025-11-18T14:09:46.314Z",
-      "results": [
-        {
-          "name": "Smartbox Brasil",
-          "url": "https://smartboxbrasil.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 200,
-          "online": true,
-          "responseTime": 551,
-          "timestamp": "2025-11-18T14:09:44.620Z",
-          "ssl": true
-        },
-        {
-          "name": "Tecnuv",
-          "url": "https://tecnuv.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 301,
-          "online": true,
-          "responseTime": 2210,
-          "timestamp": "2025-11-18T14:09:46.313Z",
-          "ssl": true
-        },
-        {
-          "name": "Postogestor",
-          "url": "https://postogestor.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 302,
-          "online": true,
-          "responseTime": 616,
-          "timestamp": "2025-11-18T14:09:44.720Z",
-          "ssl": true
-        },
-        {
-          "name": "Epsy",
-          "url": "https://epsy.com.br",
-          "category": "manual",
-          "priority": "normal",
-          "status": 200,
-          "online": true,
-          "responseTime": 815,
-          "timestamp": "2025-11-18T14:09:44.919Z",
           "ssl": true
         }
       ],
