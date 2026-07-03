@@ -365,12 +365,21 @@ function normalizeType(site: SiteResult): 'main' | 'sub' {
 }
 
 function buildMergedSites(status: StatusData, config: SitesConfigData | null): SiteResult[] {
+  // Build a whitelist of domains from the current WHM/manual config
+  const allCatalog = [...(config?.manualSites ?? []), ...(config?.whmSites ?? [])];
+  const currentUrls = new Set(allCatalog.map((s) => s.url.toLowerCase()));
+
   const latest = status.checks?.[0];
   const merged = new Map<string, SiteResult>();
   if (latest?.results?.length) {
-    latest.results.forEach((site) => merged.set(site.url.toLowerCase(), site));
+    latest.results.forEach((site) => {
+      const key = site.url.toLowerCase();
+      // Only include domains that exist in the current WHM/manual config
+      if (currentUrls.has(key)) {
+        merged.set(key, site);
+      }
+    });
   }
-  const allCatalog = [...(config?.manualSites ?? []), ...(config?.whmSites ?? [])];
   allCatalog.forEach((site) => {
     const key = site.url.toLowerCase();
     if (!merged.has(key)) {
@@ -541,6 +550,7 @@ function renderSidebar(rows: DomainRow[]): string {
         <div class="metric-value ${networkClass}">${latencyLabel}</div>
         <div class="metric-sub">${networkStateLabel}</div>
       </article>
+      <button id="exportCsvBtn" class="export-btn" title="Descargar tabla en CSV">Descargar CSV</button>
     </aside>
   `;
 }
@@ -778,7 +788,6 @@ function renderMain(): void {
       </div>
       <div class="table-footer">
         <span class="total-count">Total: ${formatNumber(filteredCount)} domínios</span>
-        <button id="exportCsvBtn" class="export-btn" title="Descargar tabla en CSV">📥 Descargar CSV</button>
       </div>
     </section>
   `;
