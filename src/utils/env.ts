@@ -60,6 +60,10 @@ const envSchema = z.object({
   IPINFO_TOKEN: z.string().optional().default(''),
   LOG_LEVEL: z.string().optional().default('info'),
   NODE_ENV: z.string().optional().default('development'),
+
+  GAS_ENABLED: z.string().optional().default('true'),
+  GAS_API_URL: z.string().optional().default('https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercopy'),
+  GAS_API_KEY: z.string().optional(),
 })
 
 function parseBool(val: string | undefined, def: boolean): boolean {
@@ -120,6 +124,11 @@ export const env = {
     parallelLimit: parseNum(raw.MONITOR_PARALLEL_LIMIT, 10, 1),
     historyLimit: parseNum(raw.MONITOR_HISTORY_LIMIT, 100, 1),
     concurrency: parseNum(raw.MONITOR_CONCURRENCY, 10, 1),
+  },
+  gas: {
+    enabled: parseBool(raw.GAS_ENABLED, false),
+    apiUrl: raw.GAS_API_URL,
+    apiKey: raw.GAS_API_KEY,
   },
   ipInfoToken: raw.IPINFO_TOKEN,
 }

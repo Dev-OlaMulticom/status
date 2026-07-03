@@ -125,6 +125,18 @@ export interface WhmUsageSummary {
   totalAccounts: number
 }
 
+export interface SiteAnalytics {
+  zoneId?: string
+  zoneName?: string
+  totalRequests?: number
+  requests?: number
+  threats: number
+  pageViews?: number
+  pageviews?: number
+  fetchAt?: string
+  lastUpdated?: string
+}
+
 export interface MonitorHistory {
   checks: CheckResult[]
 }
