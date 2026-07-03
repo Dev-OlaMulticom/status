@@ -17,12 +17,6 @@
       "url": "https://postogestor.com.br",
       "category": "manual",
       "priority": "normal"
-    },
-    {
-      "name": "Epsy",
-      "url": "https://epsy.com.br",
-      "category": "manual",
-      "priority": "normal"
     }
   ],
   "whmSites": [
@@ -1847,12 +1841,12 @@
     "geoCountry": "United States",
     "geoTimezone": "America/Phoenix",
     "ipApiSource": "ipwho.is",
-    "probedAt": "2026-07-02T20:42:41.594Z"
+    "probedAt": "2026-07-03T17:34:49.609Z"
   },
-  "lastUpdate": "2026-07-02T20:43:18.619Z",
+  "lastUpdate": "2026-07-03T17:35:29.042Z",
   "cloudflareOverview": {
     "totalZones": 20,
     "accountEmail": "criacao_dois@olamulticom.com.br",
-    "lastSync": "2026-07-02T20:43:18.617Z"
+    "lastSync": "2026-07-03T17:35:29.041Z"
   }
 }

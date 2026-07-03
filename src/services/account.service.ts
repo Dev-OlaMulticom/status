@@ -17,7 +17,6 @@ const MANUAL_SITES: Site[] = [
   { name: 'Smartbox Brasil', url: 'https://smartboxbrasil.com.br' },
   { name: 'Tecnuv', url: 'https://tecnuv.com.br' },
   { name: 'Postogestor', url: 'https://postogestor.com.br' },
-  { name: 'Epsy', url: 'https://epsy.com.br' },
 ]
 
 async function enrichFromIpWhoIs(ip: string): Promise<Partial<ServerInfo> | null> {
@@ -235,7 +234,7 @@ export class AccountService {
       if (env.whm.rdapEnabled && env.rdap.enabled) {
         const mainDomains = Array.from(
           new Set(
-            filtered.filter((d) => d.type === 'principal').map((d) => d.domain.toLowerCase()),
+            filtered.filter((d) => d.type === 'principal' || d.type === 'addon').map((d) => d.domain.toLowerCase()),
           ),
         )
         const limit = pLimit(env.whm.rdapConcurrency)
@@ -245,7 +244,7 @@ export class AccountService {
           ),
         )
         rdapResults.forEach(({ domain, dates }) => rdapDateMap.set(domain, dates))
-        logger.info({ count: mainDomains.length }, 'RDAP checked for main domains')
+        logger.info({ count: mainDomains.length }, 'RDAP checked for main and addon domains')
       }
 
       this.whmSites = filtered.map((d) => {
