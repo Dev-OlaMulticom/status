@@ -13,12 +13,6 @@ import { logger } from '../utils/logger'
 
 const SITES_CONFIG_FILE = 'sites-config.json'
 
-const MANUAL_SITES: Site[] = [
-  { name: 'Smartbox Brasil', url: 'https://smartboxbrasil.com.br' },
-  { name: 'Tecnuv', url: 'https://tecnuv.com.br' },
-  { name: 'Postogestor', url: 'https://postogestor.com.br' },
-]
-
 async function enrichFromIpWhoIs(ip: string): Promise<Partial<ServerInfo> | null> {
   try {
     const payload = await fetchJson<any>(
@@ -80,11 +74,7 @@ export class AccountService {
   cloudflareOverview: SitesConfig['cloudflareOverview'] = null
 
   constructor() {
-    this.manualSites = MANUAL_SITES.map((s) => ({
-      ...s,
-      category: 'manual' as const,
-      priority: 'normal' as const,
-    }))
+    // No hardcoded sites - all data from APIs
   }
 
   loadFromFile(): void {
@@ -122,17 +112,13 @@ export class AccountService {
         'Loaded sites config',
       )
     } catch (error: any) {
-      logger.warn({ error: error.message }, 'Could not load sites config, using defaults')
+      logger.warn({ error: error.message }, 'Could not load sites config, using empty state')
       if (existsSync(SITES_CONFIG_FILE)) {
         const backup = `sites-config.invalid-${Date.now()}.json`
         renameSync(SITES_CONFIG_FILE, backup)
         logger.warn({ backup }, 'Corrupted config backed up')
       }
-      this.manualSites = MANUAL_SITES.map((s) => ({
-        ...s,
-        category: 'manual' as const,
-        priority: 'normal' as const,
-      }))
+      // No fallback to MANUAL_SITES - only use what's loaded from file or APIs
       this.whmSites = []
       this.lastWhmSync = null
       this.whmUsage = null
