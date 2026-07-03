@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd frontend && pnpm install && pnpm build",
+  "buildCommand": "pnpm --filter status-olamulticom-frontend build",
   "outputDirectory": "frontend/dist",
   "installCommand": "pnpm install",
   "framework": null
