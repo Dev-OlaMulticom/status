@@ -1,4 +1,5 @@
 import './style.css';
+import { getAllServices, upsertService, type DomainService } from './db';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -87,6 +88,7 @@ type DomainRow = {
 
 type FilterType = 'all' | 'cuenta' | 'adicionado';
 type SortType = 'alpha' | 'venc-mais-proximo' | 'venc-mais-distante';
+type ServerFilterType = 'all' | 'whm' | 'cloudflare' | 'both' | 'none';
 
 type AppState = {
   status: StatusData | null;
@@ -95,6 +97,9 @@ type AppState = {
   search: string;
   filter: FilterType;
   sortBy: SortType;
+  accountFilter: string;
+  serverFilter: ServerFilterType;
+  serviceCache: Map<string, DomainService>;
   currentPage: number;
   networkLatencyMs: number | null;
   networkOnline: boolean;
@@ -116,6 +121,9 @@ const appState: AppState = {
   search: '',
   filter: 'all',
   sortBy: 'alpha',
+  accountFilter: '',
+  serverFilter: 'all',
+  serviceCache: new Map(),
   currentPage: 1,
   networkLatencyMs: null,
   networkOnline: false,
@@ -134,6 +142,20 @@ const RDAP_NEGATIVE_TTL_MS = 24 * 60 * 60 * 1000;
 const RDAP_CONCURRENCY = 2;
 const rdapQueue: string[] = [];
 let rdapWorkers = 0;
+
+// ─── RDAP TLD servers ─────────────────────────────────────────────────────
+
+const RDAP_TLD_SERVERS: Record<string, string> = {
+  br: 'https://rdap.registro.br/domain/',
+  com: 'https://rdap.verisign.com/com/v1/domain/',
+  net: 'https://rdap.verisign.com/net/v1/domain/',
+  org: 'https://rdap.publicinterestregistry.org/rdap/domain/',
+  info: 'https://rdap.identitydigital.services/rdap/domain/',
+  xyz: 'https://rdap.centralnic.com/xyz/domain/',
+  io: 'https://rdap.identitydigital.services/rdap/domain/',
+  app: 'https://pubapi.registry.google/rdap/domain/',
+  dev: 'https://pubapi.registry.google/rdap/domain/',
+};
 
 // ─── Utility functions ───────────────────────────────────────────────────────
 
@@ -179,7 +201,11 @@ function normalizeDateInput(value?: string): string | null {
 
 function formatShortDate(iso: string | null): string {
   if (!iso) return 'Sem dados';
-  return new Date(iso).toLocaleDateString('pt-BR');
+  const d = new Date(iso);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = d.toLocaleDateString('pt-BR', { month: 'long' });
+  const year = d.getFullYear();
+  return `${day}/${month.charAt(0).toUpperCase() + month.slice(1)}/${year}`;
 }
 
 function formatRemaining(iso: string | null): string {
@@ -191,9 +217,22 @@ function formatRemaining(iso: string | null): string {
   return `Faltam ${days} dias`;
 }
 
+function getTld(domain: string): string {
+  const parts = domain.split('.');
+  return parts.length >= 2 ? parts[parts.length - 1] : '';
+}
+
+function getRdapUrl(domain: string): string | null {
+  const tld = getTld(domain);
+  const base = RDAP_TLD_SERVERS[tld];
+  return base ? `${base}${encodeURIComponent(domain)}` : null;
+}
+
 function isEligibleForRdap(domain: string): boolean {
   const d = domain.toLowerCase();
-  return d.endsWith('.br') && !d.includes('cprapid.com');
+  if (d.includes('cprapid.com')) return false;
+  const tld = getTld(d);
+  return tld in RDAP_TLD_SERVERS;
 }
 
 function highlightText(escapedText: string, words: string[]): string {
@@ -205,6 +244,23 @@ function highlightText(escapedText: string, words: string[]): string {
     result = result.replace(regex, '<mark class="search-hl">$1</mark>');
   }
   return result;
+}
+
+// ─── Service cache helpers ──────────────────────────────────────────────────
+
+async function loadServiceCache(): Promise<void> {
+  appState.serviceCache = await getAllServices();
+}
+
+function getServiceForDomain(hostname: string): DomainService | undefined {
+  return appState.serviceCache.get(hostname);
+}
+
+async function toggleService(domain: string, field: 'site' | 'email'): Promise<void> {
+  const current = getServiceForDomain(domain);
+  const currentVal = current ? current[field] : false;
+  await upsertService(domain, field, !currentVal);
+  await loadServiceCache();
 }
 
 // ─── RDAP cache ──────────────────────────────────────────────────────────────
@@ -232,7 +288,9 @@ function persistRdapCacheToStorage(): void {
 }
 
 async function fetchRdapExpiration(domain: string): Promise<string | null> {
-  const res = await fetch(`https://rdap.registro.br/domain/${encodeURIComponent(domain)}`, { cache: 'no-store' });
+  const url = getRdapUrl(domain);
+  if (!url) return null;
+  const res = await fetch(url, { cache: 'no-store' });
   if (!res.ok) return null;
   const payload = await res.json();
   const events = Array.isArray(payload?.events) ? payload.events : [];
@@ -341,6 +399,27 @@ function buildRows(status: StatusData, config: SitesConfigData | null): DomainRo
     .map((site) => ({ site }));
 }
 
+function getUniqueAccounts(rows: DomainRow[]): string[] {
+  const accounts = new Set<string>();
+  rows.forEach((r) => {
+    if (r.site.account && !r.site.account.startsWith('manual:')) {
+      accounts.add(r.site.account);
+    }
+  });
+  return Array.from(accounts).sort();
+}
+
+function getServerFilterForSite(row: DomainRow): ServerFilterType {
+  const effectiveIp = row.site.site.cloudflareIp ?? row.site.site.ip ?? null;
+  if (!effectiveIp) return 'none';
+  const isWhm = effectiveIp === WHM_SERVER_IP;
+  const isCf = row.site.site.cloudflareIp !== null;
+  if (isWhm && isCf) return 'both';
+  if (isWhm) return 'whm';
+  if (isCf) return 'cloudflare';
+  return 'none';
+}
+
 // ─── Filtering & Sorting ─────────────────────────────────────────────────────
 
 function rowMatchesSearch(row: DomainRecord, words: string[]): boolean {
@@ -362,6 +441,17 @@ function getFilteredAndSortedRows(rows: DomainRow[]): DomainRow[] {
     return true;
   });
 
+  // Account filter
+  if (appState.accountFilter) {
+    filtered = filtered.filter((row) => row.site.account === appState.accountFilter);
+  }
+
+  // Server filter
+  if (appState.serverFilter !== 'all') {
+    filtered = filtered.filter((row) => getServerFilterForSite(row) === appState.serverFilter);
+  }
+
+  // Sorting
   if (appState.sortBy === 'alpha') {
     filtered.sort((a, b) => getHostname(a.site.site.url).localeCompare(getHostname(b.site.site.url), 'pt-BR'));
   } else if (appState.sortBy === 'venc-mais-proximo') {
@@ -400,6 +490,13 @@ function renderSidebar(rows: DomainRow[]): string {
   const networkStateLabel = appState.networkOnline ? 'Servidor online' : 'Servidor offline';
   const networkClass = appState.networkOnline ? 'ok' : 'bad';
 
+  const accounts = getUniqueAccounts(rows);
+
+  const accountOptions = accounts.map((acc) => {
+    const count = rows.filter((r) => r.site.account === acc).length;
+    return `<option value="${escapeHtml(acc)}" ${appState.accountFilter === acc ? 'selected' : ''}>${escapeHtml(acc)} (${count})</option>`;
+  }).join('');
+
   return `
     <aside class="left-panel ${appState.sidebarOpen ? 'open' : ''}">
       <div class="sidebar-header-mobile">
@@ -409,6 +506,15 @@ function renderSidebar(rows: DomainRow[]): string {
       <div class="search-box">
         <input id="searchInput" type="text" placeholder="Buscar domínio..." value="${escapeHtml(appState.search)}" />
       </div>
+      <article class="metric-card">
+        <div class="metric-label">Filtrar por Conta</div>
+        <div class="filter-select-wrap">
+          <select id="accountSelect">
+            <option value="">Todas as contas (${accounts.length})</option>
+            ${accountOptions}
+          </select>
+        </div>
+      </article>
       <article class="metric-card">
         <div class="metric-label">Servidor</div>
         <div class="metric-grid">
@@ -452,12 +558,15 @@ function getEffectiveIp(site: SiteResult): string | null {
   return site.cloudflareIp ?? site.ip ?? null;
 }
 
-function hostingBadge(effectiveIp: string | null): string {
-  if (effectiveIp === null) return '<span class="hosting-label hosting-no">Não</span>';
-  const matches = effectiveIp === WHM_SERVER_IP;
-  return matches
-    ? `<span class="hosting-label hosting-yes" title="A Record: ${WHM_SERVER_IP} (WHM)">Sim</span>`
-    : `<span class="hosting-label hosting-no" title="A Record: ${effectiveIp} (fora WHM)">Não</span>`;
+function hostingLabel(record: DomainRow): string {
+  const effectiveIp = record.site.site.cloudflareIp ?? record.site.site.ip ?? null;
+  const isWhm = effectiveIp === WHM_SERVER_IP;
+  const isCf = record.site.site.cloudflareIp !== null;
+  if (isWhm && isCf) return '<span class="hosting-label hosting-both" title="WHM + Cloudflare">WHM+CF</span>';
+  if (isWhm) return '<span class="hosting-label hosting-yes" title="A Record: ' + WHM_SERVER_IP + ' (WHM)">WHM</span>';
+  if (isCf) return '<span class="hosting-label hosting-cf" title="Cloudflare">CF</span>';
+  if (effectiveIp) return '<span class="hosting-label hosting-no" title="A Record: ' + effectiveIp + ' (fora)">Fora</span>';
+  return '<span class="hosting-label hosting-no">Não</span>';
 }
 
 function typeBadge(record: DomainRecord): string {
@@ -472,6 +581,33 @@ function accountInfo(record: DomainRecord): string {
   if (record.type === 'main') return '';
   const accountName = record.account.startsWith('manual:') ? 'Manual' : record.account;
   return `<span class="account-detail">→ ${escapeHtml(accountName)}</span>`;
+}
+
+function servicesCell(hostname: string): string {
+  const svc = getServiceForDomain(hostname);
+  const siteOn = svc?.site ?? false;
+  const emailOn = svc?.email ?? false;
+  return `
+    <div class="services-cell">
+      <button class="svc-tag ${siteOn ? 'svc-active' : ''}" data-svc="site" data-domain="${escapeHtml(hostname)}" title="Serviço SITE">SITE</button>
+      <button class="svc-tag ${emailOn ? 'svc-active' : ''}" data-svc="email" data-domain="${escapeHtml(hostname)}" title="Serviço EMAIL">EMAIL</button>
+    </div>
+  `;
+}
+
+function renderExpirationCell(row: DomainRow, resolvedExpiration: string | null): string {
+  if (!resolvedExpiration) {
+    if (row.site.type === 'sub') {
+      return '<div class="date-main">-</div><div class="date-sub">-</div>';
+    }
+    const hostname = getHostname(row.site.site.url).toLowerCase();
+    const rdapUrl = getRdapUrl(hostname);
+    if (rdapUrl) {
+      return `<div class="date-main"><a href="${escapeHtml(rdapUrl)}" target="_blank" rel="noreferrer" class="rdap-link" title="Consultar vencimento via RDAP">Sem dados ↗</a></div><div class="date-sub">Consultar RDAP</div>`;
+    }
+    return '<div class="date-main">Sem dados</div><div class="date-sub">Sem dados</div>';
+  }
+  return `<div class="date-main">${formatShortDate(resolvedExpiration)}</div><div class="date-sub">${formatRemaining(resolvedExpiration)}</div>`;
 }
 
 function rowHtml(row: DomainRow, index: number): string {
@@ -490,6 +626,7 @@ function rowHtml(row: DomainRow, index: number): string {
       <td data-label="Domínio">
         <div class="domain-cell">
           <div class="domain-name">${highlightedHostname}</div>
+          <a class="domain-link" href="${escapeHtml(safeUrl)}" target="_blank" rel="noreferrer" title="Abrir domínio">↗</a>
         </div>
       </td>
       <td data-label="Tipo">
@@ -500,18 +637,15 @@ function rowHtml(row: DomainRow, index: number): string {
       </td>
       <td data-label="Status">${statusBadge(row.site.site)}</td>
       <td data-label="Vencimento">
-        <div class="date-main">${formatShortDate(resolvedExpiration)}</div>
-        <div class="date-sub">${formatRemaining(resolvedExpiration)}</div>
+        ${renderExpirationCell(row, resolvedExpiration)}
+      </td>
+      <td data-label="Serviços">
+        ${servicesCell(hostname)}
       </td>
       <td data-label="Servidor">
         <div class="hosting-cell">
-          ${hostingBadge(effectiveIp)}
+          ${hostingLabel(row)}
           ${effectiveIp ? `<span class="ip-detail" title="A Record via ${ipSource}">${escapeHtml(effectiveIp)}</span>` : ''}
-        </div>
-      </td>
-      <td data-label="Ação">
-        <div class="actions-cell">
-          <a class="visit-link" href="${escapeHtml(safeUrl)}" target="_blank" rel="noreferrer" title="Abrir domínio">↗</a>
         </div>
       </td>
     </tr>
@@ -607,10 +741,18 @@ function renderMain(): void {
           <button class="tab ${appState.filter === 'adicionado' ? 'active' : ''}" data-filter="adicionado">Adicionado</button>
         </div>
         <div class="actions">
+          <select id="serverFilterSelect">
+            <option value="all" ${appState.serverFilter === 'all' ? 'selected' : ''}>Servidor: Todos</option>
+            <option value="whm" ${appState.serverFilter === 'whm' ? 'selected' : ''}>Servidor: WHM</option>
+            <option value="cloudflare" ${appState.serverFilter === 'cloudflare' ? 'selected' : ''}>Servidor: Cloudflare</option>
+            <option value="both" ${appState.serverFilter === 'both' ? 'selected' : ''}>Servidor: WHM + CF</option>
+            <option value="none" ${appState.serverFilter === 'none' ? 'selected' : ''}>Servidor: Fora</option>
+          </select>
           <select id="sortSelect">
             <option value="alpha" ${appState.sortBy === 'alpha' ? 'selected' : ''}>Ordenar: A–Z</option>
             <option value="venc-mais-proximo" ${appState.sortBy === 'venc-mais-proximo' ? 'selected' : ''}>Vencimento: mais próximo</option>
             <option value="venc-mais-distante" ${appState.sortBy === 'venc-mais-distante' ? 'selected' : ''}>Vencimento: mais distante</option>
+
           </select>
           ${appState.adminAvailable ? `<button id="regenerateBtn" class="ghost" ${appState.adminBusy ? 'disabled' : ''}>${appState.adminBusy ? 'Regenerando...' : 'Limpar cache'}</button>` : ''}
         </div>
@@ -626,8 +768,8 @@ function renderMain(): void {
               <th>Tipo</th>
               <th>Status</th>
               <th>Vencimento</th>
+              <th>Serviços</th>
               <th>Servidor</th>
-              <th>Ação</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -698,6 +840,22 @@ function bindEvents(): void {
     });
   });
 
+  // Account filter
+  const accountSelect = document.getElementById('accountSelect') as HTMLSelectElement | null;
+  accountSelect?.addEventListener('change', () => {
+    appState.accountFilter = accountSelect.value;
+    appState.currentPage = 1;
+    renderMain();
+  });
+
+  // Server filter
+  const serverFilterSelect = document.getElementById('serverFilterSelect') as HTMLSelectElement | null;
+  serverFilterSelect?.addEventListener('change', () => {
+    appState.serverFilter = serverFilterSelect.value as ServerFilterType;
+    appState.currentPage = 1;
+    renderMain();
+  });
+
   // Sort select
   const sortSelect = document.getElementById('sortSelect') as HTMLSelectElement | null;
   sortSelect?.addEventListener('change', () => {
@@ -730,6 +888,17 @@ function bindEvents(): void {
       appState.adminBusy = false;
       renderMain();
     }
+  });
+
+  // Service toggle (event delegation — table body is re-rendered dynamically)
+  document.querySelector('#tableBody')?.addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.svc-tag');
+    if (!btn) return;
+    const domain = btn.dataset.domain;
+    const field = btn.dataset.svc as 'site' | 'email';
+    if (!domain || !field) return;
+    await toggleService(domain, field);
+    renderTableBody();
   });
 
   // Pagination
@@ -777,6 +946,7 @@ async function bootstrap(): Promise<void> {
     appState.config = config;
     appState.adminAvailable = await checkAdminAvailability();
     loadRdapCacheFromStorage();
+    await loadServiceCache();
     appState.rows = buildRows(status, config);
     appState.currentPage = 1;
     renderMain();

@@ -1847,12 +1847,13 @@
     "geoCountry": "United States",
     "geoTimezone": "America/Phoenix",
     "ipApiSource": "ipwho.is",
-    "probedAt": "2026-07-02T19:41:27.260Z"
+    "probedAt": "2026-07-03T12:53:36.405Z"
   },
-  "lastUpdate": "2026-07-02T19:42:11.830Z",
+  "lastUpdate": "2026-07-03T12:54:17.561Z",
   "cloudflareOverview": {
     "totalZones": 20,
     "accountEmail": "criacao_dois@olamulticom.com.br",
-    "lastSync": "2026-07-02T19:42:11.829Z"
-  }
+    "lastSync": "2026-07-03T12:54:14.678Z"
+  },
+  "cloudflareAnalytics": []
 }

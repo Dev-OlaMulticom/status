@@ -161,6 +161,22 @@ body {
 .metric-value.bad { color: var(--bad); }
 .metric-sub { margin-top: 10px; color: var(--muted); font-size: 20px; }
 
+.filter-select-wrap { margin-top: 8px; }
+.filter-select-wrap select {
+  width: 100%;
+  border: 1px solid #cbd6e4;
+  border-radius: 8px;
+  height: 42px;
+  padding: 0 12px;
+  font-size: 14px;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.filter-select-wrap select:focus { border-color: var(--accent); }
+
 /* ─── Main panel ──────────────────────────────────────────────────────── */
 
 .desktop-title { margin: 0 0 18px; font-size: 42px; font-weight: 700; color: var(--text); }
@@ -230,8 +246,56 @@ th {
   font-weight: 600;
 }
 
-.domain-cell { display: flex; align-items: center; gap: 8px; }
+.domain-cell { display: flex; align-items: center; gap: 6px; }
 .domain-name { font-weight: 700; font-size: 16px; }
+
+.domain-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+.domain-link:hover { opacity: 1; }
+
+/* ─── Service tags ──────────────────────────────────────────────────── */
+
+.services-cell {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.svc-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd6e4;
+  background: #f5f8fc;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.3px;
+  user-select: none;
+}
+
+.svc-tag:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.svc-tag.svc-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
 
 /* ─── Type & account ──────────────────────────────────────────────────── */
 
@@ -271,6 +335,8 @@ th {
 
 .date-main { font-weight: 700; font-size: 14px; }
 .date-sub { font-size: 11px; color: #59728f; }
+.rdap-link { color: #0369a1; text-decoration: none; font-weight: 700; font-size: 14px; }
+.rdap-link:hover { text-decoration: underline; color: #0284c7; }
 
 /* ─── Hosting badge ───────────────────────────────────────────────────── */
 
@@ -278,6 +344,8 @@ th {
 .hosting-label { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; width: fit-content; }
 .hosting-yes { background: #dff5e7; color: #157c46; }
 .hosting-no { background: #fde8e8; color: #b23b3b; }
+.hosting-cf { background: #e0f2fe; color: #0369a1; }
+.hosting-both { background: #f0fdf4; color: #166534; }
 .ip-detail { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); }
 
 /* ─── Actions cell ────────────────────────────────────────────────────── */
