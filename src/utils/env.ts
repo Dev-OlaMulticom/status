@@ -41,6 +41,7 @@ const envSchema = z.object({
   WHM_IP_ENRICHMENT_TIMEOUT_MS: z.string().optional().default('8000'),
   WHM_SERVER_PLAN: z.string().optional().default('VPS Linux'),
   WHM_SERVER_SYSTEM: z.string().optional().default('No disponible'),
+  WHM_SERVER_IP: z.string().optional().default('31.97.169.57'),
 
   CLOUDFLARE_API_TOKEN: z.string().optional(),
   CLOUDFLARE_TIMEOUT_MS: z.string().optional().default('10000'),
@@ -61,8 +62,11 @@ const envSchema = z.object({
   LOG_LEVEL: z.string().optional().default('info'),
   NODE_ENV: z.string().optional().default('development'),
 
-  GAS_ENABLED: z.string().optional().default('true'),
-  GAS_API_URL: z.string().optional().default('https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercopy'),
+  GAS_ENABLED: z.string().optional().default('false'),
+  GAS_API_URL: z
+    .string()
+    .optional()
+    .default('https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercopy'),
   GAS_API_KEY: z.string().optional(),
 })
 
@@ -105,6 +109,7 @@ export const env = {
     ipEnrichmentTimeoutMs: parseNum(raw.WHM_IP_ENRICHMENT_TIMEOUT_MS, 8000, 1000),
     serverPlan: raw.WHM_SERVER_PLAN,
     serverSystem: raw.WHM_SERVER_SYSTEM,
+    serverIp: raw.WHM_SERVER_IP,
     excludePatterns: ['cpanel.', 'webmail.', 'mail.', 'ftp.', 'autodiscover.'],
   },
   cloudflare: {

@@ -1,11 +1,7 @@
 import pLimit from 'p-limit'
 import type { GasDomain } from '../dto/gas.dto'
-import {
-  gasListAllDomains,
-  gasCreateDomain,
-  gasUpdateDomain,
-} from '../providers/gas.provider'
 import type { SiteResult } from '../models/site.model'
+import { gasCreateDomain, gasListAllDomains, gasUpdateDomain } from '../providers/gas.provider'
 import { env } from '../utils/env'
 import { logger } from '../utils/logger'
 
@@ -23,11 +19,15 @@ export interface GasSyncResult {
  */
 export function mapSiteToGasDomain(site: SiteResult): Partial<GasDomain> {
   const hostname = (() => {
-    try { return new URL(site.url).hostname } catch { return site.url }
+    try {
+      return new URL(site.url).hostname
+    } catch {
+      return site.url
+    }
   })()
 
   const effectiveIp = site.cloudflareIp ?? site.ip ?? null
-  const isWhm = effectiveIp === '31.97.169.57'
+  const isWhm = effectiveIp === env.whm.serverIp
   const isCf = site.cloudflareIp !== null
   let servidor = 'Não'
   if (isWhm && isCf) servidor = 'WHM+CF'
@@ -35,7 +35,8 @@ export function mapSiteToGasDomain(site: SiteResult): Partial<GasDomain> {
   else if (isCf) servidor = 'CF'
   else if (effectiveIp) servidor = 'Fora'
 
-  const tipo = site.whmInfo?.type === 'principal' || site.whmInfo === undefined ? 'Conta' : 'Adicionado'
+  const tipo =
+    site.whmInfo?.type === 'principal' || site.whmInfo === undefined ? 'Conta' : 'Adicionado'
   const subtipo = site.whmInfo?.username ?? ''
 
   let vencimento = ''
@@ -93,7 +94,11 @@ export async function syncToGas(sites: SiteResult[]): Promise<GasSyncResult> {
     sites.map((site) =>
       limit(async () => {
         const hostname = (() => {
-          try { return new URL(site.url).hostname } catch { return site.url }
+          try {
+            return new URL(site.url).hostname
+          } catch {
+            return site.url
+          }
         })()
         const gasData = mapSiteToGasDomain(site)
         const existing = existingMap.get(hostname.toLowerCase())

@@ -1,12 +1,20 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import pLimit from 'p-limit'
-import type { CheckResult, HostingProvider, MonitorHistory, Site, SiteResult } from '../models/site.model'
-import { checkUrl } from '../providers/http.provider'
+import type {
+  CheckResult,
+  HostingProvider,
+  MonitorHistory,
+  Site,
+  SiteResult,
+} from '../models/site.model'
 import { getAllDnsRecords, getARecordIp, getZoneForDomain } from '../providers/cloudflare.provider'
 import { resolveDomain, resolveIpv4 } from '../providers/dns.provider'
+import { checkUrl } from '../providers/http.provider'
 import { env } from '../utils/env'
 import { logger } from '../utils/logger'
 import { AccountService } from './account.service'
+import { processGasQueue } from './gas-queue.service'
+import { syncToGas } from './gas-sync.service'
 
 const HISTORY_FILE = 'status.json'
 
@@ -56,13 +64,8 @@ export class MonitorService {
 
     const inCloudflare = cloudflareZone !== null
     const inWhm = site.whmInfo !== undefined
-    const hosting: HostingProvider = inCloudflare && inWhm
-      ? 'both'
-      : inCloudflare
-        ? 'cloudflare'
-        : inWhm
-          ? 'whm'
-          : 'unknown'
+    const hosting: HostingProvider =
+      inCloudflare && inWhm ? 'both' : inCloudflare ? 'cloudflare' : inWhm ? 'whm' : 'unknown'
 
     const dnsRecords = dnsInfo
       ? {
@@ -173,6 +176,16 @@ export class MonitorService {
     }
 
     this.saveHistory()
+
+    if (env.gas.enabled && env.gas.apiKey) {
+      const gasResults = await Promise.allSettled([syncToGas(results), processGasQueue()])
+      for (const r of gasResults) {
+        if (r.status === 'rejected') {
+          logger.warn({ error: String(r.reason) }, 'GAS sync step failed')
+        }
+      }
+    }
+
     return results
   }
 

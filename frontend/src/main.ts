@@ -3,7 +3,8 @@ import { getAllServices, upsertService, type DomainService } from './db';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const WHM_SERVER_IP = '31.97.169.57';
+const WHM_SERVER_IP_FALLBACK = '31.97.169.57';
+let whmServerIp = WHM_SERVER_IP_FALLBACK;
 const PAGE_SIZE = 50;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -27,6 +28,12 @@ type SiteResult = {
   error?: string;
   category?: string;
   whmInfo?: WhmInfo;
+  whmUsage?: {
+    diskUsedMb?: number | null;
+    diskQuotaMb?: number | null;
+    diskPercent?: number | null;
+    plan?: string | null;
+  };
   ip?: string | null;
   cloudflareIp?: string | null;
 };
@@ -110,6 +117,7 @@ type AppState = {
   adminBusy: boolean;
   adminMessage: string;
   sidebarOpen: boolean;
+  accountDomainCount: Map<string, number>;
 };
 
 // ─── State ───────────────────────────────────────────────────────────────────
@@ -134,6 +142,7 @@ const appState: AppState = {
   adminBusy: false,
   adminMessage: '',
   sidebarOpen: false,
+  accountDomainCount: new Map(),
 };
 
 const RDAP_CACHE_KEY = 'olamulticom_rdap_expiry_v1';
@@ -244,6 +253,28 @@ function highlightText(escapedText: string, words: string[]): string {
     result = result.replace(regex, '<mark class="search-hl">$1</mark>');
   }
   return result;
+}
+
+// ─── Disk / account helpers ─────────────────────────────────────────────────
+
+function formatDiskMb(mb?: number | null): string {
+  if (mb == null || Number.isNaN(mb)) return '—';
+  if (mb >= 1024) return `${(mb / 1024).toFixed(2)} GB`;
+  return `${formatNumber(mb)} MB`;
+}
+
+/**
+ * Count how many domains in the current catalog share each WHM account (username).
+ * Used to show "dominios en conta" per row.
+ */
+function computeAccountDomainCounts(rows: DomainRow[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const r of rows) {
+    const username = r.site.site.whmInfo?.username;
+    if (!username) continue;
+    counts.set(username, (counts.get(username) ?? 0) + 1);
+  }
+  return counts;
 }
 
 // ─── Service cache helpers ──────────────────────────────────────────────────
@@ -421,7 +452,7 @@ function getUniqueAccounts(rows: DomainRow[]): string[] {
 function getServerFilterForSite(row: DomainRow): ServerFilterType {
   const effectiveIp = row.site.site.cloudflareIp ?? row.site.site.ip ?? null;
   if (!effectiveIp) return 'none';
-  const isWhm = effectiveIp === WHM_SERVER_IP;
+  const isWhm = effectiveIp === whmServerIp;
   const isCf = row.site.site.cloudflareIp !== null;
   if (isWhm && isCf) return 'both';
   if (isWhm) return 'whm';
@@ -570,10 +601,10 @@ function getEffectiveIp(site: SiteResult): string | null {
 
 function hostingLabel(record: DomainRow): string {
   const effectiveIp = record.site.site.cloudflareIp ?? record.site.site.ip ?? null;
-  const isWhm = effectiveIp === WHM_SERVER_IP;
+  const isWhm = effectiveIp === whmServerIp;
   const isCf = record.site.site.cloudflareIp !== null;
   if (isWhm && isCf) return '<span class="hosting-label hosting-both" title="WHM + Cloudflare">WHM+CF</span>';
-  if (isWhm) return '<span class="hosting-label hosting-yes" title="A Record: ' + WHM_SERVER_IP + ' (WHM)">WHM</span>';
+  if (isWhm) return '<span class="hosting-label hosting-yes" title="A Record: ' + whmServerIp + ' (WHM)">WHM</span>';
   if (isCf) return '<span class="hosting-label hosting-cf" title="Cloudflare">CF</span>';
   if (effectiveIp) return '<span class="hosting-label hosting-no" title="A Record: ' + effectiveIp + ' (fora)">Fora</span>';
   return '<span class="hosting-label hosting-no">Não</span>';
@@ -620,6 +651,25 @@ function renderExpirationCell(row: DomainRow, resolvedExpiration: string | null)
   return `<div class="date-main">${formatShortDate(resolvedExpiration)}</div><div class="date-sub">${formatRemaining(resolvedExpiration)}</div>`;
 }
 
+function renderDiskCell(row: DomainRow): string {
+  const usage = row.site.site.whmUsage;
+  if (!usage || (usage.diskQuotaMb == null && usage.diskUsedMb == null)) {
+    return '<div class="disk-main">—</div><div class="disk-sub">—</div>';
+  }
+
+  const used = formatDiskMb(usage.diskUsedMb);
+  const quota = formatDiskMb(usage.diskQuotaMb);
+  const pct = usage.diskPercent != null ? `${usage.diskPercent}%` : '—';
+
+  const username = row.site.site.whmInfo?.username;
+  const accountCount = username ? appState.accountDomainCount.get(username) ?? 1 : 1;
+
+  return `
+    <div class="disk-main">${used} <span class="disk-sep">/</span> ${quota}</div>
+    <div class="disk-sub">${pct} usado · ${accountCount} dom. en conta</div>
+  `;
+}
+
 function rowHtml(row: DomainRow, index: number): string {
   const hostname = getHostname(row.site.site.url);
   const safeUrl = sanitizeUrl(row.site.site.url);
@@ -658,6 +708,7 @@ function rowHtml(row: DomainRow, index: number): string {
           ${effectiveIp ? `<span class="ip-detail" title="A Record via ${ipSource}">${escapeHtml(effectiveIp)}</span>` : ''}
         </div>
       </td>
+      <td data-label="Disco">${renderDiskCell(row)}</td>
     </tr>
   `;
 }
@@ -764,7 +815,9 @@ function renderMain(): void {
             <option value="venc-mais-distante" ${appState.sortBy === 'venc-mais-distante' ? 'selected' : ''}>Vencimento: mais distante</option>
 
           </select>
-          ${appState.adminAvailable ? `<button id="regenerateBtn" class="ghost" ${appState.adminBusy ? 'disabled' : ''}>${appState.adminBusy ? 'Regenerando...' : 'Limpar cache'}</button>` : ''}
+          ${appState.adminAvailable
+            ? `<button id="regenerateBtn" class="ghost" ${appState.adminBusy ? 'disabled' : ''}>${appState.adminBusy ? 'Regenerando...' : 'Limpar cache'}</button>`
+            : '<span class="admin-note" title="O deploy é estático; os dados são atualizados pelo agendador (cron) a cada 5 minutos.">Auto-atualização: cron 5 min</span>'}
         </div>
       </div>
       ${appState.adminMessage ? `<p class="admin-note">${escapeHtml(appState.adminMessage)}</p>` : ''}
@@ -780,6 +833,7 @@ function renderMain(): void {
               <th>Vencimento</th>
               <th>Serviços</th>
               <th>Servidor</th>
+              <th>Disco</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -820,7 +874,7 @@ function exportToCSV(): void {
   }
 
   // Headers
-  const headers = ['#', 'Domínio', 'Tipo', 'Cuenta', 'Status', 'Vencimiento', 'IP', 'Servidor'];
+  const headers = ['#', 'Domínio', 'Tipo', 'Cuenta', 'Status', 'Vencimiento', 'IP', 'Servidor', 'Capacidad Disco', 'Disco Usado', 'Dominios en cuenta'];
   
   // Convert rows to CSV data
   const csvData = filteredRows.map((row, index) => {
@@ -828,13 +882,19 @@ function exportToCSV(): void {
     const status = row.site.site.online ? 'Online' : (row.site.site.status < 0 ? 'Sin check' : 'Offline');
     const expiration = getResolvedExpiration(row.site) || 'N/A';
     const ip = getEffectiveIp(row.site.site) || 'N/A';
-    const isWhm = ip === WHM_SERVER_IP;
+    const isWhm = ip === whmServerIp;
     const isCf = row.site.site.cloudflareIp !== null;
     let servidor = 'No';
     if (isWhm && isCf) servidor = 'WHM+CF';
     else if (isWhm) servidor = 'WHM';
     else if (isCf) servidor = 'CF';
     else if (ip !== 'N/A') servidor = 'Fora';
+
+    const usage = row.site.site.whmUsage;
+    const quota = usage?.diskQuotaMb != null ? formatDiskMb(usage.diskQuotaMb) : 'N/A';
+    const used = usage?.diskUsedMb != null ? formatDiskMb(usage.diskUsedMb) : 'N/A';
+    const username = row.site.site.whmInfo?.username;
+    const accountCount = username ? (appState.accountDomainCount.get(username) ?? 1) : 1;
     
     return [
       (index + 1).toString(),
@@ -844,7 +904,10 @@ function exportToCSV(): void {
       status,
       expiration,
       ip,
-      servidor
+      servidor,
+      quota,
+      used,
+      String(accountCount)
     ];
   });
 
@@ -951,6 +1014,7 @@ function bindEvents(): void {
       appState.status = status;
       appState.config = config;
       appState.rows = buildRows(status, config);
+      appState.accountDomainCount = computeAccountDomainCounts(appState.rows);
       appState.adminMessage = 'Cache limpo e dados regenerados com sucesso.';
     } catch (error) {
       appState.adminMessage = `Não foi possível regenerar: ${(error as Error).message}`;
@@ -1019,10 +1083,12 @@ async function bootstrap(): Promise<void> {
     const [status, config] = await Promise.all([loadStatus(), loadSitesConfig()]);
     appState.status = status;
     appState.config = config;
+    whmServerIp = config?.serverInfo?.ip || WHM_SERVER_IP_FALLBACK;
     appState.adminAvailable = await checkAdminAvailability();
     loadRdapCacheFromStorage();
     await loadServiceCache();
     appState.rows = buildRows(status, config);
+    appState.accountDomainCount = computeAccountDomainCounts(appState.rows);
     appState.currentPage = 1;
     renderMain();
     enqueueMainDomainsRdap();

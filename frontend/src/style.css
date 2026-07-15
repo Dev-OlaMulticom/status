@@ -338,6 +338,12 @@ th {
 .rdap-link { color: #0369a1; text-decoration: none; font-weight: 700; font-size: 14px; }
 .rdap-link:hover { text-decoration: underline; color: #0284c7; }
 
+/* ─── Disk ────────────────────────────────────────────────────────────── */
+
+.disk-main { font-weight: 700; font-size: 14px; }
+.disk-sub { font-size: 11px; color: #59728f; margin-top: 2px; }
+.disk-sep { color: #59728f; font-weight: 400; margin: 0 4px; }
+
 /* ─── Hosting badge ───────────────────────────────────────────────────── */
 
 .hosting-cell { display: flex; flex-direction: column; gap: 2px; }
