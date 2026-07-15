@@ -94,14 +94,20 @@ async function getEmailCountForUser(username: string): Promise<number | null> {
     keyParts: ['email_count', env.whm.host, username],
     ttlOverrideMs: 6 * 60 * 60 * 1000,
     fetcher: async () => {
-      const payload = await requestWhm('cpanel', {
-        cpanel_jsonapi_user: username,
-        cpanel_jsonapi_apiversion: '2',
-        cpanel_jsonapi_module: 'Email',
-        cpanel_jsonapi_func: 'listpopswithdisk',
-      })
-      const entries = extractEmailEntries(payload)
-      return entries.length
+      try {
+        const payload = await requestWhm('cpanel', {
+          cpanel_jsonapi_user: username,
+          cpanel_jsonapi_apiversion: '2',
+          cpanel_jsonapi_module: 'Email',
+          cpanel_jsonapi_func: 'listpopswithdisk',
+        })
+        const entries = extractEmailEntries(payload)
+        logger.debug({ username, emailCount: entries.length }, 'Email count fetched')
+        return entries.length
+      } catch (error: any) {
+        logger.warn({ username, error: error.message }, 'Email count fetch failed')
+        return null
+      }
     },
   })
 
@@ -188,7 +194,10 @@ export async function extractAccountsAndDomains(bypassCache = false): Promise<Wh
  * Get detailed account information (disk usage, bandwidth, plan) from WHM listaccts.
  */
 export async function getAccountDetails(bypassCache = false): Promise<WhmAccountDetail[]> {
-  if (!env.whm.apiToken) return []
+  if (!env.whm.apiToken) {
+    logger.warn('WHM_API_TOKEN not configured, skipping account details')
+    return []
+  }
 
   const result = await getCached<WhmAccountDetail[]>({
     namespace: 'whm',
@@ -203,8 +212,12 @@ export async function getAccountDetails(bypassCache = false): Promise<WhmAccount
         })
 
         const accounts: any[] = response?.data ?? response?.accts ?? []
-        if (!Array.isArray(accounts)) return []
+        if (!Array.isArray(accounts)) {
+          logger.warn({ responseKeys: Object.keys(response ?? {}) }, 'WHM listaccts returned non-array')
+          return []
+        }
 
+        logger.info({ count: accounts.length }, 'WHM listaccts returned accounts')
         return accounts.map((acc: any) => ({
           username: acc.user ?? acc.username ?? '',
           domain: acc.domain ?? '',

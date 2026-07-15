@@ -624,14 +624,18 @@ function accountInfo(record: DomainRecord): string {
   return `<span class="account-detail">→ ${escapeHtml(accountName)}</span>`;
 }
 
-function servicesCell(hostname: string): string {
+function servicesCell(row: DomainRow): string {
+  const hostname = getHostname(row.site.site.url);
   const svc = getServiceForDomain(hostname);
   const siteOn = svc?.site ?? false;
   const emailOn = svc?.email ?? false;
+  const mailCount = row.site.site.whmInfo?.mailAccountsCount;
+  const mailLabel = mailCount != null ? `${mailCount} conta${mailCount !== 1 ? 's' : ''}` : '';
   return `
     <div class="services-cell">
       <button class="svc-tag ${siteOn ? 'svc-active' : ''}" data-svc="site" data-domain="${escapeHtml(hostname)}" title="Serviço SITE">SITE</button>
       <button class="svc-tag ${emailOn ? 'svc-active' : ''}" data-svc="email" data-domain="${escapeHtml(hostname)}" title="Serviço EMAIL">EMAIL</button>
+      ${mailLabel ? `<span class="mail-count" title="Contas de e-mail configuradas">${escapeHtml(mailLabel)}</span>` : ''}
     </div>
   `;
 }
@@ -700,7 +704,7 @@ function rowHtml(row: DomainRow, index: number): string {
         ${renderExpirationCell(row, resolvedExpiration)}
       </td>
       <td data-label="Serviços">
-        ${servicesCell(hostname)}
+        ${servicesCell(row)}
       </td>
       <td data-label="Servidor">
         <div class="hosting-cell">
@@ -874,8 +878,8 @@ function exportToCSV(): void {
   }
 
   // Headers
-  const headers = ['#', 'Domínio', 'Tipo', 'Cuenta', 'Status', 'Vencimiento', 'IP', 'Servidor', 'Capacidad Disco', 'Disco Usado', 'Dominios en cuenta'];
-  
+  const headers = ['#', 'Domínio', 'Tipo', 'Cuenta', 'Status', 'Vencimiento', 'IP', 'Servidor', 'Capacidad Disco', 'Disco Usado', 'Dominios en cuenta', 'Contas Email'];
+
   // Convert rows to CSV data
   const csvData = filteredRows.map((row, index) => {
     const hostname = getHostname(row.site.site.url);
@@ -895,7 +899,8 @@ function exportToCSV(): void {
     const used = usage?.diskUsedMb != null ? formatDiskMb(usage.diskUsedMb) : 'N/A';
     const username = row.site.site.whmInfo?.username;
     const accountCount = username ? (appState.accountDomainCount.get(username) ?? 1) : 1;
-    
+    const mailCount = row.site.site.whmInfo?.mailAccountsCount;
+
     return [
       (index + 1).toString(),
       hostname,
@@ -907,7 +912,8 @@ function exportToCSV(): void {
       servidor,
       quota,
       used,
-      String(accountCount)
+      String(accountCount),
+      mailCount != null ? String(mailCount) : 'N/A'
     ];
   });
 

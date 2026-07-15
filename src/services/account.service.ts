@@ -186,6 +186,7 @@ export class AccountService {
       ])
 
       const detailMap = new Map<string, WhmAccountDetail>(accountDetails.map((d) => [d.username.toLowerCase(), d]))
+      logger.info({ count: accountDetails.length, usernames: Array.from(detailMap.keys()).slice(0, 5) }, 'Account details loaded')
 
       const filtered = whmData.domains.filter((d) => {
         if (env.whm.excludeSuspended && d.status !== 'Activa') return false
@@ -203,12 +204,18 @@ export class AccountService {
       }
 
       const oldDates = new Map<string, { expirationDate?: string; renewalDate?: string }>()
+      const oldUsage = new Map<string, typeof this.whmSites[0]['whmUsage']>()
+      const oldMailCount = new Map<string, number | null>()
       this.whmSites.forEach((s) => {
         if (s.url && s.whmInfo) {
           oldDates.set(s.url.toLowerCase(), {
             expirationDate: s.whmInfo.expirationDate,
             renewalDate: s.whmInfo.renewalDate,
           })
+          oldMailCount.set(s.url.toLowerCase(), s.whmInfo.mailAccountsCount ?? null)
+        }
+        if (s.url && s.whmUsage) {
+          oldUsage.set(s.url.toLowerCase(), s.whmUsage)
         }
       })
 
@@ -235,9 +242,12 @@ export class AccountService {
 
       this.whmSites = filtered.map((d) => {
         const url = `https://${d.domain}`
+        const urlLower = url.toLowerCase()
         const rdap = rdapDateMap.get(d.domain.toLowerCase())
-        const prev = oldDates.get(url.toLowerCase())
+        const prev = oldDates.get(urlLower)
         const detail = detailMap.get(d.username.toLowerCase())
+        const prevUsage = oldUsage.get(urlLower)
+        const prevMailCount = oldMailCount.get(urlLower)
 
         return {
           name: d.domain,
@@ -250,7 +260,7 @@ export class AccountService {
             status: d.status,
             expirationDate: rdap?.expirationDate ?? prev?.expirationDate,
             renewalDate: rdap?.renewalDate ?? prev?.renewalDate,
-            mailAccountsCount: d.mailAccountsCount ?? null,
+            mailAccountsCount: d.mailAccountsCount ?? prevMailCount ?? null,
           },
           whmUsage: detail
             ? {
@@ -263,7 +273,7 @@ export class AccountService {
                 plan: detail.plan || null,
                 startdate: detail.startdate,
               }
-            : undefined,
+            : prevUsage ?? undefined,
         }
       })
 
@@ -271,7 +281,9 @@ export class AccountService {
       this.lastWhmSync = new Date().toISOString()
       await this.refreshServerInfo()
       this.saveToFile()
-      logger.info({ count: this.whmSites.length }, 'WHM sync complete')
+      const withUsage = this.whmSites.filter((s) => s.whmUsage).length
+      const withMail = this.whmSites.filter((s) => s.whmInfo?.mailAccountsCount != null).length
+      logger.info({ count: this.whmSites.length, withUsage, withMail }, 'WHM sync complete')
       return true
     } catch (error: any) {
       logger.error({ error: error.message }, 'WHM sync failed')
